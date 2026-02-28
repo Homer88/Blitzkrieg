@@ -18,8 +18,8 @@ add_subdirectory(Anim)
 
 
 
-
-add_subdirectory(LuaLib)
+add_subdirectory (libpng)
+add_subdirectory (LuaLib)
 add_subdirectory (zlib)
 add_subdirectory (AutoRun)
 
