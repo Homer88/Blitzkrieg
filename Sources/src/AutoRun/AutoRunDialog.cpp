@@ -330,7 +330,7 @@ BOOL CAutoRunDialog::PreTranslateMessage( MSG* pMsg )
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CAutoRunDialog::OnTimer(UINT nIDEvent) 
+void CAutoRunDialog::OnTimer(UINT_PTR nIDEvent)
 {
   if ( nIDEvent == FINISH_TIMER_ID )
 	{

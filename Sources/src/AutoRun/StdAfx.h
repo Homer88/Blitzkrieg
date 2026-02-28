@@ -10,8 +10,8 @@
 #define _MBCS 1
 //
 #define _STLP_USE_MFC 1
-#include "stl_user_config.h"
-#include <stl/_config.h>
+//#include "stl_user_config.h"
+//#include <stl/_config.h>
 
 #include <afxwin.h>											// MFC core and standard components
 #include <afxext.h>											// MFC extensions
@@ -30,7 +30,10 @@
 #include <string>
 #include <vector>
 #include <map>
+
 #include <hash_map>
+
+
 #include <hash_set>
 #include <set>
 #include <queue>

@@ -389,10 +389,10 @@ inline int MSVCMustDie_tolower( int a ) { return tolower(a); }
 inline int MSVCMustDie_toupper( int a ) { return toupper(a); }
 void NStr::ToLower( std::string &szString ) 
 { 
-	std::transform( szString.begin(), szString.end(), szString.begin(), std::ptr_fun(MSVCMustDie_tolower) ); 
+	std::transform( szString.begin(), szString.end(), szString.begin(), MSVCMustDie_tolower ); 
 }
 void NStr::ToUpper( std::string &szString ) 
 { 
-	std::transform( szString.begin(), szString.end(), szString.begin(), std::ptr_fun(MSVCMustDie_toupper) ); 
+	std::transform( szString.begin(), szString.end(), szString.begin(), MSVCMustDie_toupper ); 
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
