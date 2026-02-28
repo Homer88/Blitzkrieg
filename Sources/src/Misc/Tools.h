@@ -241,7 +241,7 @@ inline TYPE Sign( const TYPE x )
 template <>
 inline int Sign<int>( const int nVal )
 {
-	int nRes;
+	//int nRes;
 	/*_asm
 	{
 		xor ecx, ecx
@@ -444,7 +444,7 @@ inline float select_gt( const float x, const float y, const float val1, const fl
 // very fast comparison: 'x' <= 'y' ? val1 : val2
 inline float select_le( const float x, const float y, const float val1, const float val2 )
 {
-	float z;
+	/*float z;
 	_asm
 	{
 		// loading 'x' and compare with 'y'
@@ -470,13 +470,17 @@ inline float select_le( const float x, const float y, const float val1, const fl
 
 		mov					[z], ebx
 	}
+	return z;*/
+	float z;
+	int selected = (x <= y) ? val1 : val2;
+	std::memcpy(&z, &selected, sizeof(z));
 	return z;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // very fast comparison: 'x' >= 'y' ? val1 : val2
 inline float select_ge( const float x, const float y, const float val1, const float val2 )
 {
-	float z;
+	/*float z;
 	_asm
 	{
 		// loading 'x' and compare with 'y'
@@ -502,13 +506,18 @@ inline float select_ge( const float x, const float y, const float val1, const fl
 
 		mov					[z], ebx
 	}
+	return z;*/
+
+	float z;
+	int selected = (x >= y) ? val1 : val2;
+	std::memcpy(&z, &selected, sizeof(z));
 	return z;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // very fast comparison: 'x' == 'y' ? val1 : val2
 inline float select_eq( const float x, const float y, const float val1, const float val2 )
 {
-	float z;
+	/*float z;
 	_asm
 	{
 		// loading 'x' and compare with 'y'
@@ -531,13 +540,27 @@ inline float select_eq( const float x, const float y, const float val1, const fl
 
 		mov					[z], ebx
 	}
+	return z;*/
+	float z;
+	int xi, yi;
+
+	// Получаем целочисленные представления x и y
+	std::memcpy(&xi, &x, sizeof(x));
+	std::memcpy(&yi, &y, sizeof(y));
+
+	// Выбираем нужное значение
+	int selected = (xi == yi) ? val1 : val2;
+
+	// Копируем выбранное целое как float
+	std::memcpy(&z, &selected, sizeof(z));
+
 	return z;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // very fast comparison: 'x' != 'y' ? val1 : val2
 inline float select_ne( const float x, const float y, const float val1, const float val2 )
 {
-	float z;
+	/*float z;
 	_asm
 	{
 		// loading 'x' and compare with 'y'
@@ -561,6 +584,19 @@ inline float select_ne( const float x, const float y, const float val1, const fl
 		mov					[z], ebx
 	}
 	return z;
+	*/
+	float z;
+	int xi, yi;
+
+	// Получаем целочисленные представления x и y
+	std::memcpy(&xi, &x, sizeof(x));
+	std::memcpy(&yi, &y, sizeof(y));
+
+	// Условный выбор
+	int selected = (xi == yi) ? val1 : val2;
+
+	// Копируем выбранное целое как float
+	std::memcpy(&z, &selected, sizeof(z));
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // performs the next check:
@@ -572,7 +608,7 @@ inline float select_ne( const float x, const float y, const float val1, const fl
 //			( (zp >   wp) << 5 );
 inline const BYTE CheckForViewingFrustum( float xp, float yp, const float zp, const float wp )
 {
-	float wp2 = wp + wp;
+	/*float wp2 = wp + wp;
 	BYTE value;
 
 	xp += wp;
@@ -614,6 +650,33 @@ inline const BYTE CheckForViewingFrustum( float xp, float yp, const float zp, co
 		mov [value], al
 	};
 
+	return value;*/
+	float wp2 = wp + wp;
+	xp += wp;
+	yp += wp;
+
+	// Получаем битовые представления чисел (чтобы извлечь знак)
+	uint32_t x_bits, y_bits, z_bits;
+	std::memcpy(&x_bits, &xp, sizeof(xp));
+	std::memcpy(&y_bits, &yp, sizeof(yp));
+	std::memcpy(&z_bits, &zp, sizeof(zp));
+
+	// Знаковые биты (31-й)
+	int sign_x = (x_bits >> 31) & 1;
+	int sign_y = (y_bits >> 31) & 1;
+	int sign_z = (z_bits >> 31) & 1;
+
+	// Результаты сравнений (с учётом поведения для NaN в исходном коде, 
+	// но здесь предполагается, что NaN не возникают)
+	int cond_x = (xp > wp2) ? 1 : 0;
+	int cond_y = (yp > wp2) ? 1 : 0;
+	int cond_z = (zp > wp)  ? 1 : 0;
+
+	// Формируем байт
+	BYTE value = (sign_x << 0) | (cond_x << 1) |
+             (sign_y << 2) | (cond_y << 3) |
+             (sign_z << 4) | (cond_z << 5);
+
 	return value;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -633,7 +696,7 @@ inline const TYPE Max( const TYPE val1, const TYPE val2 )
 template<>
 inline const float Min<float>( const float a, const float b )
 {
-	float fpRet;
+	/*float fpRet;
 	_asm
 	{
 		// comparing
@@ -650,13 +713,14 @@ inline const float Min<float>( const float a, const float b )
 		or			eax, ecx
 		mov			[fpRet], eax
 	}
-	return fpRet;
+	return fpRet;*/
+	 return (b < a) ? b : a;
 }
 // returns minimum of two float values
 template<>
 inline const float Max<float>( const float a, const float b )
 {
-	float fpRet;
+	/*float fpRet;
 	_asm
 	{
 		// comparing
@@ -673,7 +737,9 @@ inline const float Max<float>( const float a, const float b )
 		or			eax, ecx
 		mov			[fpRet], eax
 	}
-	return fpRet;
+	return fpRet;*/
+
+	 return (a < b) ? b : a;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class TYPE>
@@ -786,7 +852,7 @@ inline float sin( float fVal ) { return static_cast<float>( sin( double(fVal) ) 
 inline float acos( float fVal ) { return static_cast<float>( acos( double(fVal) ) ); }
 inline float asin( float fVal ) { return static_cast<float>( asin( double(fVal) ) ); }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#define MINIMIZE_INT( nToMin, nHow )  \
+/*#define MINIMIZE_INT( nToMin, nHow )  \
 	_asm mov ecx, nToMin                \
 	_asm cmp ecx, nHow                  \
 	_asm setl al                        \
@@ -797,8 +863,9 @@ inline float asin( float fVal ) { return static_cast<float>( asin( double(fVal) 
 	_asm and eax, nHow                  \
 	_asm or ecx, eax                    \
 	_asm mov nToMin, ecx
-
-#define MINIMIZE_UINT( nToMin, nHow ) \
+*/
+#define MINIMIZE_INT(nToMin, nHow) do { if ((nToMin) > (nHow)) (nToMin) = (nHow); } while(0)
+/*#define MINIMIZE_UINT( nToMin, nHow ) \
 	_asm mov ecx, nToMin                \
 	_asm cmp ecx, nHow                  \
 	_asm setb al                        \
@@ -808,22 +875,24 @@ inline float asin( float fVal ) { return static_cast<float>( asin( double(fVal) 
 	_asm not eax                        \
 	_asm and eax, nHow                  \
 	_asm or ecx, eax                    \
-	_asm mov nToMin, ecx
+	_asm mov nToMin, ecx*/
+#define MINIMIZE_UINT(nToMin, nHow) do { if ((nToMin) > (nHow)) (nToMin) = (nHow); } while(0)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 inline void Copy8Bytes( void* fpDst, const void* fpSrc )
 {
-	_asm
+	/*_asm
 	{
 		mov ecx, [ fpSrc ]
 		mov edx, [ fpDst ]
 		fild qword ptr [ ECX ]
 		fistp qword ptr [ EDX ]
-	}
+	}*/
+	std::memcpy(fpDst, fpSrc, 8);
 }
 
 inline void Copy16Bytes( void* fpDst, const void* fpSrc )
 {
-	_asm
+	/*_asm
 	{
 		mov ecx, [ fpSrc ]
 		mov edx, [ fpDst ]
@@ -831,12 +900,13 @@ inline void Copy16Bytes( void* fpDst, const void* fpSrc )
 		fistp qword ptr [ EDX ]
 		fild qword ptr [ ECX + 8 ]
 		fistp qword ptr [ EDX + 8 ]
-	}
+	}*/
+	std::memcpy(fpDst, fpSrc, 16);
 }
 
 inline void Copy32Bytes( void* fpDst, const void* fpSrc )
 {
-	_asm
+	/*_asm
 	{
 		mov ecx, [ fpSrc ]
 		mov edx, [ fpDst ]
@@ -848,15 +918,23 @@ inline void Copy32Bytes( void* fpDst, const void* fpSrc )
 		fistp qword ptr [ EDX + 16 ]
 		fild qword ptr [ ECX + 24 ]
 		fistp qword ptr [ EDX + 24 ]
-	}
+	}*/
+	std::memcpy(fpDst, fpSrc, 32);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const DWORD CPUID_MMX_FEATURE_PRESENT = 0x00800000;
 const DWORD CPUID_SSE_FEATURE_PRESENT = 0x02000000;
-#define GET_CPUID __asm _emit 0x0f __asm _emit 0xa2
+//#define GET_CPUID __asm _emit 0x0f __asm _emit 0xa2
+#include <intrin.h>
+
+DWORD GetCPUID_EDX() {
+    int cpuInfo[4];
+    __cpuid(cpuInfo, 1);          // вызов CPUID с функцией 1
+    return cpuInfo[3];             // EDX находится в cpuInfo[3]
+}
 inline DWORD GetCPUID()
 {
-	DWORD dwRes;
+	/*DWORD dwRes;
 	_asm
 	{
 		pusha                               // keep compiler happy
@@ -877,7 +955,23 @@ inline DWORD GetCPUID()
 	q:
 		popa
 	}
-	return dwRes;
+	return dwRes;*/
+
+    DWORD dwRes = 0;
+    __try {
+        int cpuInfo[4];
+        // Вызов CPUID с функцией 1
+        __cpuid(cpuInfo, 1);
+        // Результат в EDX находится в cpuInfo[3]
+        dwRes = cpuInfo[3];
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER) {
+        // Если инструкция CPUID не поддерживается (старые процессоры),
+        // возвращаем 0
+        dwRes = 0;
+    }
+    return dwRes;
+
 }
 #undef GET_CPUID
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

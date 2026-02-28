@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 #проекты 
 add_subdirectory(A7ExportModel)
 add_subdirectory(AILogic)
+
 #Анимация 
 add_subdirectory(Anim)
 
@@ -18,12 +19,9 @@ add_subdirectory(Anim)
 
 
 
-
+add_subdirectory(LuaLib)
 add_subdirectory (zlib)
 add_subdirectory (AutoRun)
-#список файлов Общий 
-FILE(GLOB MAINFILE_SOURCE "./Sources/src/Game/*.cpp")
-FILE(GLOB MAINFILE_HEADERS "./Sources/src/Game/*.H")
 
 #SDK
 
@@ -38,7 +36,7 @@ FILE (GLOB MAYA4_HEADERS "./SDK/MAYA4/*.h")
 FILE (GLOB S3TC_SOURCE "./SDK/S3TC/*.cpp")
 FILE (GLOB S3TC_HEADERS "./SDK/S3TC/*.h")
 
-#STL
+#STL выбрасываю переписываю на стандартный STL
 FILE (GLOB STLPORT_SOURCE "./SDK/stlport/*.cpp")
 FILE (GLOB STLPORT_HEADERS "./SDK/stlport/*.h")
 

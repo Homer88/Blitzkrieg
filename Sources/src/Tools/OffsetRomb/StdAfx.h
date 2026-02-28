@@ -17,8 +17,8 @@
 //
 #ifndef __AFX__
 #define WIN32_LEAN_AND_MEAN							// Exclude rarely-used stuff from Windows headers
-#include "stl_user_config.h"
-#include <stl/_config.h>
+//#include "stl_user_config.h"
+//#include <stl/_config.h>
 
 #include <comutil.h>
 #include <assert.h>
@@ -82,23 +82,23 @@ typedef unsigned __int64 QWORD;					// quadra word
 #endif // ASSERT
 #endif // _DEBUG
 //
-#include "..\Misc\Basic.h"							// base interfaces
-#include "..\BugSlay\BugSlayer.h"				// cool asserts :)
-#include "..\Misc\Tools.h"							// different usefull tools
-#include "..\Misc\Geometry.h"						// geometry primitives and operations (vectors, matrix, quaternion, etc.)
-#include "..\Misc\2DArray.h"						// 2-D array
-#include "..\Misc\HashFuncs.h"					// different usefull hash functions
-#include "..\Misc\StrProc.h"						// string processing functions
+#include "../../Misc/Basic.h"							// base interfaces
+#include "../../BugSlay/BugSlayer.h"				// cool asserts :)
+#include "../../Misc/Tools.h"							// different usefull tools
+#include "../../Misc/Geometry.h"						// geometry primitives and operations (vectors, matrix, quaternion, etc.)
+#include "../../Misc/2DArray.h"						// 2-D array
+#include "../../Misc/HashFuncs.h"					// different usefull hash functions
+#include "../../Misc/StrProc.h"						// string processing functions
 
-#include "..\StreamIO\Globals.h"				// globals - singleton, global var system, temp buffers, console, etc.
-#include "..\StreamIO\StreamIO.h"				// stream I/O base interfaces
-#include "..\StreamIO\DBIO.h"						// database I/O base interfaces
-#include "..\StreamIO\StructureSaver.h"	// strucutre saver base interfaces
-#include "..\StreamIO\SSHelper.h"				// strucutre saver helper classes
-#include "..\StreamIO\DTHelper.h"				// data tree helper classes
+#include "../../StreamIO/Globals.h"				// globals - singleton, global var system, temp buffers, console, etc.
+#include "../../StreamIO/StreamIO.h"				// stream I/O base interfaces
+#include "../../StreamIO/DBIO.h"						// database I/O base interfaces
+#include "../../StreamIO/StructureSaver.h"	// strucutre saver base interfaces
+#include "../../StreamIO/SSHelper.h"				// strucutre saver helper classes
+#include "../../StreamIO/DTHelper.h"				// data tree helper classes
 
-#include "..\Main\GameTimer.h"
-#include "..\Main\GameDB.h"
+#include "../../Main/GameTimer.h"
+#include "../../Main/GameDB.h"
 // in the file 'Specific.h' one can define own project-specific includes
 #include "Specific.h"
 
