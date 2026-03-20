@@ -142,3 +142,12 @@ Sources/src/soundverifycation/SoundVerifycation.vcproj
 Sources/src/StreamIOLib/StreamIOLib.vcproj
 Sources/src/UI/UI.vcproj
 Sources/src/RandomMapGen/RandomMapGen.vcproj
+/Versions/Current
+Versions/Current/Data/objects.gdb
+/Versions
+Versions/Current/config.cfg
+Versions/Current/Data/objects.gdb
+Sources/src/StreamIO/1.txt
+/Sources/src/StreamIO/build/.vs
+/Sources/src/StreamIO/build
+/Sources/src/UI/build

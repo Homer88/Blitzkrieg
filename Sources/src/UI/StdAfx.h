@@ -17,8 +17,8 @@
 //
 #ifndef __AFX__
 #define WIN32_LEAN_AND_MEAN							// Exclude rarely-used stuff from Windows headers
-#include "stl_user_config.h"
-#include <stl/_config.h>
+//#include "stl_user_config.h"
+//#include <stl/_config.h>
 
 #include <comutil.h>
 #include <assert.h>

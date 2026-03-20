@@ -15,7 +15,8 @@ add_subdirectory(AILogic)
 #Анимация 
 add_subdirectory(Anim)
 
-
+add_subdirectory(GameSpy)
+add_subdirectory(UI)
 
 
 add_subdirectory (libpng)
