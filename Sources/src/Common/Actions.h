@@ -668,7 +668,7 @@ struct SAIUnitCmd
 	//
 	int operator&( IStructureSaver &ss )
 	{
-		CSaverAccessor saver = &ss;
+		CSaverAccessor saver (& ss); // גלוסעמ CSaverAccessor saver = &ss;
 
 		saver.Add( 2, &cmdType );
 		saver.Add( 3, &pObject );
@@ -683,7 +683,7 @@ struct SAIUnitCmd
 	// pObject םו ס‎יגטעסÿ!
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver (&ss);
 
 		saver.Add( "Command", &cmdType );
 		saver.Add( "Position", &vPos );

@@ -32,7 +32,7 @@ class CDataTreeXML : public IDataTree
     std::list<SNodesList> nodelists;
 
     // Get attribute from current node
-    tinyxml2::XMLNode* GetAttribute(const char* idChunk);
+    const tinyxml2::XMLAttribute* GetAttribute(const char* idChunk);
 
     // Get text node (attribute or child element)
     tinyxml2::XMLNode* GetTextNode(const char* idChunk);

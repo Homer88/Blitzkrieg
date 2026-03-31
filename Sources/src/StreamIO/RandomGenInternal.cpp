@@ -308,7 +308,7 @@ int CRandomGenSeed::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CRandomGenSeed::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver (&ss);
 	saver.Add( "RandCounter", &rnd.randcnt );
 	saver.Add( "RandA", &rnd.randa );
 	saver.Add( "RandB", &rnd.randb );

@@ -1,4 +1,4 @@
-#ifndef __OPTIONSSYSTEMINTERNAL_H__
+﻿#ifndef __OPTIONSSYSTEMINTERNAL_H__
 #define __OPTIONSSYSTEMINTERNAL_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -36,7 +36,7 @@ struct SOption : public SSerialVariantT
 	}
 	virtual int STDCALL operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver (& ss); // вместо CSaverAccessor saver = &ss;
 		saver.Add( "EditorType", &nEditorType );
 		saver.Add( "Flags", &dwFlags );
 		saver.Add( "Order", &nOrder );
@@ -97,9 +97,9 @@ public:
 class COptionSystemIterator : public CTVarSystemIterator<COptionSystem, CTRefCount<IOptionSystemIterator>, SOptionSorter, COptionMaskAccepter>
 {
 	typedef CTVarSystemIterator<COptionSystem, CTRefCount<IOptionSystemIterator>, SOptionSorter, COptionMaskAccepter> CBase;
-	CPtr<COptionSystem> pOS;
-	//
-	COptionSystem* GetVS() const { return pOS; }
+	CPtr<COptionSystem> pOS;  // ← изменено с COptionSystem* на CPtr
+
+	COptionSystem* GetVS() const { return pOS.GetPtr(); }  // ← теперь pOS.GetPtr() не нужен
 public:
 	COptionSystemIterator( COptionSystem *pOS, const DWORD dwMask );
 	virtual ~COptionSystemIterator() {  }

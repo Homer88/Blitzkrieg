@@ -38,19 +38,20 @@ void CSaveLoadSystem::AddFactory( IObjectFactory *_pFactory )
 	pFactory->Aggregate( _pFactory );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-IStructureSaver* CSaveLoadSystem::CreateStructureSaver( IDataStream *pStream, IStructureSaver::EAccessMode eAccessMode, 
-		interface IProgressHook *pLoadHook )
+IStructureSaver* CSaveLoadSystem::CreateStructureSaver(IDataStream* pStream, IStructureSaver::EAccessMode eAccessMode, IProgressHook* pLoadHook)
 {
-	NI_ASSERT_TF( pStream != 0, "Can't create structure saver from NULL stream", return 0 );
-	return new CStructureSaver2( pStream, eAccessMode, pLoadHook, pFactory, pGDB );
+	NI_ASSERT_TF(pStream != 0, "Can't create structure saver from NULL stream", return 0);
+	// IProgressHook не используетс€ в текущей реализации
+	// »спользуем режим ALL дл€ полного сохранени€/загрузки
+	return new CStructureSaver(pStream, eAccessMode, IStructureSaver::ALL, pFactory, pGDB);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-IDataTree* CSaveLoadSystem::CreateDataTreeSaver( IDataStream *pStream, IDataTree::EAccessMode eAccessMode, DTChunkID idBaseNode )
+IDataTree* CSaveLoadSystem::CreateDataTreeSaver(IDataStream* pStream,IDataTree::EAccessMode eAccessMode, DTChunkID idBaseNode)
 {
-	NI_ASSERT_TF( pStream != 0, "Can't create data tree saver from NULL stream", return 0 );
-	InitCOM();
-	CDataTreeXML *pDT = new CDataTreeXML( eAccessMode );
-	pDT->Open( pStream, idBaseNode );
+	NI_ASSERT_TF(pStream != 0, "Can't create data tree saver from NULL stream", return 0);
+	// »нициализаци€ COM больше не нужна, так как используетс€ TinyXML-2
+	CDataTreeXML* pDT = new CDataTreeXML(eAccessMode);
+	pDT->Open(pStream, idBaseNode);
 	return pDT;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,7 +101,7 @@ IDataStorage* CSaveLoadSystem::CreateStorage( const char *pszName, DWORD dwAcces
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 IDataTable* CSaveLoadSystem::OpenDataTable( IDataStream *pStream, const char *pszBaseNode )
 {
-	InitCOM();
+	///InitCOM();
 	//
 	CDataTableXML *pTable = new CDataTableXML();
 	pTable->Open( pStream, pszBaseNode );

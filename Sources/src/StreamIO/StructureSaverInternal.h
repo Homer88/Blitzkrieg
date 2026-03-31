@@ -16,9 +16,9 @@ public:
 	virtual void STDCALL AddFactory( IObjectFactory *pFactory );
 	virtual void STDCALL SetGDB( IGDB *_pGDB ) { pGDB = _pGDB; }
 	virtual IObjectFactory* STDCALL GetCommonFactory() { return pFactory; }
-	virtual IStructureSaver* STDCALL CreateStructureSaver( IDataStream *pStream, IStructureSaver::EAccessMode eAccessMode, 
-		                                                     IStructureSaver::EStoreMode eStoreMode );
-	virtual IDataTree* STDCALL CreateDataTreeSaver( IDataStream *pStream, IDataTree::EAccessMode eAccessMode, DTChunkID idBaseNode );
+	// Исправленная сигнатура - соответствует интерфейсу FIX 
+	virtual IStructureSaver* STDCALL CreateStructureSaver(IDataStream* pStream, IStructureSaver::EAccessMode eAccessMode, IProgressHook* pLoadHook = 0);
+	virtual IDataTree* STDCALL CreateDataTreeSaver(IDataStream* pStream, IDataTree::EAccessMode eAccessMode, DTChunkID idBaseNode);
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // a) chunk structure
@@ -56,6 +56,7 @@ class CStructureSaver : public IStructureSaver
 	typedef std::list<CChunkLevel>::iterator CChunkLevelIterator;
 	typedef std::list<CChunkLevel>::reverse_iterator CChunkLevelReverseIterator;
 	bool bReading;
+	
 	IStructureSaver::EStoreMode eStoreMode;	// we can store data only and can store with objects re-creation...
 	// maps objects addresses during save(first) to addresses during load(second) - during loading
 	// or serves as a sign that some object has been already stored - during storing

@@ -42,7 +42,7 @@ CDataTreeXML::~CDataTreeXML()
 bool CDataTreeXML::Open(IDataStream* _pStream, const char* idBaseNode)
 {
     pStream = _pStream;
-    xmlDocument = new XMLDocument();
+    xmlDocument = new tinyxml2::XMLDocument();
 
     if (IsReading())
     {
@@ -276,7 +276,7 @@ int CDataTreeXML::CountChunks(const char* idChunk)
     return 0;
 }
 
-XMLNode* CDataTreeXML::GetAttribute(const char* idChunk)
+const XMLAttribute* CDataTreeXML::GetAttribute(const char* idChunk)
 {
     if (!xmlCurrNode || !xmlCurrNode->ToElement())
         return NULL;
@@ -414,15 +414,11 @@ bool CDataTreeXML::DataChunk(const char* idChunk, int* pData)
 {
     if (IsReading())
     {
-        XMLNode* pNode = GetTextNode(idChunk);
-        if (pNode && pNode->ToElement())
+        const XMLAttribute* pAttr = GetAttribute(idChunk);
+        if (pAttr && pAttr->Value())
         {
-            const char* pText = pNode->ToElement()->GetText();
-            if (pText)
-            {
-                sscanf(pText, "%d", pData);
-                return true;
-            }
+            sscanf(pAttr->Value(), "%d", pData);
+            return true;
         }
         return false;
     }
@@ -443,15 +439,11 @@ bool CDataTreeXML::DataChunk(const char* idChunk, double* pData)
 {
     if (IsReading())
     {
-        XMLNode* pNode = GetTextNode(idChunk);
-        if (pNode && pNode->ToElement())
+        const XMLAttribute* pAttr = GetAttribute(idChunk);
+        if (pAttr && pAttr->Value())
         {
-            const char* pText = pNode->ToElement()->GetText();
-            if (pText)
-            {
-                sscanf(pText, "%lg", pData);
-                return true;
-            }
+            sscanf(pAttr->Value(), "%lf", pData);
+            return true;
         }
         return false;
     }

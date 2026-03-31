@@ -1,8 +1,10 @@
+﻿#include <algorithm>
 #include "StdAfx.h"
 #include "DataTableXML.h"
 #include "tinyxml2.h"
 
 using namespace tinyxml2;
+
 
 // Helper function to add name to buffer
 static int AddToBuffer(const std::string& szName, char*& pszBuffer, int nBufferSize, int nTotalSize)
@@ -28,7 +30,7 @@ CDataTableXML::~CDataTableXML()
 {
     try
     {
-        if (bModified && pStream && xmlDocument && xmlRootNode)
+        if (bModified && pStream.GetPtr() && xmlDocument && xmlRootNode)
         {
             // Save XML document to stream
             XMLPrinter printer;
@@ -65,7 +67,7 @@ bool CDataTableXML::Open(IDataStream* _pStream, const char* pszBaseNode)
         pBuffer[nSize] = '\0';
 
         // Create XML document
-        xmlDocument = new XMLDocument();
+        xmlDocument = new tinyxml2::XMLDocument();
         XMLError err = xmlDocument->Parse(pBuffer, nSize);
         delete[] pBuffer;
 
@@ -73,7 +75,7 @@ bool CDataTableXML::Open(IDataStream* _pStream, const char* pszBaseNode)
         {
             // Create new document if parsing fails
             delete xmlDocument;
-            xmlDocument = new XMLDocument();
+            xmlDocument = new tinyxml2::XMLDocument();
 
             // Add XML declaration
             XMLDeclaration* pDecl = xmlDocument->NewDeclaration("xml version=\"1.0\"");
@@ -238,7 +240,7 @@ int CDataTableXML::GetEntryNames(const char* pszRow, char* pszBuffer, int nBuffe
 
                 if (nSize > 1)
                 {
-                    const char* pos = buffer;
+                    char* pos = buffer;   // ← исправлено
                     while (*pos != 0 && (pos - buffer <= nSize))
                     {
                         std::string szNewName = szName + "/" + pos;
@@ -249,8 +251,7 @@ int CDataTableXML::GetEntryNames(const char* pszRow, char* pszBuffer, int nBuffe
                                 szNewName[i] = '.';
                         }
                         int nAdded = AddToBuffer(szNewName, pCurrent, nBufferSize, nTotalSize);
-                        if (nAdded == 0)
-                            break;
+                        if (nAdded == 0) break;
                         nTotalSize += nAdded;
                         pos = std::find(pos, buffer + nSize, '\0') + 1;
                     }
@@ -291,7 +292,7 @@ int CDataTableXML::GetInt(const char* pszRow, const char* pszEntry, int defval)
     // Check if it's an attribute
     const XMLAttribute* pAttr = pElement->FindAttribute(pszEntry);
     if (pAttr)
-        return pAttr->IntValue(defval);
+        return pAttr->IntValue();
 
     // Check if it's a child element
     XMLElement* pChild = pElement->FirstChildElement(pszEntry);
@@ -312,7 +313,7 @@ double CDataTableXML::GetDouble(const char* pszRow, const char* pszEntry, double
     // Check if it's an attribute
     const XMLAttribute* pAttr = pElement->FindAttribute(pszEntry);
     if (pAttr)
-        return pAttr->DoubleValue(defval);
+        return pAttr->DoubleValue();
 
     // Check if it's a child element
     XMLElement* pChild = pElement->FirstChildElement(pszEntry);

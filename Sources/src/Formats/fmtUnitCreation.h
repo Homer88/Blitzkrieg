@@ -28,7 +28,7 @@ struct SUCAircraft
 
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver  (&ss);
 
 		saver.Add( "Name", &szName );
 		saver.Add( "FormationSize", &nFormationSize );
@@ -94,7 +94,7 @@ struct SUCAviation
 
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver(&ss);
 
 		saver.Add( "Aircrafts", &aircrafts );
 		saver.Add( "ParadropSoldierName", &szParadropSquadName );
@@ -157,7 +157,7 @@ struct SUnitCreation
 
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver(&ss);
 
 		saver.Add( "Aviation", &aviation );
 		saver.Add( "PartyName", &szPartyName );
@@ -213,7 +213,7 @@ struct SUnitCreationInfo
 
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver(&ss);
 
 		saver.Add( "Units", &units );
 		if ( saver.IsReading() )

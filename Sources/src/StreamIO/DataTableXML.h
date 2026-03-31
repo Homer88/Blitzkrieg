@@ -21,7 +21,7 @@ class CDataTableXML : public IDataTable
     inline void SetValue(const char* pszRow, const char* pszEntry, const TYPE& val);
 
     tinyxml2::XMLElement* GetNode(const std::string& szName);
-    const std::string MakeName(const char* pszRow, const char* pszEntry);
+    std::string MakeName(const char* pszRow, const char* pszEntry);
 
 public:
     CDataTableXML();

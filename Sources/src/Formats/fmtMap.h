@@ -93,7 +93,7 @@ struct SBattlePosition
 
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver  (& ss);
 
 		saver.Add( "Artillery", &nArtilleryLinkID );
 		saver.Add( "Truck", &nTruckLinkID );
@@ -135,7 +135,7 @@ struct SMapSoundInfo
 
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver (& ss);
 		saver.Add( "Sound", &szName );
 		saver.Add( "Position", &vPos );
 		saver.Add( "Interval", &timeRepeat );
@@ -168,7 +168,7 @@ struct SSoundInfo
 
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver  (& ss);
 		saver.Add( "Sounds", &sounds );
 		return 0;
 	}
@@ -276,7 +276,7 @@ struct SVertexAltitude
 	//
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver (& ss);
 		saver.Add( "Height", &fHeight );
 		saver.Add( "Shade", &shade );
 		return 0;
@@ -409,7 +409,7 @@ struct SAIStartCommand
 	//serializing
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver (&ss);
 
 		saver.Add( "Type", &cmdType );
 		saver.Add( "Units", &unitLinkIDs );

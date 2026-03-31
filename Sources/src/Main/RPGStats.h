@@ -43,7 +43,7 @@ struct SFlashEffect
 	const bool HasFlash() const { return (nPower > 0) && (nDuration > 10); }
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver (& ss);
 		saver.Add( "Power", &nPower );
 		saver.Add( "Duration", &nDuration );
 		return 0;
@@ -901,7 +901,7 @@ struct SUnitBaseRPGStats : public SHPObjectRPGStats
 		SAnimDesc() : nLength( 0 ), nAction( 0 ), nIndex( -1 ), nAABB_A( -1 ), nAABB_D( -1 ) {  }
 		int operator&( IDataTree &ss )
 		{
-			CTreeAccessor saver = &ss;
+			CTreeAccessor saver  ( & ss);
 			saver.Add( "Length", &nLength );
 			saver.Add( "Action", &nAction );
 			saver.Add( "Index", &nIndex );
@@ -919,7 +919,7 @@ struct SUnitBaseRPGStats : public SHPObjectRPGStats
 		int ToAIUnits();
 		int operator&( IDataTree &ss )
 		{
-			CTreeAccessor saver = &ss;
+			CTreeAccessor saver (& ss);
 			saver.Add( "Center", &vCenter );
 			saver.Add( "HalfSize", &vHalfSize );
 			return 0;
@@ -1976,7 +1976,7 @@ struct SAIExpLevel : public IGDBObject
 		
 		int operator&( IDataTree &ss )
 		{
-			CTreeAccessor saver = &ss;
+			CTreeAccessor saver  (& ss);
 
 			saver.Add( "Exp", &nExp );
 			saver.Add( "BonusSpeed", &fBonusSpeed );

@@ -161,7 +161,7 @@ bool COptionSystem::Set( const std::string &szVarName, const variant_t &_var )
 	if ( var.vt == VT_BSTR )
 	{
 		// cut string for allowable lenght
-		std::wstring szStr = (const WORD*)bstr_t(var);
+		std::wstring szStr = static_cast<const wchar_t*>(bstr_t(var));
 		if ( szStr.size() > 12 )
 		{
 			szStr.resize( 8 );
@@ -173,12 +173,14 @@ bool COptionSystem::Set( const std::string &szVarName, const variant_t &_var )
 	//CRAP{ FOR LOCAL PLAYER NAME
 	if ( szVarName == "GamePlay.PlayerName" )
 	{
-		std::wstring szPlayerName = (const WORD*)bstr_t(var);
+		std::wstring szPlayerName = static_cast<const wchar_t*>(bstr_t(var));
 		if ( szPlayerName.empty() )
 		{
 			IText * pT = GetSingleton<ITextManager>()->GetDialog( "Textes\\PlayerName" );
-			if ( pT )
-				szPlayerName = pT->GetString();
+			if (pT) {
+				const wchar_t* pStr = reinterpret_cast<const wchar_t*>(pT->GetString());
+				szPlayerName = pStr ? pStr : L"";
+			}
 			CBase::Set( szVarName, variant_t(szPlayerName.c_str()) );
 		}
 		else 
@@ -215,14 +217,15 @@ void COptionSystem::InnerSet( const std::string &szVarName, const variant_t &var
 			ISFX * pSFX = GetSingleton<ISFX>();
 			short nVolume = short(var) * GetGlobalVar( "Sound.StreamMasterVolume", 1.0f );
 			pSFX->SetStreamMasterVolume( nVolume / 100.0f );
-			SetGlobalVar( ("Options." + szVarName).c_str(), var );
+
+			SetGlobalVar( ("Options." + szVarName).c_str(), (int)var );
 		}
 		else if ( pOpt->szAction == "SetSFXVolume" )
 		{
 			ISFX * pSFX = GetSingleton<ISFX>();
 			short nVolume = short(var) * GetGlobalVar( "Sound.SFXMasterVolume", 1.0f );
 			pSFX->SetSFXMasterVolume( nVolume / 100.0f );
-			SetGlobalVar( ("Options." + szVarName).c_str(), var );
+			SetGlobalVar( ("Options." + szVarName).c_str(), (int)var );
 		}
 		else if ( pOpt->szAction == "SetDifficulty" )
 		{
@@ -308,7 +311,7 @@ void COptionSystem::InnerSet( const std::string &szVarName, const variant_t &var
 		}
 		else 
 		{
-			SetGlobalVar( ("Options." + szVarName).c_str(), var );
+			SetGlobalVar( ("Options." + szVarName).c_str(), (int)var );
 		}
 	}
 }
@@ -385,7 +388,7 @@ const std::vector<SOptionDropListValue>& COptionSystem::GetDropValues( const std
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void COptionSystem::Init()
 {
-	for ( CPtr<IOptionSystemIterator> pIter = CreateIterator(); !pIter->IsEnd(); pIter->Next() )
+	for ( CPtr<IOptionSystemIterator> pIter (CreateIterator()); !pIter->IsEnd(); pIter->Next() )
 	{
 		const SOptionDesc * pDesc = pIter->GetDesc();
 		variant_t var;
@@ -399,7 +402,7 @@ void COptionSystem::Init()
 // serialize to configuration file
 bool COptionSystem::SerializeConfig( IDataTree *pSS )
 {
-	CTreeAccessor saver = pSS;
+	CTreeAccessor saver (pSS);
 	saver.Add( "Options", static_cast<CBase*>(this) );
 	return true;
 }
@@ -412,12 +415,12 @@ void COptionSystem::Repair( IDataTree *pSS, const bool bToDefault )
 	}
 	else
 	{
-		CPtr<COptionSystem> pTmpOptions = new COptionSystem;
+		CPtr<COptionSystem> pTmpOptions ( new COptionSystem);
 		pTmpOptions->Repair( pSS, true );
 
 		variant_t dummy;
 		
-		for ( CPtr<IOptionSystemIterator> pIterator = pTmpOptions->CreateIterator(); !pIterator->IsEnd(); pIterator->Next() )
+		for ( CPtr<IOptionSystemIterator> pIterator (pTmpOptions->CreateIterator()); !pIterator->IsEnd(); pIterator->Next() )
 		{
 			const SOptionDesc *pDesc = pIterator->GetDesc();
 			const bool bRet = Get( pDesc->szName, &dummy );
@@ -425,7 +428,7 @@ void COptionSystem::Repair( IDataTree *pSS, const bool bToDefault )
 			//CRAP{ FOR LOCAL PLAYER'S NAME
 			if ( pDesc->szName == "GamePlay.PlayerName" )
 			{
-				const std::wstring szPlayerName = (const WORD*)bstr_t(dummy);
+				const std::wstring szPlayerName = static_cast<const wchar_t*>(bstr_t(dummy));
 				if ( szPlayerName.empty() )
 				{
 					SetVar( pDesc->szName, pTmpOptions->GetVar( pDesc->szName ) );
@@ -444,7 +447,7 @@ void COptionSystem::Repair( IDataTree *pSS, const bool bToDefault )
 // begin to iterate through all variables
 IOptionSystemIterator* COptionSystem::CreateIterator( const DWORD dwMask )
 {
-	return new COptionSystemIterator( this, dwMask );
+	return new COptionSystemIterator ( this, dwMask);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ************************************************************************************************************************ //

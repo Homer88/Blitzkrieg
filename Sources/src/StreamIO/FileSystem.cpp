@@ -374,11 +374,12 @@ IDataStream* CFileSystem::OpenStream( const char *pszName, DWORD dwAccessMode )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CFileSystem::GetStreamStats( const char *pszName, SStorageElementStats *pStats )
 {
-	if ( !IsStreamExist(pszName) ) 
+	if (!IsStreamExist(pszName))
 		return false;
-	if ( CPtr<IDataStream> pStream = OpenStream(pszName, STREAM_ACCESS_READ) )
+	CPtr<IDataStream> pStream ( OpenStream(pszName, STREAM_ACCESS_READ));
+	if (pStream.GetPtr() != 0)
 	{
-		pStream->GetStats( pStats );
+		pStream->GetStats(pStats);
 		pStats->pszName = 0;
 		return true;
 	}

@@ -57,7 +57,7 @@ IDataTable* CIniFileDataBase::OpenTable( const char *pszName, DWORD dwAccessMode
 	}
 	else
 	{
-		if ( CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream(pszName, STREAM_ACCESS_READ) )
+		if ( CPtr<IDataStream> pStream =GetSingleton<IDataStorage>()->OpenStream(pszName, STREAM_ACCESS_READ) )
 		{
 			if ( !pTable->Load(pStream.GetPtr()) )
 			{

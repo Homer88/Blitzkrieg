@@ -11,7 +11,7 @@ class CArray1Bit
 	std::vector<BYTE> array;
 public:
 	int operator&( interface IStructureSaver &ss ) { CSaverAccessor saver = &ss; saver.Add( 1, &array ); saver.Add( 2, &xSize ); return 0; }
-	int operator&( interface IDataTree &ss ) { CTreeAccessor saver = &ss; saver.Add( "Size", &xSize ); saver.Add( "BitArray", &array ); return 0; }
+	int operator&( interface IDataTree &ss ) { CTreeAccessor saver  (& ss); saver.Add("Size", &xSize); saver.Add("BitArray", &array); return 0; }
 
 	CArray1Bit() { }
 	CArray1Bit( const int size ) { SetSize( size ); }
