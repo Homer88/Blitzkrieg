@@ -39,6 +39,7 @@ FILE(GLOB STREAMIO_HEADERS "*.h")
 
 add_definitions( -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS)
 add_definitions( -D_WIN32_WINNT=0x0501)
+add_definitions( -D_CRT_SECURE_NO_WARNINGS)
 
 # Добавить зависимость для таргета (позже)
 add_custom_target(tinyxml2_dep DEPENDS tinyxml2)

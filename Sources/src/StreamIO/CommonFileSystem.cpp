@@ -73,17 +73,17 @@ CCommonFileSystem::CCommonFileSystem( const char *pszName, DWORD dwAccessMode )
 	}
 	// enumerate files from zip file system
 	pZipStorage = OpenStorage( pszName, dwStorageAccessMode, STORAGE_TYPE_ZIP );
-	EnumerateFiles( "", pZipStorage );
+	EnumerateFiles("", pZipStorage.GetPtr() );
 	// enumerate files from open file system
 	pFileStorage = OpenStorage( szName.c_str(), dwStorageAccessMode, STORAGE_TYPE_FILE );
-	EnumerateFiles( "", pFileStorage );
+	EnumerateFiles( "", pFileStorage.GetPtr() );
 	// base name
 	szBase = pFileStorage->GetName();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CCommonFileSystem::EnumerateFiles( const std::string &szName, IDataStorage *pStorage )
 {
-	CPtr<IStorageEnumerator> pEnum = pStorage->CreateEnumerator();
+	CPtr<IStorageEnumerator> pEnum (pStorage->CreateEnumerator());
 	for ( pEnum->Reset( (szName + "*.*").c_str() ); pEnum->Next(); )
 	{
 		const SStorageElementStats *pStats = pEnum->GetStats();

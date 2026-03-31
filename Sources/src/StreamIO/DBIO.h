@@ -110,19 +110,19 @@ class CTableAccessor
 public:
 	CTableAccessor() {  }
 	CTableAccessor( const CTableAccessor &accessor ) : pTable( accessor.pTable ) {  }
-	CTableAccessor( IDataTable *_pTable ) : pTable( _pTable ) {  }
+	explicit CTableAccessor( IDataTable *_pTable ) : pTable( _pTable ) {  }
 	CTableAccessor( IDataBase *pDB, const char *pszName, DWORD dwAccessMode = TABLE_ACCESS_READ )
 		: pTable( pDB->OpenTable( pszName, dwAccessMode ) ) {  }
 	// assigning and extracting
 	const CTableAccessor& operator=( IDataTable *_pTable ) { pTable = _pTable; return *this; }
 	const CTableAccessor& operator=( const CTableAccessor &accessor ) { pTable = accessor.pTable; return *this; }
-	operator IDataTable*() const { return pTable; }
-	IDataTable* operator->() const { return pTable; }
+	operator IDataTable*() const { return pTable.GetPtr(); }
+	IDataTable* operator->() const { return pTable.GetPtr(); }
 	// comparison operators
-	bool operator==( const CTableAccessor &ptr ) const { return ( pTable == ptr.pTable ); }
-	bool operator==( const IDataTable *pNewObject ) const { return ( pTable == pNewObject ); }
+	bool operator==( const CTableAccessor &ptr ) const { return ( pTable == ptr.pTable); }
+	bool operator==( const IDataTable *pNewObject ) const { return ( pTable.GetPtr() == pNewObject ); }
 	bool operator!=( const CTableAccessor &ptr ) const { return ( pTable != ptr.pTable ); }
-	bool operator!=( const IDataTable *pNewObject ) const { return ( pTable != pNewObject ); }
+	bool operator!=( const IDataTable *pNewObject ) const { return ( pTable.GetPtr() != pNewObject ); }
 	//
 	//
 	bool GetRowNames( std::vector<std::string> &szNames )

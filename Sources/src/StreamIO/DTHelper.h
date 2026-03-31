@@ -660,11 +660,13 @@ public:
 	const CTreeAccessor& operator=(const CTreeAccessor& accessor) { pSS = accessor.pSS; return *this; }
 
 	operator void* () const { return pSS; }          // позволяет if (acc) / if (!acc)
-	IDataTree* operator->() const { return pSS; }
-	IDataTree* get() const { return pSS; }
+	IDataTree* operator->() const { return pSS.GetPtr(); }
+	IDataTree* get() const { return pSS.GetPtr(); }
 
-	bool operator==(const CTreeAccessor& ptr) const { return pSS == ptr.pSS; }
-	bool operator!=(const CTreeAccessor& ptr) const { return pSS != ptr.pSS; }
+	bool operator==(const CTreeAccessor& ptr) const { return (pSS == ptr.pSS); }
+	bool operator==(IDataTree* pNewObject) const { return (pSS.GetPtr() == pNewObject); }
+	bool operator!=(const CTreeAccessor& ptr) const { return (pSS != ptr.pSS); }
+	bool operator!=(IDataTree* pNewObject) const { return (pSS.GetPtr() != pNewObject); }
 
 	bool IsReading() const { return pSS->IsReading(); }
 	void AddRawData(const DTChunkID idChunk, void* pData, int nSize)
