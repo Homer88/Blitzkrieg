@@ -8,60 +8,51 @@ project(StreamIO)
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+
+
+# Включить модуль ExternalProject
+include(ExternalProject)
+
+# Скачать TinyXML-2
+ExternalProject_Add(
+    tinyxml2
+    GIT_REPOSITORY https://github.com/leethomason/tinyxml2.git
+    GIT_TAG master
+    GIT_SHALLOW TRUE
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+    UPDATE_COMMAND ""
+)
+
+# Получить пути к исходникам
+ExternalProject_Get_Property(tinyxml2 source_dir)
+
+# Создать переменную с путем к заголовкам
+set(TINYXML2_INCLUDE_DIR ${source_dir})
+
+# Добавить директорию для include (глобально)
+include_directories(${TINYXML2_INCLUDE_DIR})
+
 FILE(GLOB STREAMIO_SOURCE "*.cpp")
 FILE(GLOB STREAMIO_HEADERS "*.h")
 
 add_definitions( -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS)
 add_definitions( -D_WIN32_WINNT=0x0501)
 
-# Функция проверки существования файла
-function(check_msxml_installed)
-    set(MSXML_PATHS
-        "C:/Windows/System32/msxml6.dll"
-        "C:/Windows/SysWOW64/msxml6.dll"
-        "C:/Windows/System32/msxml3.dll"
-        "C:/Windows/SysWOW64/msxml3.dll"
-    )
-    
-    set(MSXML_FOUND FALSE)
-    
-    foreach(path ${MSXML_PATHS})
-        if(EXISTS ${path})
-            message(STATUS "Найден MSXML: ${path}")
-            set(MSXML_FOUND TRUE PARENT_SCOPE)
-            break()
-        endif()
-    endforeach()
-    
-    if(NOT MSXML_FOUND)
-        message(WARNING "MSXML не найден!")
-        set(MSXML_FOUND FALSE PARENT_SCOPE)
-    endif()
-endfunction()
-
-# Вызываем проверку
-check_msxml_installed()
-
-if(NOT MSXML_FOUND)
-    message(STATUS "Требуется установка MSXML")
-    
-    # Вариант 1: просто показать предупреждение
-    message(WARNING "Пожалуйста, установите MSXML 6.0 с сайта Microsoft")
-    message(FATAL_ERROR "MSXML не установлен. Пожалуйста, установите его вручную.")
-endif()
-
+# Добавить зависимость для таргета (позже)
+add_custom_target(tinyxml2_dep DEPENDS tinyxml2)
 
 # LIB
-#find_library(MSXML_LIB NAMES msxml6 msxml3)
-#if(MSXML_LIB)
+
 add_library(StreamIO STATIC ${STREAMIO_HEADERS} ${STREAMIO_SOURCE})
 
-	#target_link_libraries(StreamIO PRIVATE ole32 oleaut32)	
-	# DLL
-add_library(StreamIO SHARED ${STREAMIO_HEADERS} ${STREAMIO_SOURCE})
-	# (Опционально) Устанавливаем версию библиотеки
+# DLL
+add_library(StreamIO_SHARED SHARED ${STREAMIO_HEADERS} ${STREAMIO_SOURCE})
+
+# Добавить зависимости для библиотек
+add_dependencies(StreamIO tinyxml2_dep)
+add_dependencies(StreamIO_SHARED tinyxml2_dep)
+# (Опционально) Устанавливаем версию библиотеки
 set_target_properties(StreamIO  PROPERTIES VERSION 1.0.0 SOVERSION 1)
-#endif()
-
-
 

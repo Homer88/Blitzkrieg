@@ -1,245 +1,506 @@
 #include "StdAfx.h"
-
 #include "DataTableXML.h"
-#include "DataTreeXML.h"
+#include "tinyxml2.h"
 
-#include "..\StreamIO\StreamAdaptor.h"
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CDataTableXML::CDataTableXML()
-: xmlDocument( "Microsoft.XMLDOM" ), bModified( false )
+using namespace tinyxml2;
+
+// Helper function to add name to buffer
+static int AddToBuffer(const std::string& szName, char*& pszBuffer, int nBufferSize, int nTotalSize)
 {
-	xmlDocument->async = false; 
+    int nLen = szName.size();
+    if (nTotalSize + nLen + 2 >= nBufferSize)
+        return 0;
+
+    strcpy(pszBuffer, szName.c_str());
+    pszBuffer += nLen;
+    *pszBuffer++ = '\0';
+    return nLen + 1;
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CDataTableXML::CDataTableXML()
+    : xmlDocument(NULL)
+    , xmlRootNode(NULL)
+    , bModified(false)
+{
+}
+
 CDataTableXML::~CDataTableXML()
 {
-	try
-	{
-		if ( bModified && pStream )
-		{
-			CStreamCOMAdaptor comstream( pStream );
-			xmlDocument->save( static_cast<IStream*>(&comstream) );
-		}
-	}
-	catch ( ... )
-	{
-	}
+    try
+    {
+        if (bModified && pStream && xmlDocument && xmlRootNode)
+        {
+            // Save XML document to stream
+            XMLPrinter printer;
+            xmlDocument->Print(&printer);
+
+            const char* pXML = printer.CStr();
+            int nSize = strlen(pXML);
+
+            pStream->Seek(0, STREAM_SEEK_SET);
+            pStream->Write((void*)pXML, nSize);
+        }
+    }
+    catch (...)
+    {
+    }
+
+    if (xmlDocument)
+        delete xmlDocument;
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CDataTableXML::Open( IDataStream *_pStream, const char *pszBaseNode )
+
+bool CDataTableXML::Open(IDataStream* _pStream, const char* pszBaseNode)
 {
-	try
-	{
-		pStream = _pStream;
-		CStreamCOMAdaptor comstream( pStream );
-		int nPos = pStream->GetPos();
-		if ( xmlDocument->load( static_cast<IStream*>(&comstream) ) )
-		{
-			xmlRootNode = xmlDocument->selectSingleNode( pszBaseNode );
-			pStream->Seek( nPos, STREAM_SEEK_SET );
-		}
-		else 
-		{ 
-			IXMLDOMProcessingInstructionPtr pPI = xmlDocument->createProcessingInstruction( "xml", "version=\"1.0\"" );
-			xmlDocument->appendChild( pPI );
-			IXMLDOMElementPtr pElement = xmlDocument->createElement( pszBaseNode );
-			xmlDocument->appendChild( pElement );
-		}
-		return true;
-	}
-	catch ( ... ) 
-	{
-	}
-	return false;
+    try
+    {
+        pStream = _pStream;
+
+        // Read entire stream into memory
+        int nSize = pStream->GetSize();
+        if (nSize <= 0)
+            return false;
+
+        char* pBuffer = new char[nSize + 1];
+        pStream->Read(pBuffer, nSize);
+        pBuffer[nSize] = '\0';
+
+        // Create XML document
+        xmlDocument = new XMLDocument();
+        XMLError err = xmlDocument->Parse(pBuffer, nSize);
+        delete[] pBuffer;
+
+        if (err != XML_SUCCESS)
+        {
+            // Create new document if parsing fails
+            delete xmlDocument;
+            xmlDocument = new XMLDocument();
+
+            // Add XML declaration
+            XMLDeclaration* pDecl = xmlDocument->NewDeclaration("xml version=\"1.0\"");
+            xmlDocument->InsertFirstChild(pDecl);
+
+            // Create root element
+            xmlRootNode = xmlDocument->NewElement(pszBaseNode);
+            xmlDocument->InsertEndChild(xmlRootNode);
+        }
+        else
+        {
+            // Find root node
+            xmlRootNode = xmlDocument->FirstChildElement(pszBaseNode);
+            if (!xmlRootNode)
+                xmlRootNode = xmlDocument->RootElement();
+        }
+
+        return true;
+    }
+    catch (...)
+    {
+        return false;
+    }
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ************************************************************************************************************************ //
-// **
-// ** 
-// **
-// **
-// **
-// ************************************************************************************************************************ //
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-IXMLDOMNodePtr CDataTableXML::GetNode( const std::string &szName )
+
+std::string CDataTableXML::MakeName(const char* pszRow, const char* pszEntry)
 {
-	const int nPos = szName.rfind( '/' );
-	const std::string szRestName = szName.substr( nPos + 1 );
-	if ( IXMLDOMNodePtr xmlCurrNode = xmlRootNode->selectSingleNode(szName.substr(0, nPos).c_str()) )
-	{
-		if ( IXMLDOMNodePtr xmlNode = xmlCurrNode->attributes->getNamedItem(szRestName.c_str()) ) 
-			return xmlNode;
-		else
-			return xmlCurrNode->selectSingleNode( szRestName.c_str() );
-	}
-	return 0;
+    std::string szName = std::string(pszRow) + "/" + std::string(pszEntry);
+    // Replace '.' with '/' in the path
+    for (size_t i = 0; i < szName.size(); ++i)
+    {
+        if (szName[i] == '.')
+            szName[i] = '/';
+    }
+    return szName;
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-inline int AddToBuffer( const std::string &szName, char* &pszBuffer, const int nBufferSize, const int nTotalSize )
+
+XMLElement* CDataTableXML::GetNode(const std::string& szName)
 {
-	NI_ASSERT_TF( nTotalSize + szName.size() + 2 < nBufferSize, "Buffer too small to add name", return 0 );
-	strcpy( pszBuffer, szName.c_str() );
-	pszBuffer += szName.size();
-	*pszBuffer++ = '\0';
-	return szName.size() + 1;
+    if (!xmlRootNode)
+        return NULL;
+
+    XMLElement* pCurrent = xmlRootNode;
+    size_t start = 0;
+    size_t end = szName.find('/');
+
+    // Navigate through path
+    while (end != std::string::npos)
+    {
+        std::string tag = szName.substr(start, end - start);
+        XMLElement* pChild = pCurrent->FirstChildElement(tag.c_str());
+        if (!pChild)
+            return NULL;
+        pCurrent = pChild;
+        start = end + 1;
+        end = szName.find('/', start);
+    }
+
+    // Last part - the entry name
+    std::string entry = szName.substr(start);
+
+    // Try to find attribute first
+    const XMLAttribute* pAttr = pCurrent->FindAttribute(entry.c_str());
+    if (pAttr)
+    {
+        // Return as element wrapper (hack: create temporary element)
+        // For simplicity, we'll return the parent element and handle specially
+        return pCurrent;
+    }
+
+    // Then try child element
+    return pCurrent->FirstChildElement(entry.c_str());
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int CDataTableXML::GetRowNames( char *pszBuffer, int nBufferSize )
+
+XMLNode* CDataTableXML::GetTextNode(const char* pszRow, const char* pszEntry)
 {
-	try
-	{
-		int nTotalSize = 0;
-		IXMLDOMNodeListPtr pNodes = xmlRootNode->childNodes;
-		for ( int i=0; i<pNodes->length; ++i )
-		{
-			std::string szName = pNodes->item[i]->nodeName;
-			nTotalSize += AddToBuffer( szName, pszBuffer, nBufferSize, nTotalSize );
-		}
-		*pszBuffer++ = '\0';
-		//
-		return nTotalSize + 1;
-	}
-	catch ( ... ) 
-	{
-	}
-	return 0;
+    std::string path = MakeName(pszRow, pszEntry);
+    XMLElement* pElement = GetNode(path);
+    return pElement;
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int CDataTableXML::GetEntryNames( const char *pszRow, char *pszBuffer, int nBufferSize )
+
+int CDataTableXML::GetRowNames(char* pszBuffer, int nBufferSize)
 {
-	try
-	{
-		int nTotalSize = 0;
-		IXMLDOMNodePtr pNode = xmlRootNode->selectSingleNode( pszRow );
-		// attributes
-		for ( int i=0; i<pNode->attributes->length; ++i )
-		{
-			const std::string szName = pNode->attributes->item[i]->nodeName;
-			nTotalSize += AddToBuffer( szName, pszBuffer, nBufferSize, nTotalSize );
-		}
-		// named nodes
-		IXMLDOMNodeListPtr pNodes = pNode->childNodes;
-		for ( int i=0; i<pNodes->length; ++i )
-		{
-			std::string szName = pNodes->item[i]->nodeName;
-			if ( (szName == "#comment") || (szName == "#text") ) 
-				continue;
-			else
-			{
-				std::string szRowName = std::string(pszRow) + "/" + szName;
-				std::replace_if( szRowName.begin(), szRowName.end(), std::bind2nd(std::equal_to<char>(), '.'), '/' );
-				//
-				char buffer[65536];
-				const int nSize = GetEntryNames( szRowName.c_str(), buffer, 65536 );
-				if ( nSize > 1 )
-				{
-					const char *pos = buffer;
-					while ( (*pos != 0) && (pos - buffer <= nSize) )
-					{
-						std::string szNewName = szName + "/" + pos;
-						std::replace_if( szNewName.begin(), szNewName.end(), std::bind2nd(std::equal_to<char>(), '/'), '.' );
-						nTotalSize += AddToBuffer( szNewName, pszBuffer, nBufferSize, nTotalSize );
-						pos = std::find( pos, (const char*)(buffer) + nSize, '\0' ) + 1;
-					}
-				}
-				else
-				{
-					nTotalSize += AddToBuffer( szName, pszBuffer, nBufferSize, nTotalSize );
-				}
-			}
-		}
-		*pszBuffer++ = '\0';
-		//
-		return nTotalSize + 1;
-	}
-	catch ( ... ) 
-	{
-	}
-	return 0;
+    if (!xmlRootNode || !pszBuffer || nBufferSize <= 0)
+        return 0;
+
+    try
+    {
+        int nTotalSize = 0;
+        char* pCurrent = pszBuffer;
+
+        for (XMLElement* pChild = xmlRootNode->FirstChildElement();
+            pChild;
+            pChild = pChild->NextSiblingElement())
+        {
+            std::string szName = pChild->Name();
+            int nAdded = AddToBuffer(szName, pCurrent, nBufferSize, nTotalSize);
+            if (nAdded == 0)
+                break;
+            nTotalSize += nAdded;
+        }
+
+        // Add double null termination
+        if (nTotalSize + 1 <= nBufferSize)
+        {
+            *pCurrent++ = '\0';
+            nTotalSize++;
+        }
+
+        return nTotalSize;
+    }
+    catch (...)
+    {
+        return 0;
+    }
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// get
-int CDataTableXML::GetInt( const char *pszRow, const char *pszEntry, int defval )
+
+int CDataTableXML::GetEntryNames(const char* pszRow, char* pszBuffer, int nBufferSize)
 {
-	const std::string szName = MakeName( pszRow, pszEntry );
-	if ( IXMLDOMNodePtr pNode = GetNode(szName) )
-		return atoi( pNode->text );
-	else
-		return defval;
+    if (!xmlRootNode || !pszBuffer || nBufferSize <= 0)
+        return 0;
+
+    try
+    {
+        // Find row element
+        std::string rowPath = pszRow;
+        XMLElement* pRowElement = GetNode(rowPath);
+        if (!pRowElement)
+            return 0;
+
+        int nTotalSize = 0;
+        char* pCurrent = pszBuffer;
+
+        // Process attributes
+        for (const XMLAttribute* pAttr = pRowElement->FirstAttribute();
+            pAttr;
+            pAttr = pAttr->Next())
+        {
+            std::string szName = pAttr->Name();
+            int nAdded = AddToBuffer(szName, pCurrent, nBufferSize, nTotalSize);
+            if (nAdded == 0)
+                break;
+            nTotalSize += nAdded;
+        }
+
+        // Process child elements
+        for (XMLElement* pChild = pRowElement->FirstChildElement();
+            pChild;
+            pChild = pChild->NextSiblingElement())
+        {
+            std::string szName = pChild->Name();
+
+            // Check if this element has children
+            bool hasChildren = (pChild->FirstChildElement() != NULL);
+
+            if (hasChildren)
+            {
+                // Recursively get nested entry names
+                std::string fullPath = rowPath + "/" + szName;
+                char buffer[65536];
+                int nSize = GetEntryNames(fullPath.c_str(), buffer, 65536);
+
+                if (nSize > 1)
+                {
+                    const char* pos = buffer;
+                    while (*pos != 0 && (pos - buffer <= nSize))
+                    {
+                        std::string szNewName = szName + "/" + pos;
+                        // Replace '/' with '.' in the final name
+                        for (size_t i = 0; i < szNewName.size(); ++i)
+                        {
+                            if (szNewName[i] == '/')
+                                szNewName[i] = '.';
+                        }
+                        int nAdded = AddToBuffer(szNewName, pCurrent, nBufferSize, nTotalSize);
+                        if (nAdded == 0)
+                            break;
+                        nTotalSize += nAdded;
+                        pos = std::find(pos, buffer + nSize, '\0') + 1;
+                    }
+                }
+            }
+            else
+            {
+                int nAdded = AddToBuffer(szName, pCurrent, nBufferSize, nTotalSize);
+                if (nAdded == 0)
+                    break;
+                nTotalSize += nAdded;
+            }
+        }
+
+        // Add double null termination
+        if (nTotalSize + 1 <= nBufferSize)
+        {
+            *pCurrent++ = '\0';
+            nTotalSize++;
+        }
+
+        return nTotalSize;
+    }
+    catch (...)
+    {
+        return 0;
+    }
 }
-double CDataTableXML::GetDouble( const char *pszRow, const char *pszEntry, double defval )
+
+int CDataTableXML::GetInt(const char* pszRow, const char* pszEntry, int defval)
 {
-	const std::string szName = MakeName( pszRow, pszEntry );
-	if ( IXMLDOMNodePtr pNode = GetNode(szName) )
-		return atof( pNode->text );
-	else
-		return defval;
+    std::string path = MakeName(pszRow, pszEntry);
+    XMLElement* pElement = GetNode(path);
+
+    if (!pElement)
+        return defval;
+
+    // Check if it's an attribute
+    const XMLAttribute* pAttr = pElement->FindAttribute(pszEntry);
+    if (pAttr)
+        return pAttr->IntValue(defval);
+
+    // Check if it's a child element
+    XMLElement* pChild = pElement->FirstChildElement(pszEntry);
+    if (pChild && pChild->GetText())
+        return atoi(pChild->GetText());
+
+    return defval;
 }
-const char* CDataTableXML::GetString( const char *pszRow, const char *pszEntry, const char *defval, char *pszBuffer, int nBufferSize )
+
+double CDataTableXML::GetDouble(const char* pszRow, const char* pszEntry, double defval)
 {
-	const std::string szName = MakeName( pszRow, pszEntry );
-	if ( IXMLDOMNodePtr pNode = GetNode(szName) )
-	{
-		std::string szString = pNode->text;
-		NI_ASSERT_TF( nBufferSize >= szString.size(), "Buffer too small to fill all string", return 0 );
-		strcpy( pszBuffer, szString.c_str() );
-	}
-	else
-		strcpy( pszBuffer, defval );
-	return pszBuffer;
+    std::string path = MakeName(pszRow, pszEntry);
+    XMLElement* pElement = GetNode(path);
+
+    if (!pElement)
+        return defval;
+
+    // Check if it's an attribute
+    const XMLAttribute* pAttr = pElement->FindAttribute(pszEntry);
+    if (pAttr)
+        return pAttr->DoubleValue(defval);
+
+    // Check if it's a child element
+    XMLElement* pChild = pElement->FirstChildElement(pszEntry);
+    if (pChild && pChild->GetText())
+        return atof(pChild->GetText());
+
+    return defval;
 }
-int CDataTableXML::GetRawData( const char *pszRow, const char *pszEntry, void *pBuffer, int nBufferSize )
+
+const char* CDataTableXML::GetString(const char* pszRow, const char* pszEntry,
+    const char* defval, char* pszBuffer, int nBufferSize)
 {
-	const std::string szName = MakeName( pszRow, pszEntry );
-	if ( IXMLDOMNodePtr pNode = GetNode(szName) )
-	{
-		std::string szBuffer = pNode->text;
-		NI_ASSERT_TF( nBufferSize >= szBuffer.size(), "Buffer too small to fill all string", return 0 );
-		int nCheck = szBuffer.size() / 2;
-		NI_ASSERT_TF( nCheck >= nBufferSize, NStr::Format("Wrong buffer size: %d >= %d", nCheck, nBufferSize), return 0 );
-		NStr::StringToBin( szBuffer.c_str(), pBuffer, &nCheck );
-		return nCheck;
-	}
-	return 0;
+    if (!pszBuffer || nBufferSize <= 0)
+        return defval;
+
+    std::string path = MakeName(pszRow, pszEntry);
+    XMLElement* pElement = GetNode(path);
+
+    if (pElement)
+    {
+        // Check if it's an attribute
+        const XMLAttribute* pAttr = pElement->FindAttribute(pszEntry);
+        if (pAttr && pAttr->Value())
+        {
+            strncpy(pszBuffer, pAttr->Value(), nBufferSize - 1);
+            pszBuffer[nBufferSize - 1] = '\0';
+            return pszBuffer;
+        }
+
+        // Check if it's a child element
+        XMLElement* pChild = pElement->FirstChildElement(pszEntry);
+        if (pChild && pChild->GetText())
+        {
+            strncpy(pszBuffer, pChild->GetText(), nBufferSize - 1);
+            pszBuffer[nBufferSize - 1] = '\0';
+            return pszBuffer;
+        }
+    }
+
+    strncpy(pszBuffer, defval, nBufferSize - 1);
+    pszBuffer[nBufferSize - 1] = '\0';
+    return pszBuffer;
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// set
-void CDataTableXML::SetInt( const char *pszRow, const char *pszEntry, int val )
+
+int CDataTableXML::GetRawData(const char* pszRow, const char* pszEntry,
+    void* pBuffer, int nBufferSize)
 {
-	NI_ASSERT_T( false, "Still not implemented" );
-	SetValue( pszRow, pszEntry, long(val) );
-	SetModified();
+    std::string path = MakeName(pszRow, pszEntry);
+    XMLElement* pElement = GetNode(path);
+
+    if (!pElement || !pBuffer || nBufferSize <= 0)
+        return 0;
+
+    const char* pText = NULL;
+
+    // Check if it's an attribute
+    const XMLAttribute* pAttr = pElement->FindAttribute(pszEntry);
+    if (pAttr && pAttr->Value())
+        pText = pAttr->Value();
+
+    // Check if it's a child element
+    if (!pText)
+    {
+        XMLElement* pChild = pElement->FirstChildElement(pszEntry);
+        if (pChild && pChild->GetText())
+            pText = pChild->GetText();
+    }
+
+    if (!pText)
+        return 0;
+
+    // Convert hex string to binary
+    int nLen = strlen(pText);
+    int nOutSize = nBufferSize;
+    NStr::StringToBin(pText, pBuffer, &nOutSize);
+    return nOutSize;
 }
-void CDataTableXML::SetDouble( const char *pszRow, const char *pszEntry, double val )
+
+void CDataTableXML::SetInt(const char* pszRow, const char* pszEntry, int val)
 {
-	NI_ASSERT_T( false, "Still not implemented" );
-	SetValue( pszRow, pszEntry, val );
-	SetModified();
+    std::string path = MakeName(pszRow, pszEntry);
+    XMLElement* pElement = GetNode(path);
+
+    if (!pElement)
+    {
+        // Create node hierarchy
+        XMLElement* pCurrent = xmlRootNode;
+        size_t start = 0;
+        size_t end = path.find('/');
+
+        while (end != std::string::npos)
+        {
+            std::string tag = path.substr(start, end - start);
+            XMLElement* pChild = pCurrent->FirstChildElement(tag.c_str());
+            if (!pChild)
+            {
+                pChild = xmlDocument->NewElement(tag.c_str());
+                pCurrent->InsertEndChild(pChild);
+            }
+            pCurrent = pChild;
+            start = end + 1;
+            end = path.find('/', start);
+        }
+
+        pElement = pCurrent;
+    }
+
+    // Set as attribute
+    pElement->SetAttribute(pszEntry, val);
+    SetModified();
 }
-void CDataTableXML::SetString( const char *pszRow, const char *pszEntry, const char *val )
-{	
-	NI_ASSERT_T( false, "Still not implemented" );
-	if ( IXMLDOMNodePtr pNode = xmlRootNode->selectSingleNode( pszRow ) )
-	{
-		IXMLDOMCharacterDataPtr xmlText = xmlDocument->createTextNode( val );
-		pNode->appendChild( xmlText );
-	}
-	else
-	{
-		IXMLDOMElementPtr pElement = xmlDocument->createElement( pszRow );
-		xmlRootNode->appendChild( pElement );
-		IXMLDOMCharacterDataPtr xmlText = xmlDocument->createTextNode( val );
-		pElement->appendChild( xmlText );
-	}
-	SetModified();
-}
-void CDataTableXML::SetRawData( const char *pszRow, const char *pszEntry, const void *pBuffer, int nBufferSize )
+
+void CDataTableXML::SetDouble(const char* pszRow, const char* pszEntry, double val)
 {
-	NI_ASSERT_T( false, "Still not implemented" );
-	std::string szString;
-	szString.resize( nBufferSize * 2 );
-	NStr::BinToString( pBuffer, nBufferSize, const_cast<char*>(szString.c_str()) );
-	SetString( pszRow, pszEntry, szString.c_str() );
-	SetModified();
+    std::string path = MakeName(pszRow, pszEntry);
+    XMLElement* pElement = GetNode(path);
+
+    if (!pElement)
+    {
+        // Create node hierarchy
+        XMLElement* pCurrent = xmlRootNode;
+        size_t start = 0;
+        size_t end = path.find('/');
+
+        while (end != std::string::npos)
+        {
+            std::string tag = path.substr(start, end - start);
+            XMLElement* pChild = pCurrent->FirstChildElement(tag.c_str());
+            if (!pChild)
+            {
+                pChild = xmlDocument->NewElement(tag.c_str());
+                pCurrent->InsertEndChild(pChild);
+            }
+            pCurrent = pChild;
+            start = end + 1;
+            end = path.find('/', start);
+        }
+
+        pElement = pCurrent;
+    }
+
+    // Set as attribute
+    pElement->SetAttribute(pszEntry, val);
+    SetModified();
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CDataTableXML::SetString(const char* pszRow, const char* pszEntry, const char* val)
+{
+    std::string path = MakeName(pszRow, pszEntry);
+    XMLElement* pElement = GetNode(path);
+
+    if (!pElement)
+    {
+        // Create node hierarchy
+        XMLElement* pCurrent = xmlRootNode;
+        size_t start = 0;
+        size_t end = path.find('/');
+
+        while (end != std::string::npos)
+        {
+            std::string tag = path.substr(start, end - start);
+            XMLElement* pChild = pCurrent->FirstChildElement(tag.c_str());
+            if (!pChild)
+            {
+                pChild = xmlDocument->NewElement(tag.c_str());
+                pCurrent->InsertEndChild(pChild);
+            }
+            pCurrent = pChild;
+            start = end + 1;
+            end = path.find('/', start);
+        }
+
+        pElement = pCurrent;
+    }
+
+    // Create text element
+    XMLElement* pTextElement = xmlDocument->NewElement(pszEntry);
+    pTextElement->SetText(val);
+    pElement->InsertEndChild(pTextElement);
+    SetModified();
+}
+
+void CDataTableXML::SetRawData(const char* pszRow, const char* pszEntry,
+    const void* pBuffer, int nBufferSize)
+{
+    std::string szString;
+    szString.resize(nBufferSize * 2 + 1);
+    NStr::BinToString(pBuffer, nBufferSize, const_cast<char*>(szString.c_str()));
+    SetString(pszRow, pszEntry, szString.c_str());
+    SetModified();
+}
