@@ -157,7 +157,7 @@ inline IDataStream* OpenFileStream( const std::string &szFullName, DWORD dwAcces
 	const int nPos = szFullName.rfind( '\\' );
 	const std::string szPathName = nPos != std::string::npos ? szFullName.substr( 0, nPos + 1 ) : ".\\";
 	const std::string szFileName = nPos != std::string::npos ? szFullName.substr( nPos + 1 ) : szFullName;
-	CPtr<IDataStorage> pStorage = OpenStorage( szPathName.c_str(), dwAccessMode, STORAGE_TYPE_FILE );
+	CPtr<IDataStorage> pStorage ( OpenStorage( szPathName.c_str(), dwAccessMode, STORAGE_TYPE_FILE ));
 	return pStorage->OpenStream( szFileName.c_str(), dwAccessMode );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -166,7 +166,7 @@ inline IDataStream* CreateFileStream( const std::string &szFullName, DWORD dwAcc
 	const int nPos = szFullName.rfind( '\\' );
 	const std::string szPathName = nPos != std::string::npos ? szFullName.substr( 0, nPos + 1 ) : ".\\";
 	const std::string szFileName = nPos != std::string::npos ? szFullName.substr( nPos + 1 ) : szFullName;
-	CPtr<IDataStorage> pStorage = CreateStorage( szPathName.c_str(), dwAccessMode, STORAGE_TYPE_FILE );
+	CPtr<IDataStorage> pStorage  (CreateStorage( szPathName.c_str(), dwAccessMode, STORAGE_TYPE_FILE ));
 	return pStorage->CreateStream( szFileName.c_str(), dwAccessMode );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,11 +194,13 @@ inline IDataTable* OpenIniDataTable( IDataStream *pStream )
 #ifndef _DONT_USE_SINGLETON
 namespace NDB
 {
-	inline IDataTable* OpenDataTable( const char *pszName )
+	inline IDataTable* OpenDataTable(const char* pszName)
 	{
-		CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream( pszName, STREAM_ACCESS_READ );
-		NI_ASSERT_TF( pStream != 0, NStr::Format("Can't open stream \"%s\"", pszName), return 0 );
-		return ::OpenDataTable( pStream );
+		IDataStream* pStream = GetSingleton<IDataStorage>()->OpenStream(pszName, STREAM_ACCESS_READ);
+		NI_ASSERT_TF(pStream != 0, NStr::Format("Can't open stream \"%s\"", pszName), return 0);
+		IDataTable* pTable = ::OpenDataTable(pStream);
+		pStream->Release();  // не забыть освободить, если не используется умный указатель
+		return pTable;
 	}
 };
 #endif // _DONT_USE_SINGLETON

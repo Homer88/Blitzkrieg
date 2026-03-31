@@ -67,16 +67,18 @@ class CTableAccessor
 {
 	CPtr<IDataTable> pTable;
 	//
-	template <class TFunc, class TYPE>
-		TYPE GetVal( TFunc func, const char *pszRow, const char *pszEntry, TYPE defval )
+	template <class TYPE, class TFunc>
+	TYPE GetVal(TFunc func, const char* pszRow, const char* pszEntry, TYPE defval)
 	{
-		return (TYPE)(pTable->*func)( pszRow, pszEntry, defval );
+		return (TYPE)((pTable->*func)(pszRow, pszEntry, defval));
 	}
-	template <class TFunc, class TYPE>
-		void SetVal( TFunc func, const char *pszRow, const char *pszEntry, TYPE val )
-	{
-		(pTable->*func)( pszRow, pszEntry, val );
-	}
+
+	template <class TYPE, class TFunc>
+		void SetVal(TFunc func, const char* pszRow, const char* pszEntry, TYPE val)
+		{
+		(pTable->*func)(pszRow, pszEntry, val);
+		}
+
 	template <class TFunc, class TYPE>
 		bool GetValArray( TFunc func, const char *pszRow, const char *pszEntry, std::vector<TYPE> &array, const char cSeparator = DEFAULT_SEPARATOR )
 	{
@@ -201,43 +203,43 @@ public:
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 inline char CTableAccessor::GetChar( const char *pszRow, const char *pszEntry, char defval )
 {
-	return GetVal( IDataTable::GetInt, pszRow, pszEntry, defval );
+	return GetVal<char>( &IDataTable::GetInt, pszRow, pszEntry, defval );
 }
 inline unsigned char CTableAccessor::GetUChar( const char *pszRow, const char *pszEntry, unsigned char defval )
 {
-	return GetVal( IDataTable::GetInt, pszRow, pszEntry, defval );
+	return GetVal<unsigned char>( &IDataTable::GetInt, pszRow, pszEntry, defval );
 }
 inline short CTableAccessor::GetShort( const char *pszRow, const char *pszEntry, short defval )
 {
-	return GetVal( IDataTable::GetInt, pszRow, pszEntry, defval );
+	return GetVal<short>( &IDataTable::GetInt, pszRow, pszEntry, defval );
 }
 inline unsigned short CTableAccessor::GetUShort( const char *pszRow, const char *pszEntry, unsigned short defval )
 {
-	return GetVal( IDataTable::GetInt, pszRow, pszEntry, defval );
+	return GetVal<unsigned short>( &IDataTable::GetInt, pszRow, pszEntry, defval );
 }
 inline long CTableAccessor::GetLong( const char *pszRow, const char *pszEntry, long defval )
 {
-	return GetVal( IDataTable::GetInt, pszRow, pszEntry, defval );
+	return GetVal<long>( &IDataTable::GetInt, pszRow, pszEntry, defval );
 }
 inline unsigned long CTableAccessor::GetULong( const char *pszRow, const char *pszEntry, unsigned long defval )
 {
-	return GetVal( IDataTable::GetInt, pszRow, pszEntry, defval );
+	return GetVal<unsigned long>( &IDataTable::GetInt, pszRow, pszEntry, defval );
 }
 inline int CTableAccessor::GetInt( const char *pszRow, const char *pszEntry, int defval )
 {
-	return GetVal( IDataTable::GetInt, pszRow, pszEntry, defval );
+	return GetVal<int>( &IDataTable::GetInt, pszRow, pszEntry, defval );
 }
 inline unsigned int CTableAccessor::GetUInt( const char *pszRow, const char *pszEntry, unsigned int defval )
 {
-	return GetVal( IDataTable::GetInt, pszRow, pszEntry, defval );
+	return GetVal<unsigned int>( &IDataTable::GetInt, pszRow, pszEntry, defval );
 }
 inline float CTableAccessor::GetFloat( const char *pszRow, const char *pszEntry, float defval )
 {
-	return GetVal( IDataTable::GetDouble, pszRow, pszEntry, defval );
+	return GetVal<float>( &IDataTable::GetDouble, pszRow, pszEntry, defval );
 }
 inline double CTableAccessor::GetDouble( const char *pszRow, const char *pszEntry, double defval )
 {
-	return GetVal( IDataTable::GetDouble, pszRow, pszEntry, defval );
+	return GetVal<double>( &IDataTable::GetDouble, pszRow, pszEntry, defval );
 }
 inline std::string CTableAccessor::GetString( const char *pszRow, const char *pszEntry, const char *defval )
 {
@@ -305,43 +307,43 @@ inline bool CTableAccessor::GetArray( const char *pszRow, const char *pszEntry, 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 inline void CTableAccessor::SetChar( const char *pszRow, const char *pszEntry, char val )
 {
-	SetVal( IDataTable::SetInt, pszRow, pszEntry, val );
+	SetVal<char>( &IDataTable::SetInt, pszRow, pszEntry, val );
 }
 inline void CTableAccessor::SetUChar( const char *pszRow, const char *pszEntry, unsigned char val )
 {
-	SetVal( IDataTable::SetInt, pszRow, pszEntry, val );
+	SetVal<unsigned char> ( &IDataTable::SetInt, pszRow, pszEntry, val );
 }
 inline void CTableAccessor::SetShort( const char *pszRow, const char *pszEntry, short val )
 {
-	SetVal( IDataTable::SetInt, pszRow, pszEntry, val );
+	SetVal<short>( &IDataTable::SetInt, pszRow, pszEntry, val );
 }
 inline void CTableAccessor::SetUShort( const char *pszRow, const char *pszEntry, unsigned short val )
 {
-	SetVal( IDataTable::SetInt, pszRow, pszEntry, val );
+	SetVal<unsigned short>( &IDataTable::SetInt, pszRow, pszEntry, val );
 }
 inline void CTableAccessor::SetLong( const char *pszRow, const char *pszEntry, long val )
 {
-	SetVal( IDataTable::SetInt, pszRow, pszEntry, val );
+	SetVal<long>( &IDataTable::SetInt, pszRow, pszEntry, val );
 }
 inline void CTableAccessor::SetULong ( const char *pszRow, const char *pszEntry, unsigned long val )
 {
-	SetVal( IDataTable::SetInt, pszRow, pszEntry, val );
+	SetVal<unsigned long>( &IDataTable::SetInt, pszRow, pszEntry, val );
 }
 inline void CTableAccessor::SetInt( const char *pszRow, const char *pszEntry, int val )
 {
-	SetVal( IDataTable::SetInt, pszRow, pszEntry, val );
+	SetVal<int>( &IDataTable::SetInt, pszRow, pszEntry, val );
 }
 inline void CTableAccessor::SetUInt( const char *pszRow, const char *pszEntry, unsigned int val )
 {
-	SetVal( IDataTable::SetInt, pszRow, pszEntry, val );
+	SetVal<unsigned int>( &IDataTable::SetInt, pszRow, pszEntry, val );
 }
 inline void CTableAccessor::SetFloat( const char *pszRow, const char *pszEntry, float val )
 {
-	SetVal( IDataTable::SetDouble, pszRow, pszEntry, val );
+	SetVal<float>(& IDataTable::SetDouble, pszRow, pszEntry, val );
 }
 inline void CTableAccessor::SetDouble( const char *pszRow, const char *pszEntry, double val )
 {
-	SetVal( IDataTable::SetDouble, pszRow, pszEntry, val );
+	SetVal<double>( &IDataTable::SetDouble, pszRow, pszEntry, val );
 }
 inline void CTableAccessor::SetString( const char *pszRow, const char *pszEntry, const char *val )
 {

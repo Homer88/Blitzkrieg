@@ -110,7 +110,11 @@ IRefCount* CSingleton::Get( int nID )
 {
 	CObjectIDs::iterator pos = objects.find( nID );
 //	NI_ASSERT_SLOW_TF( pos != objects.end(), NStr::Format("object with id = 0x%x does not registered", nID), return false );
-	return pos == objects.end() ? 0 : pos->second;
+
+	if (pos == objects.end())
+		return 0;
+	else
+		return pos->second;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // get all registered objects

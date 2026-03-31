@@ -59,7 +59,7 @@ IDataTable* CIniFileDataBase::OpenTable( const char *pszName, DWORD dwAccessMode
 	{
 		if ( CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream(pszName, STREAM_ACCESS_READ) )
 		{
-			if ( !pTable->Load(pStream) )
+			if ( !pTable->Load(pStream.GetPtr()) )
 			{
 				delete pTable;
 				pTable = 0;

@@ -11,6 +11,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 FILE(GLOB GFX_SOURCE "*.cpp")
 FILE(GLOB GFX_HEADERS "*.h")
 
+
+
+
+
+# прописать еще Directx 8
+
+
+
+
 add_definitions( -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS)
 
 add_definitions( -D_WIN32_WINNT=0x0501)

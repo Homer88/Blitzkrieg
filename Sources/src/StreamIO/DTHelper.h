@@ -50,11 +50,11 @@ class CTreeAccessor
 	template <class T1, class T2, class T3, class T4>
 		int __cdecl TestDataPath( std::map<T1, T2, T3, T4> * ) { return 0; }
 	template <class T1, class T2, class T3, class T4, class T5>
-		int __cdecl TestDataPath( std::hash_map<T1, T2, T3, T4, T5> * ) { return 0; }
+		int __cdecl TestDataPath( std::hash_map<T1, T2, T3, T4> * ) { return 0; }
 	template <class T1, class T2, class T3, class T4, class T5>
-		int __cdecl TestDataPath( std::hash_multimap<T1, T2, T3, T4, T5> * ) { return 0; }
+		int __cdecl TestDataPath( std::hash_multimap<T1, T2, T3, T4> * ) { return 0; }
 	template <class T1, class T2, class T3, class T4>
-		int __cdecl TestDataPath( std::hash_set<T1, T2, T3, T4> * ) { return 0; }
+		int __cdecl TestDataPath( std::hash_set<T1, T2, T3> * ) { return 0; }
 	template <class T1, class T2, class T3>
 		int __cdecl TestDataPath( std::set<T1, T2, T3> * ) { return 0; }
 	template <class T1, class T2, class T3, class T4, class T5>
@@ -227,8 +227,8 @@ class CTreeAccessor
 			}
 			pSS->FinishContainerChunk();
 		}
-	template <class T, class T1, class T2, class T3, class T4, class T5>
-		void __cdecl AddInternal( const DTChunkID idChunk, T *p, std::hash_map<T1, T2, T3, T4, T5> *pData ) 
+	template <class T, class T1, class T2, class T3, class T4>
+		void __cdecl AddInternal( const DTChunkID idChunk, T *p, std::hash_map<T1, T2, T3, T4> *pData ) 
 		{
 			if ( pSS->StartContainerChunk( idChunk ) == 0 )
 				return;
@@ -236,8 +236,8 @@ class CTreeAccessor
 			DoHashMap( *pData, nSize );
 			pSS->FinishContainerChunk();
 		}
-	template <class T, class T1, class T2, class T3, class T4, class T5>
-		void __cdecl AddInternal( const DTChunkID idChunk, T* p, std::hash_multimap<T1, T2, T3, T4, T5> *pData )
+	template <class T, class T1, class T2, class T3, class T4>
+		void __cdecl AddInternal( const DTChunkID idChunk, T* p, std::hash_multimap<T1, T2, T3, T4> *pData )
 		{
 			if ( pSS->StartContainerChunk( idChunk ) == 0 )
 				return;
@@ -283,15 +283,15 @@ class CTreeAccessor
 			for ( std::vector<T1>::iterator it = elements.begin(); it != elements.end(); ++it )
 				data.push( *it );
 		}
-	template <class T, class T1, class T2, class T3, class T4>
-		void __cdecl AddInternal( const DTChunkID idChunk, T *p, std::hash_set<T1, T2, T3, T4> *pData ) 
+	template <class T, class T1, class T2, class T3>
+		void __cdecl AddInternal( const DTChunkID idChunk, T *p, std::hash_set<T1, T2, T3> *pData ) 
 		{
 			std::vector<T1> elements;
 			// hash_set => vector
 			if ( !IsReading() )
 			{
 				elements.reserve( pData->size() );
-				for ( std::hash_set<T1, T2, T3, T4>::iterator it = pData->begin(); it != pData->end(); ++it )
+				for ( std::hash_set<T1, T2, T3>::iterator it = pData->begin(); it != pData->end(); ++it )
 					elements.push_back( *it );
 			}
 			// add container
@@ -522,8 +522,8 @@ class CTreeAccessor
 			}
 		}
 	// hash_map
-	template <class T1, class T2, class T3, class T4, class T5> 
-		void DoHashMap( std::hash_map<T1, T2, T3, T4, T5> &data, const int nExtSize )
+	template <class T1, class T2, class T3, class T4> 
+		void DoHashMap( std::hash_map<T1, T2, T3, T4> &data, const int nExtSize )
 		{
 			if ( IsReading() )
 			{
@@ -539,7 +539,7 @@ class CTreeAccessor
 			else
 			{
 				int i = 0;
-				for ( std::hash_map<T1, T2, T3, T4, T5>::iterator it = data.begin(); it != data.end(); ++it, ++i )
+				for ( std::hash_map<T1, T2, T3, T4>::iterator it = data.begin(); it != data.end(); ++it, ++i )
 				{
 					pSS->SetChunkCounter( i );
 					T1 idx = it->first;
@@ -549,8 +549,8 @@ class CTreeAccessor
 			}
 		}
 	// hash_multimap
-	template <class T1, class T2, class T3, class T4, class T5>
-		void DoHashMultiMap( std::hash_multimap<T1, T2, T3, T4, T5> &data, const int nExtSize )
+	template <class T1, class T2, class T3, class T4>
+		void DoHashMultiMap( std::hash_multimap<T1, T2, T3, T4> &data, const int nExtSize )
 		{
 			if ( IsReading() )
 			{
@@ -564,13 +564,13 @@ class CTreeAccessor
 					T2 value;
 					Add( "data", &value );
 
-					data.insert( std::hash_multimap<T1, T2, T3, T4, T5>::value_type( idx, value ) );
+					data.insert( std::hash_multimap<T1, T2, T3, T4>::value_type( idx, value ) );
 				}
 			}
 			else
 			{
 				int i = 0;
-				for ( std::hash_multimap<T1, T2, T3, T4, T5>::iterator it = data.begin(); it != data.end(); ++it, ++i )
+				for ( std::hash_multimap<T1, T2, T3, T4>::iterator it = data.begin(); it != data.end(); ++it, ++i )
 				{
 					pSS->SetChunkCounter( i );
 					T1 idx = it->first;
@@ -651,41 +651,33 @@ class CTreeAccessor
 			}
 		}
 public:
-	CTreeAccessor() {  }
-	CTreeAccessor( const CTreeAccessor &accessor ) 
-		: pSS( accessor.pSS ) {  }
-	CTreeAccessor( IDataTree *_pSS ) 
-		: pSS( _pSS ) {  }
-	// stream assigning and extracting
-	const CTreeAccessor& operator=( IDataTree *_pSS ) { pSS = _pSS; return *this; }
-	const CTreeAccessor& operator=( const CTreeAccessor &accessor ) { pSS = accessor.pSS; return *this; }
-	operator IDataTree*() const { return pSS; }
+	CTreeAccessor() : pSS(0) {}
+	CTreeAccessor(const CTreeAccessor& accessor) : pSS(accessor.pSS) {}
+
+	explicit CTreeAccessor(IDataTree* _pSS = 0) : pSS(_pSS) {}
+
+	const CTreeAccessor& operator=(IDataTree* _pSS) { pSS = _pSS; return *this; }
+	const CTreeAccessor& operator=(const CTreeAccessor& accessor) { pSS = accessor.pSS; return *this; }
+
+	operator void* () const { return pSS; }          // позволяет if (acc) / if (!acc)
 	IDataTree* operator->() const { return pSS; }
-	// comparison operators
-	bool operator==( const CTreeAccessor &ptr ) const { return ( pSS == ptr.pSS ); }
-	bool operator==( IDataTree *pNewObject ) const { return ( pSS == pNewObject ); }
-	bool operator!=( const CTreeAccessor &ptr ) const { return ( pSS != ptr.pSS ); }
-	bool operator!=( IDataTree *pNewObject ) const { return ( pSS != pNewObject ); }
-	// 
+	IDataTree* get() const { return pSS; }
+
+	bool operator==(const CTreeAccessor& ptr) const { return pSS == ptr.pSS; }
+	bool operator!=(const CTreeAccessor& ptr) const { return pSS != ptr.pSS; }
+
 	bool IsReading() const { return pSS->IsReading(); }
-	// add raw data of specified size (in bytes)
-	void AddRawData( const DTChunkID idChunk, void *pData, int nSize ) 
-	{ 
-		int nVal = pSS->StartChunk( idChunk );
-		if ( nVal == 0 )
-			return;
-		//
-		(*this)->RawData( pData, nSize );
-		//
-		if ( nVal != -1 )
-			(*this)->FinishChunk();
+	void AddRawData(const DTChunkID idChunk, void* pData, int nSize)
+	{
+		int nVal = pSS->StartChunk(idChunk);
+		if (nVal == 0) return;
+		(*this)->RawData(pData, nSize);
+		if (nVal != -1) (*this)->FinishChunk();
 	}
-	// main add function - add all structures/classes/datas through it
 	template <class T>
-		void Add( const DTChunkID idChunk, T *p ) { AddInternal( idChunk, p, p ); }
-	// adding typed super class - use it only for super class members serialization
+	void Add(const DTChunkID idChunk, T* p) { AddInternal(idChunk, p, p); }
 	template <class T>
-		void AddTypedSuper( T *pData ) { pData->T::operator&( *pSS ); }
+	void AddTypedSuper(T* pData) { pData->T::operator&(*pSS); }
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __DTHELPER_H__
