@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#include "StructureSaver.h"
 #include "StructureSaverInternal.h"
 #include "DataTreeXML.h"
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -412,11 +413,12 @@ void CStructureSaver::Finish()
 			bool bValid = pObject->IsValid();
 			NI_ASSERT_SLOW_T( nTypeID != -1, NStr::Format("unregistered object of type \"%s\"", typeid(*pObject).name()) );
 			obj.Write( &nTypeID, 4 );
-			obj.Write( &pObject, 4 );
+			IRefCount* pRaw = pObject.GetPtr();
+			obj.Write(&pRaw, 4);
 			obj.Write( &bValid, 1 );
 			// save object data
 			StartChunk( SSChunkID( 1 ) );
-			DataChunk( 0, &pObject, 4 );
+			DataChunk( 0, &pRaw, 4 );
 			//
 			if ( StartChunk( 1 ) )
 			{

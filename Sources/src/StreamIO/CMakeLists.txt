@@ -25,6 +25,10 @@ ExternalProject_Add(
     UPDATE_COMMAND ""
 )
 
+if (NOT TARGET Misc)
+    add_subdirectory (../Misc misc_build)
+    endif()
+
 # Получить пути к исходникам
 ExternalProject_Get_Property(tinyxml2 source_dir)
 
@@ -49,11 +53,12 @@ add_custom_target(tinyxml2_dep DEPENDS tinyxml2)
 add_library(StreamIO STATIC ${STREAMIO_HEADERS} ${STREAMIO_SOURCE})
 
 # DLL
-add_library(StreamIO_SHARED SHARED ${STREAMIO_HEADERS} ${STREAMIO_SOURCE})
+#add_library(StreamIO_SHARED SHARED ${STREAMIO_HEADERS} ${STREAMIO_SOURCE})
 
 # Добавить зависимости для библиотек
 add_dependencies(StreamIO tinyxml2_dep)
-add_dependencies(StreamIO_SHARED tinyxml2_dep)
+#add_dependencies(StreamIO misc_build)
+#add_dependencies(StreamIO_SHARED tinyxml2_dep)
 # (Опционально) Устанавливаем версию библиотеки
-set_target_properties(StreamIO  PROPERTIES VERSION 1.0.0 SOVERSION 1)
+#set_target_properties(StreamIO  PROPERTIES VERSION 1.0.0 SOVERSION 1)
 

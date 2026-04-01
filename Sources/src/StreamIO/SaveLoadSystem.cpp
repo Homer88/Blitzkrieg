@@ -1,9 +1,11 @@
 ﻿
 #include "StdAfx.h"
 
-   //  вроде как должен исправить
-#include "SaveLoadSystem.h"
 
+#include "StructureSaverInternal.h" // для CStructureSaver
+#include "SaveLoadSystem.h"            // для CSaveLoadSystem
+
+#include "StructureSaver.h"
 #include "StructureSaver2.h"
 #include "DataTreeXML.h"
 
@@ -17,6 +19,7 @@
 #include "DataBase.h"
 #include "IniFile.h"
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 CSaveLoadSystem theSaveLoadSystem;
 ISaveLoadSystem* STDCALL GetSLS_Hook()
 {
@@ -45,6 +48,7 @@ IStructureSaver* CSaveLoadSystem::CreateStructureSaver(IDataStream* pStream, ISt
 	NI_ASSERT_TF(pStream != 0, "Can't create structure saver from NULL stream", return 0);
 	// IProgressHook не используется в текущей реализации
 	// Используем режим ALL для полного сохранения/загрузки
+
 	return new CStructureSaver(pStream, eAccessMode, IStructureSaver::ALL, pFactory, pGDB);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

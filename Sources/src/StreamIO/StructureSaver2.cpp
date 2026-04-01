@@ -585,12 +585,13 @@ void CStructureSaver2::Finish()
 				// const int nOldDataSize = nDataSize;
 				
 				obj.Write( &nTypeID, 4 );
-				obj.Write( &pObject, 4 );
+				IRefCount* pRaw = pObject.GetPtr();
+				obj.Write(&pRaw, 4);
 				obj.Write( &bValid, 1 );
 				// nDataSize += 9;
 				// save object data
 				StartChunk( SSChunkID(1) );
-				DataChunk( 0, &pObject, 4 );
+				DataChunk( 0, &pRaw, 4 );
 				//
 				if ( StartChunk( 1 ) )
 				{

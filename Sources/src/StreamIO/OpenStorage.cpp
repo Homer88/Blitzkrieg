@@ -5,7 +5,7 @@
 #include "MemFileSystem.h"
 #include "CommonFileSystem.h"
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-static IDataStorage* STDCALL OpenStorage( const char *pszName, DWORD dwAccessMode, DWORD type )
+/*static IDataStorage* STDCALL OpenStorage(const char* pszName, DWORD dwAccessMode, DWORD type)
 {
 	switch ( type )
 	{
@@ -19,9 +19,9 @@ static IDataStorage* STDCALL OpenStorage( const char *pszName, DWORD dwAccessMod
 			return new CMemFileSystem( dwAccessMode );
 	}
 	return 0;
-}
+}*/
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-static IDataStorage* STDCALL CreateStorage( const char *pszName, DWORD dwAccessMode, DWORD type )
+/*static IDataStorage* STDCALL CreateStorage(const char* pszName, DWORD dwAccessMode, DWORD type)
 {
 	switch ( type )
 	{
@@ -29,5 +29,5 @@ static IDataStorage* STDCALL CreateStorage( const char *pszName, DWORD dwAccessM
 			return new CFileSystem( pszName, dwAccessMode, true );
 	}
 	return 0;
-}
+}*/
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
