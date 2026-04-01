@@ -79,9 +79,9 @@ class CStructureSaver2 : public IStructureSaver
 	bool bIsReading;
 	// maps objects addresses during save(first) to addresses during load(second) - during loading
 	// or serves as a sign that some object has been already stored - during storing
-	typedef std::hash_map<void*, CPtr<IRefCount>, SDefaultPtrHash> CObjectsHash;
+	typedef stdext::hash_map<void*, CPtr<IRefCount>, SDefaultPtrHashCompare> CObjectsHash;
 	CObjectsHash objects;
-	typedef std::hash_set<IRefCount*, SDefaultPtrHash> CPObjectsHashSet;
+	typedef stdext::hash_set<IRefCount*, SDefaultPtrHashCompare> CPObjectsHashSet;
 	CPObjectsHashSet storedObjects;
 	std::list< CPtr<IRefCount> > toStore;
 	//

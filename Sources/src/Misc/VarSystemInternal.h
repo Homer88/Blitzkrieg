@@ -204,7 +204,7 @@ private:
 		//
 		virtual int STDCALL operator&( IDataTree &ss )
 		{
-			CTreeAccessor saver = &ss;
+			CTreeAccessor saver (&ss);
 			saver.AddTypedSuper( static_cast<TVar*>(this) );
 			saver.Add( "KeyName", &szKeyName );
 			return 0;

@@ -1,6 +1,6 @@
 //BasicHash.h
-#ifdef __BASIC_HASH_H_
-#define__BASIC_HASH_H_
+#ifndef __BASIC_HASH_H_
+#define __BASIC_HASH_H_
 
 
 // Äëÿ stdext::hash_map è stdext::hash_set

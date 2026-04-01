@@ -1,8 +1,12 @@
+///file StructureSaverInternal.h
+
 #ifndef __STRUCTURESAVER_INTERNAL_H__
 #define __STRUCTURESAVER_INTERNAL_H__
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "StructureSaver.h"
 #include "Streams.h"
+#include"BasicHash.h"
+
 #include "..\Misc\BasicObjectFactory.h"
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CSaveLoadSystem : public ISaveLoadSystem
@@ -60,9 +64,9 @@ class CStructureSaver : public IStructureSaver
 	IStructureSaver::EStoreMode eStoreMode;	// we can store data only and can store with objects re-creation...
 	// maps objects addresses during save(first) to addresses during load(second) - during loading
 	// or serves as a sign that some object has been already stored - during storing
-	typedef std::hash_map<void*, CPtr<IRefCount>, SDefaultPtrHash> CObjectsHash;
+	typedef stdext::hash_map<void*, CPtr<IRefCount>, SDefaultPtrHashCompare> CObjectsHash;
 	CObjectsHash objects;
-	typedef std::hash_map<void*,bool,SDefaultPtrHash> CPObjectsHash;
+	typedef std::hash_map<void*,bool,SDefaultPtrHashCompare> CPObjectsHash;
 	CPObjectsHash storedObjects;
 	std::list< CPtr<IRefCount> > toStore;
 

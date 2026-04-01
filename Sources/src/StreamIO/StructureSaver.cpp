@@ -26,17 +26,17 @@ void CSaveLoadSystem::AddFactory( IObjectFactory *_pFactory )
 	pFactory->Aggregate( _pFactory );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-IStructureSaver* CSaveLoadSystem::CreateStructureSaver( IDataStream *pStream, IStructureSaver::EAccessMode eAccessMode, 
-		IStructureSaver::EStoreMode eStoreMode = IStructureSaver::ALL )
+IStructureSaver* CSaveLoadSystem::CreateStructureSaver(IDataStream* pStream, IStructureSaver::EAccessMode eAccessMode, IProgressHook* pLoadHook)
 {
-	NI_ASSERT_TF( pStream != 0, "Can't create structure saver from NULL stream", return 0 );
-	return new CStructureSaver( pStream, eAccessMode, eStoreMode, pFactory, pGDB );
+	NI_ASSERT_TF(pStream != 0, "Can't create structure saver from NULL stream", return 0);
+	// Используем режим ALL по умолчанию, так как IProgressHook не используется
+	return new CStructureSaver(pStream, eAccessMode, IStructureSaver::ALL, pFactory, pGDB);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 IDataTree* CSaveLoadSystem::CreateDataTreeSaver( IDataStream *pStream, IDataTree::EAccessMode eAccessMode, DTChunkID idBaseNode )
 {
 	NI_ASSERT_TF( pStream != 0, "Can't create data tree saver from NULL stream", return 0 );
-	InitCOM();
+	//InitCOM();
 	CDataTreeXML *pDT = new CDataTreeXML( eAccessMode );
 	pDT->Open( pStream, idBaseNode );
 	return pDT;
@@ -408,7 +408,7 @@ void CStructureSaver::Finish()
 			CPtr<IRefCount> pObject = toStore.front();
 			toStore.pop_front();
 			// save object type and its server pointer
-			int nTypeID = pFactory->GetObjectTypeID( pObject );
+			int nTypeID = pFactory->GetObjectTypeID( pObject.GetPtr());
 			bool bValid = pObject->IsValid();
 			NI_ASSERT_SLOW_T( nTypeID != -1, NStr::Format("unregistered object of type \"%s\"", typeid(*pObject).name()) );
 			obj.Write( &nTypeID, 4 );

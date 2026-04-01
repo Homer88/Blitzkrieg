@@ -90,7 +90,7 @@ class CTreeAccessor
 			int nVal = pSS->StartChunk( idChunk );
 			if ( nVal == 0 )
 				return;
-			pData->operator&( *pSS );
+			pData->operator&( *pSS.GetPtr() );
 			if ( nVal != -1 )
 				pSS->FinishChunk();
 		}
@@ -171,22 +171,56 @@ class CTreeAccessor
 		}
 
 	template <class T1, class T2>
-		void __cdecl AddInternal( const DTChunkID idChunk, T1 *p, std::basic_string<T2> *pData ) 
+	void __cdecl AddInternal(const DTChunkID idChunk, T1* p, std::basic_string<T2>* pData)
+	{
+		int nVal = pSS->StartChunk(idChunk);
+		if (nVal == 0)
+			return;
+		//
+		if (IsReading())
 		{
-			int nVal = pSS->StartChunk( idChunk );
-			if ( nVal == 0 )
-				return;
-			//
-			if ( IsReading() )
-			{
-				int nSize = pSS->GetChunkSize();
-				pData->resize( nSize );
-			}
-			pSS->StringData( const_cast<T2*>( pData->c_str() ) );
-			//
-			if ( nVal != -1 )
-				pSS->FinishChunk();
+			int nSize = pSS->GetChunkSize();
+			pData->resize(nSize);
 		}
+		// Выбираем перегрузку StringData в зависимости от размера символа
+		if (sizeof(T2) == 1)
+			pSS->StringData(const_cast<char*>(pData->c_str()));
+		else
+			pSS->StringData(const_cast<WORD*>(reinterpret_cast<const WORD*>(pData->c_str())));
+		//
+		if (nVal != -1)
+			pSS->FinishChunk();
+	}
+
+	// Специализация для char
+	template <class T1>
+	void __cdecl AddInternal(const DTChunkID idChunk, T1* p, std::string* pData)
+	{
+		int nVal = pSS->StartChunk(idChunk);
+		if (nVal == 0) return;
+		if (IsReading())
+		{
+			int nSize = pSS->GetChunkSize();
+			pData->resize(nSize);
+		}
+		pSS->StringData(const_cast<char*>(pData->c_str()));
+		if (nVal != -1) pSS->FinishChunk();
+	}
+
+	// Специализация для wchar_t
+	template <class T1>
+	void __cdecl AddInternal(const DTChunkID idChunk, T1* p, std::wstring* pData)
+	{
+		int nVal = pSS->StartChunk(idChunk);
+		if (nVal == 0) return;
+		if (IsReading())
+		{
+			int nSize = pSS->GetChunkSize();
+			pData->resize(nSize);
+		}
+		pSS->StringData(const_cast<WORD*>(reinterpret_cast<const WORD*>(pData->c_str())));
+		if (nVal != -1) pSS->FinishChunk();
+	}
 	template <class T, class T1, class T2>
 		void __cdecl AddInternal( const DTChunkID idChunk, T *p, std::vector<T1, T2> *pData ) 
 		{
@@ -679,7 +713,7 @@ public:
 	template <class T>
 	void Add(const DTChunkID idChunk, T* p) { AddInternal(idChunk, p, p); }
 	template <class T>
-	void AddTypedSuper(T* pData) { pData->T::operator&(*pSS); }
+	void AddTypedSuper(T* pData) { pData->T::operator&(*pSS.GetPtr()); }
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __DTHELPER_H__
