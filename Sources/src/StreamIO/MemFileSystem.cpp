@@ -152,7 +152,7 @@ IDataStream* CMemFileSystem::OpenStream( const char *pszName, DWORD dwAccessMode
 	if ( pos != streams.end() )
 	{
 		pos->second->Seek( 0, STREAM_SEEK_SET );
-		return pos->second;
+		return pos->second.GetPtr();
 	}
 	else
 		return 0;

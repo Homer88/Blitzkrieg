@@ -71,7 +71,7 @@ struct SSerialVariantT : public variant_t
 	}
 	virtual int STDCALL operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver (& ss);
 		const VARTYPE oldvt = vt;
 		saver.Add( "Type", &vt );
 		switch ( vt ) 

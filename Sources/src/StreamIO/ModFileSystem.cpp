@@ -161,7 +161,7 @@ IStorageEnumerator* CModFileSystem::CreateEnumerator()
 		// add all files to this enumerator
 		for ( CFileSystemsList::reverse_iterator it = filesystems.rbegin(); it != filesystems.rend(); ++it )
 		{
-			CPtr<IStorageEnumerator> pEnumerator = it->second->CreateEnumerator();
+			CPtr<IStorageEnumerator> pEnumerator  (it->second->CreateEnumerator());
 			pEnumerator->Reset( "*.*" );
 			while (	pEnumerator->Next() )
 			{

@@ -114,7 +114,7 @@ IRefCount* CSingleton::Get( int nID )
 	if (pos == objects.end())
 		return 0;
 	else
-		return pos->second;
+		return pos->second.GetPtr();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // get all registered objects
@@ -125,7 +125,7 @@ int CSingleton::GetAllObjects( IRefCount ***ppBuffer, int *pnBufferSize )
 	*ppBuffer = GetTempBuffer<IRefCount*>( *pnBufferSize );
 	IRefCount **pBuffer = *ppBuffer;
 	for ( CObjectIDs::iterator it = objects.begin(); it != objects.end(); ++it )
-		*pBuffer++ = it->second;
+		*pBuffer++ = it->second.GetPtr();
 	return *pnBufferSize;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

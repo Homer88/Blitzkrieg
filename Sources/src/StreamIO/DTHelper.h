@@ -165,9 +165,9 @@ class CTreeAccessor
 	template <class T>
 		void __cdecl AddInternal( const DTChunkID idChunk, T *pData, ... )
 		{
-			const int N_HAS_SERIALIZE_TEST = sizeof( (*pData) & (*pSS) );
+			enum { N_HAS_SERIALIZE_TEST = sizeof((*pData) & (*(pSS.GetPtr()))) };
 			SGenericNumber<N_HAS_SERIALIZE_TEST> separator;
-			CallObjectSerialize( idChunk, pData, &separator );
+			CallObjectSerialize(idChunk, pData, &separator);
 		}
 
 	template <class T1, class T2>

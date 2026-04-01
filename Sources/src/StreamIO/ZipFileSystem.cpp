@@ -165,7 +165,7 @@ IDataStream* CZipFileSystem::OpenStream( const char *pszName, DWORD dwAccessMode
 	if ( pos != files.end() )
 	{
 		const SZipArchiveFileInfo &info = pos->second;
-		CPtr<IDataStream> pZipStream = OpenFileStream( info.pZipFile->szZipFileName, dwStorageAccessMode );
+		CPtr<IDataStream> pZipStream ( OpenFileStream( info.pZipFile->szZipFileName, dwStorageAccessMode ));
 		return info.pZipFile->ReadFile( pZipStream, info.nIndex );
 	}
 	return 0;

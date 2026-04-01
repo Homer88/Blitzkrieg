@@ -1,5 +1,5 @@
-#include "StdAfx.h"
-
+﻿#include "StdAfx.h"
+#include <typeinfo>   // ← добавить
 #include "StructureSaver2.h"
 #include "ProgressHook.h"
 
@@ -300,7 +300,7 @@ void CStructureSaver2::StoreObject( IRefCount *pObject )
 		CPObjectsHashSet::iterator pos = storedObjects.find( pObject );
 		NI_ASSERT_SLOW_T( (pos == storedObjects.end()) || ((pos != storedObjects.end()) && (*pos == pObject)), NStr::Format("storing object 0x.8x of type \"%s\", but such object of type \"%s\" already exist", pObject, typeid(*pObject).name(), typeid(*(*pos)).name()) );
 #endif // _DO_ASSERT_SLOW
-		toStore.push_back( pObject );
+		toStore.push_back(CPtr<IRefCount>(pObject) );
 		storedObjects.insert( pObject );
 	}
 
@@ -319,9 +319,9 @@ IRefCount* CStructureSaver2::LoadObject()
 		{
 #ifndef _FINALRELEASE
 			if ( bCollectReferedObjects ) 
-				referedObjects.push_back( pFound->second );
+				referedObjects.push_back( pFound->second.GetPtr() );
 #endif // _FINALRELEASE
-			return pFound->second;
+			return pFound->second.GetPtr();
 		}
 		NI_ASSERT_SLOW_T( 0, "Here we are in problem - stored object does not exist. Actually I think we got to throw the exception" );
 		// here we are in problem - stored object does not exist
@@ -333,7 +333,7 @@ IRefCount* CStructureSaver2::LoadObject()
 bool CStructureSaver2::StartChunk( const SSChunkID idChunk )
 {
 	CChunkLevel &last = chunks.back();
-	chunks.push_back();
+	chunks.push_back(CChunkLevel());
 	if ( IsReading() ) 
 	{
 		bool bRes = GetShortChunk( last, idChunk, chunks.back(), last.nChunkNumber );
@@ -379,12 +379,12 @@ int CStructureSaver2::CountChunks( const SSChunkID idChunk )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CStructureSaver2::Start( IStructureSaver::EAccessMode eAccessMode, IProgressHook *pLoadHook )
 {
-	IDataStream *pRes = pDstStream;
+	IDataStream *pRes = pDstStream.GetPtr();
 	//
 	chunks.clear();
 	obj.Clear();
 	data.Clear();
-	chunks.push_back();
+	chunks.push_back(CChunkLevel());
 	bIsReading = eAccessMode == IStructureSaver::READ;
 	if ( IsReading() )
 	{
@@ -403,10 +403,10 @@ void CStructureSaver2::Start( IStructureSaver::EAccessMode eAccessMode, IProgres
 			obj.Read( &bValid, 1 );
 			IRefCount *pObject = pFactory->CreateObject( nTypeID );
 			NI_ASSERT_SLOW( pObject != 0 );
-			toStore.push_back( pObject );
+			toStore.push_back(CPtr<IRefCount>(pObject) );
 			objects[pServer] = pObject;
 			if ( !bValid )
-				CObj<IRefCount> pObj = pObject;
+				CObj<IRefCount> pObj ( pObject);
 			//
 #ifndef _FINALRELEASE
 			if ( bCheckResourcesOnLoad && (nTypeID > AILOGIC_BASE_VALUE) && (nTypeID < AILOGIC_BASE_VALUE + 0x00010000) ) 
@@ -426,7 +426,7 @@ void CStructureSaver2::Start( IStructureSaver::EAccessMode eAccessMode, IProgres
 			SetChunkCounter( i + 1 );
 			StartChunk( (SSChunkID) 1 );
 			DataChunk( 0, &pServer, 4 );
-			pObject = objects[pServer];
+			pObject = objects[pServer].GetPtr();
 			NI_ASSERT_SLOW_T( pObject != 0, "NULL object during storing" );
 
 #ifndef _FINALRELEASE
@@ -528,7 +528,8 @@ void CStructureSaver2::Start( IStructureSaver::EAccessMode eAccessMode, IProgres
 				for ( std::vector<SObjectInfo>::iterator it = objinfos.begin(); it != objinfos.end(); ++it )
 				{
 					// UID (class name): 
-					fprintf( file, "0x%.8x: %s has checksum 0x%.8x (size = %d).", it->nUID, typeid(*(it->pObj)).name(), it->uCheckSum, it->nSize );
+					fprintf( file, "0x%.8x: %s has checksum 0x%.8x (size = %d).", 
+						it->nUID, typeid(*(it->pObj)).name(), it->uCheckSum, it->nSize );
 					if ( !it->referedUIDs.empty() ) 
 					{
 						fprintf( file, " refered objects: " );
@@ -549,7 +550,7 @@ void CStructureSaver2::Start( IStructureSaver::EAccessMode eAccessMode, IProgres
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CStructureSaver2::Finish()
 {
-	IDataStream *pRes = pDstStream;
+	IDataStream *pRes =pDstStream.GetPtr();
 	NI_ASSERT_SLOW( chunks.size() == 1 );
 	if ( !IsReading() )
 	{
@@ -575,7 +576,7 @@ void CStructureSaver2::Finish()
 			CPtr<IRefCount> pObject = toStore.front();
 			toStore.pop_front();
 			// save object type and its server pointer
-			const int nTypeID = pFactory->GetObjectTypeID( pObject );
+			const int nTypeID = pFactory->GetObjectTypeID( pObject.GetPtr() );  // ← исправлено
 			const bool bValid = pObject->IsValid();
 			NI_ASSERT_SLOW_T( nTypeID != -1, NStr::Format("unregistered object of type \"%s\"", typeid(*pObject).name()) );
 

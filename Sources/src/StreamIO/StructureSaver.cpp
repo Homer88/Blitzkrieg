@@ -255,7 +255,7 @@ void CStructureSaver::StoreObject( IRefCount *pObject )
 {
 	if ( (pObject != 0) && (storedObjects.find(pObject) == storedObjects.end()) && !IsDataOnly() )
 	{
-		toStore.push_back( pObject );
+		toStore.push_back(CPtr<IRefCount>(pObject) );
 		storedObjects[pObject] = true;			// важно присвоить хоть что-нибудь
 	}
 	RawData( &pObject, 4 );
@@ -269,7 +269,7 @@ IRefCount* CStructureSaver::LoadObject()
 	{
 		CObjectsHash::iterator pFound = objects.find( pServerPtr );
 		if ( pFound != objects.end() )
-			return pFound->second;
+			return pFound->second.GetPtr();
 		NI_ASSERT_SLOW_T( 0, "we are in problem - stored object does not exist" );
 		// here  we are in problem - stored object does not exist
 		// actually i think we got to throw the exception
@@ -280,7 +280,7 @@ IRefCount* CStructureSaver::LoadObject()
 bool CStructureSaver::StartChunk( const SSChunkID idChunk )
 {
 	CChunkLevel &last = chunks.back();
-	chunks.push_back();
+	chunks.push_back(CChunkLevel());
 	if ( IsReading() ) 
 	{
 		bool bRes = GetShortChunk( last, idChunk, chunks.back(), last.nChunkNumber );
@@ -331,12 +331,12 @@ void CStructureSaver::SetChunkCounter( int nCount )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CStructureSaver::Start( IStructureSaver::EAccessMode eAccessMode, IStructureSaver::EStoreMode _eStoreMode )
 {
-	IDataStream *pRes = pDstStream;
+	IDataStream *pRes = pDstStream.GetPtr();
 	//
 	chunks.clear();
 	obj.Clear();
 	data.Clear();
-	chunks.push_back();
+	chunks.push_back(CChunkLevel());
 	bReading = eAccessMode == IStructureSaver::READ;
 	eStoreMode = _eStoreMode;
 	if ( bReading )
@@ -355,10 +355,10 @@ void CStructureSaver::Start( IStructureSaver::EAccessMode eAccessMode, IStructur
 			obj.Read( &pServer, 4 );
 			obj.Read( &bValid, 1 );
 			IRefCount *pObject = pFactory->CreateObject( nTypeID );
-			toStore.push_back( pObject );
+			toStore.push_back(CPtr<IRefCount>(pObject) );
 			objects[pServer] = pObject;
 			if ( !bValid )
-				CObj<IRefCount> pObj = pObject;
+				CObj<IRefCount> pObj ( pObject);
 		}
 		// read information about every created object
 		int nCount = CountChunks( SSChunkID( 1 ) );
@@ -369,7 +369,7 @@ void CStructureSaver::Start( IStructureSaver::EAccessMode eAccessMode, IStructur
 			SetChunkCounter( i + 1 );
 			StartChunk( SSChunkID( 1 ) );
 			DataChunk( 0, &pServer, 4 );
-			IRefCount *pObject = objects[pServer];
+			IRefCount* pObject = objects[pServer].GetPtr();
 			NI_ASSERT_SLOW_T( pObject != 0, "NULL object during storing" );
 			if ( pObject )
 			{
@@ -393,7 +393,7 @@ void CStructureSaver::Start( IStructureSaver::EAccessMode eAccessMode, IStructur
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CStructureSaver::Finish()
 {
-	IDataStream *pRes = pDstStream;
+	IDataStream *pRes = pDstStream.GetPtr();
 	NI_ASSERT_SLOW( chunks.size() == 1 );
 	if ( !IsReading() )
 	{

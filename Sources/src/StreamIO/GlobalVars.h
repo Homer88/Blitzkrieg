@@ -51,7 +51,7 @@ public:
 	
 	virtual void STDCALL SerializeVarsByMatch( IDataTree *pSS, const char *pszValueMatch )
 	{
-		CTreeAccessor saver = pSS;
+		CTreeAccessor saver ( pSS);
 
 		if ( !saver.IsReading() )
 		{
@@ -93,13 +93,13 @@ public:
 	//
 	virtual void STDCALL SetVar( const char *pszValueName, const WORD *pszValue )
 	{
-		wValues[pszValueName] = pszValue;
+		wValues[pszValueName] = reinterpret_cast<const wchar_t*>(pszValue);
 	}
 
 	virtual const WORD* STDCALL GetWVar( const char *pszValueName ) const
 	{
 		CWValuesMap::const_iterator pos = wValues.find( pszValueName );
-		return pos == wValues.end() ? 0 : pos->second.c_str();
+		return pos == wValues.end() ? 0 : reinterpret_cast<const WORD*>(pos->second.c_str());
 	}
 
 	virtual void STDCALL RemoveWVar( const char *pszValueName )

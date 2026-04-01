@@ -87,9 +87,9 @@ void CRandomGenerator::Init()
 	if ( bIsReady )
 		return;
 
-	CPtr<CRandomGenSeed> pSeed = new CRandomGenSeed();
+	CPtr<CRandomGenSeed> pSeed ( new CRandomGenSeed());
 	pSeed->Init();
-	SetSeed( pSeed );
+	SetSeed( pSeed.GetPtr() );
 	bIsReady = TRUE;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -68,15 +68,17 @@ class CTableAccessor
 	CPtr<IDataTable> pTable;
 	//
 	template <class TYPE, class TFunc>
-	TYPE GetVal(TFunc func, const char* pszRow, const char* pszEntry, TYPE defval)
+		TYPE GetVal(TFunc func, const char* pszRow, const char* pszEntry, TYPE defval)
 	{
-		return (TYPE)((pTable->*func)(pszRow, pszEntry, defval));
+		IDataTable* pRaw = pTable.GetPtr(); // или pTable.operator->()
+		return (TYPE)((pRaw->*func)(pszRow, pszEntry, defval));
 	}
 
 	template <class TYPE, class TFunc>
 		void SetVal(TFunc func, const char* pszRow, const char* pszEntry, TYPE val)
 		{
-		(pTable->*func)(pszRow, pszEntry, val);
+		IDataTable* pRaw = pTable.GetPtr();
+		(pRaw->*func)(pszRow, pszEntry, val);
 		}
 
 	template <class TFunc, class TYPE>

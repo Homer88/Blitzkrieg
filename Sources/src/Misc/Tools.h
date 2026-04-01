@@ -779,10 +779,10 @@ inline float fabs2( const float x )
 {
 	return x*x;
 }
-inline float fabs( float x )
-{
-	return fabsf( x );
-}
+//inline float fabs( float x )
+//{
+	//return fabsf( x );
+//}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class TYPE> 
 inline bool Normalize( TYPE &x, TYPE &y )
