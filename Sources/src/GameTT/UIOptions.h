@@ -1,4 +1,4 @@
-#ifndef __UIOPTIONS_H__
+﻿#ifndef __UIOPTIONS_H__
 #define __UIOPTIONS_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -73,7 +73,7 @@ protected:
 	IOptionSystem * GetOptionSystem()
 	{
 		if ( pOptionSystem.IsValid() ) 
-			return pOptionSystem;
+			return pOptionSystem.GetPtr(); // ← добавлено .GetPtr() 
 		return GetSingleton<IOptionSystem>();
 	}
 	COption() {  }
@@ -144,11 +144,13 @@ class COptionTextEntry : public COption
 	std::wstring szText;
 public:
 	COptionTextEntry() {  }
-	COptionTextEntry( const char *pszName, const bool _bInstant, const WORD *_pszText)	: COption( pszName, _bInstant ), szText( _pszText ) {  }
+	COptionTextEntry(const char* pszName, const bool _bInstant, const WORD* _pszText) //исправил 
+		: COption(pszName, _bInstant), szText(reinterpret_cast<const wchar_t*>(_pszText)) {
+	}
 	virtual void STDCALL Set( interface IUISetOptionsToUI *pSet )
-		{ pSet->SetTextOption( szText.c_str() ); }
+		{ pSet->SetTextOption( reinterpret_cast<const WORD*>(szText.c_str() ) ); }
 	virtual void STDCALL Get( interface IUIGetOptionsFromUI *pGet )
-		{ szText = pGet->GetTextOption(); }
+		{ szText = reinterpret_cast<const wchar_t*>(pGet->GetTextOption()); }
 	virtual EOptionsType STDCALL GetType() const { return EOT_TEXTENTRY; }
 	virtual void STDCALL CancelChanges( interface IUISetOptionsToUI *pSet )
 		{ pSet->ResetTextEntry(); }
@@ -164,11 +166,13 @@ class COptionTextEntryGameSpyCharacters : public COption
 	std::wstring szText;
 public:
 	COptionTextEntryGameSpyCharacters() {  }
-	COptionTextEntryGameSpyCharacters( const char *pszName, const bool _bInstant, const WORD *_pszText )	: COption( pszName, _bInstant ), szText( _pszText ) {  }
+	COptionTextEntryGameSpyCharacters(const char* pszName, const bool _bInstant, const WORD* _pszText) :
+		COption(pszName, _bInstant), szText(reinterpret_cast<const wchar_t*>(_pszText)) {
+	}
 	virtual void STDCALL Set( interface IUISetOptionsToUI *pSet )
-		{ pSet->SetTextGameSpyOption( szText.c_str() ); }
+		{ pSet->SetTextGameSpyOption(reinterpret_cast<const WORD*>(szText.c_str()) ); }
 	virtual void STDCALL Get( interface IUIGetOptionsFromUI *pGet )
-		{ szText = pGet->GetTextGameSpyOption(); }
+		{ szText = reinterpret_cast<const wchar_t*>(pGet->GetTextGameSpyOption()); }
 	virtual EOptionsType STDCALL GetType() const { return EOT_GAMESPY_TEXTENTRY; }
 	virtual void STDCALL CancelChanges( interface IUISetOptionsToUI *pSet )
 		{ pSet->ResetTextGameSpyEntry(); }

@@ -1,4 +1,4 @@
-#ifndef __VARSYSTEMINTERNAL_H__
+﻿#ifndef __VARSYSTEMINTERNAL_H__
 #define __VARSYSTEMINTERNAL_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -177,7 +177,7 @@ struct SSerialVarEqFunctional
 template <class TVarSystem>
 struct SEmptySorter
 {
-	void Sort( std::list<TVarSystem::CVarsMap::const_iterator> &lst ) const {  }
+	void Sort(typename std::list<typename TVarSystem::CVarsMap::const_iterator>& lst) const {}
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ************************************************************************************************************************ //
@@ -302,7 +302,7 @@ public:
 	// serialization
 	virtual int STDCALL operator&( IStructureSaver &ss )
 	{
-		CSaverAccessor saver = &ss;
+		CSaverAccessor saver  (& ss);
 		if ( saver.IsReading() ) 
 		{
 			CVarsMap newvars;
@@ -326,7 +326,7 @@ public:
 	}
 	virtual int STDCALL operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver  (& ss);
 		if ( saver.IsReading() ) 
 		{
 			std::list<SSerialVar> vars;
@@ -359,8 +359,8 @@ public:
 		return 0;
 	}
 	//
-	CVarsMap::const_iterator begin() const { return variables.begin(); }
-	CVarsMap::const_iterator end() const { return variables.end(); }
+	typename CVarsMap::const_iterator begin() const { return variables.begin(); }
+	typename CVarsMap::const_iterator end() const { return variables.end(); }
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class TVar>
@@ -373,17 +373,17 @@ template < class TVarSystem, class TBase, class TSorter = SEmptySorter<TVarSyste
 class CTVarSystemIterator : public TBase
 {
 public:
-	typedef std::list<TVarSystem::CVarsMap::const_iterator> CPosList;
+	typedef typename std::list<typename TVarSystem::CVarsMap::const_iterator> CPosList; // ← добавлен typename 
 private:
 	CPosList positions;										// all positions, sorted by some criterion
-	CPosList::const_iterator pos;					// current iteration position
+	typename CPosList::const_iterator pos;					// current iteration position
 protected:
-	const TVarSystem::CVarsMap::const_iterator& GetIt() const { return *pos; }
+	const typename TVarSystem::CVarsMap::const_iterator& GetIt() const { return *pos; }   // ← добавлен typename
 public:
 	CTVarSystemIterator( const TVarSystem *pVS, TVarAccepter &accepter )
 	{
 		TSorter sorter;
-		for ( TVarSystem::CVarsMap::const_iterator it = pVS->begin(); it != pVS->end(); ++it )
+		for (typename TVarSystem::CVarsMap::const_iterator it = pVS->begin(); it != pVS->end(); ++it)  // ← добавлен typename
 		{
 			if ( accepter(it->second) ) 
 				positions.push_back( it );
