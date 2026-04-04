@@ -25,9 +25,9 @@ ExternalProject_Add(
     UPDATE_COMMAND ""
 )
 
-if (NOT TARGET Misc)
-    add_subdirectory (../Misc misc_build)
-    endif()
+#if (NOT TARGET Misc)
+ #   add_subdirectory (../Misc misc_build)
+  #  endif()
 
 # Получить пути к исходникам
 ExternalProject_Get_Property(tinyxml2 source_dir)

@@ -21,7 +21,7 @@ public:
 	virtual void STDCALL AddFactory( IObjectFactory *pFactory );
 	virtual void STDCALL SetGDB( IGDB *_pGDB ) { pGDB = _pGDB; }
 	virtual IObjectFactory* STDCALL GetCommonFactory() { return pFactory; }
-	// Исправленная сигнатура - соответствует интерфейсу FIX 
+	// РСЃРїСЂР°РІР»РµРЅРЅР°СЏ СЃРёРіРЅР°С‚СѓСЂР° - СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ РёРЅС‚РµСЂС„РµР№СЃСѓ FIX 
 	virtual IStructureSaver* STDCALL CreateStructureSaver(IDataStream* pStream, IStructureSaver::EAccessMode eAccessMode, IProgressHook* pLoadHook = 0);
 	virtual IDataTree* STDCALL CreateDataTreeSaver(IDataStream* pStream, IDataTree::EAccessMode eAccessMode, DTChunkID idBaseNode);
 };
@@ -48,7 +48,7 @@ class CStructureSaver : public IStructureSaver
 	{
 		SSChunkID idChunk;
 		int nStart, nLength;
-		int nChunkNumber; // номер чанка по порядку для считывания - используется при записи/считывании vector/list
+		int nChunkNumber; // РЅРѕРјРµСЂ С‡Р°РЅРєР° РїРѕ РїРѕСЂСЏРґРєСѓ РґР»СЏ СЃС‡РёС‚С‹РІР°РЅРёСЏ - РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РїСЂРё Р·Р°РїРёСЃРё/СЃС‡РёС‚С‹РІР°РЅРёРё vector/list
 		
 		void Clear() { idChunk = (SSChunkID)0xff; nChunkNumber = 1; nStart = 0; nLength = 0; }
 		CChunkLevel() { Clear(); }
@@ -104,11 +104,11 @@ public:
 	virtual void STDCALL SetChunkCounter( int nCount );
 	// is structure saver opened in the READ mode?
 	virtual bool STDCALL IsReading() const { return bReading; }
-	// загрузка объекта с воссозданием его
+	// Р·Р°РіСЂСѓР·РєР° РѕР±СЉРµРєС‚Р° СЃ РІРѕСЃСЃРѕР·РґР°РЅРёРµРј РµРіРѕ
 	virtual IRefCount* STDCALL LoadObject();
-	// запись объекта и данных, необходимых для его воссоздания при загрузке
+	// Р·Р°РїРёСЃСЊ РѕР±СЉРµРєС‚Р° Рё РґР°РЅРЅС‹С…, РЅРµРѕР±С…РѕРґРёРјС‹С… РґР»СЏ РµРіРѕ РІРѕСЃСЃРѕР·РґР°РЅРёСЏ РїСЂРё Р·Р°РіСЂСѓР·РєРµ
 	virtual void STDCALL StoreObject( IRefCount *pObj );
-	// получить указатель на игровую базу данных
+	// РїРѕР»СѓС‡РёС‚СЊ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РёРіСЂРѕРІСѓСЋ Р±Р°Р·Сѓ РґР°РЅРЅС‹С…
 	virtual interface IGDB* STDCALL GetGDB() { return pGDB; }
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
