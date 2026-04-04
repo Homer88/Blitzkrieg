@@ -1,249 +1,126 @@
-# Минимальная версия CMake
-cmake_minimum_required(VERSION 3.0)
+# ============================================================
+# Blitzkrieg - Общий проект сборки
+# Совместимость: CMake 2.4+ (для сборки под Windows 98/2000)
+# Структура основана на A7.dsw
+# ============================================================
 
-# Название проекта
-project( Blitzkrieg LANGUAGES CXX)
+cmake_minimum_required(VERSION 2.4)
 
-# Установка стандарта C++
-set(CMAKE_CXX_STANDARD 98)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+project(Blitzkrieg)
 
-#проекты 
-add_subdirectory(A7ExportModel)
-add_subdirectory(AILogic)
+# ============================================================
+# Глобальные определения для всех проектов (Windows 98/2000 + новый SDK)
+# ============================================================
+add_definitions(
+    -DWIN32
+    -D_WINDOWS
+    -D_CRT_SECURE_NO_WARNINGS
+    -D_CRT_NONSTDC_NO_DEPRECATE
+    -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
+    -D_WIN32_WINNT=0x0501
+    -DWINVER=0x0501
+)
 
-#Анимация 
-add_subdirectory(Anim)
+# ============================================================
+# DirectX8 SDK из ../sdk/directx
+# (Подключается локально только там, где нужен: Scene, GFX, Main и т.д.)
+# ============================================================
+set(DIRECTX8_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/../sdk/directx/include")
+set(DIRECTX8_LIB_DIR "${CMAKE_SOURCE_DIR}/../sdk/directx/lib")
 
-add_subdirectory(GameSpy)
-add_subdirectory(UI)
-
-
-add_subdirectory (libpng)
-add_subdirectory (LuaLib)
-add_subdirectory (net)
-add_subdirectory (zlib)
-add_subdirectory (AutoRun)
-
-#SDK
-
-# Замена файлов 
-FILE (GLOB BINKWINDOWS_SOURCE "./SDK/BINK/*.cpp")
-FILE (GLOB BINKWINDOWS_HEADERS "./SDK/BINK/*.h")
-
-#MAYA 4
-FILE (GLOB MAYA4_SOURCE "./SDK/MAYA4/*.cpp")
-FILE (GLOB MAYA4_HEADERS "./SDK/MAYA4/*.h")
-
-FILE (GLOB S3TC_SOURCE "./SDK/S3TC/*.cpp")
-FILE (GLOB S3TC_HEADERS "./SDK/S3TC/*.h")
-
-#STL выбрасываю переписываю на стандартный STL
-FILE (GLOB STLPORT_SOURCE "./SDK/stlport/*.cpp")
-FILE (GLOB STLPORT_HEADERS "./SDK/stlport/*.h")
-
-#PS2 SDK
-FILE (GLOB PS2SDK_HEADERS "./SDK/PS2SDK/include/*.h")
-FILE (GLOB PS2SDK_LIBS "./SDK/PS2SDK/lib/*.lib")
-
-#PS3 SDK
-FILE (GLOB PS3SDK_HEADERS "./SDK/PS3SDK/include/*.h")
-FILE (GLOB PS3SDK_LIBS "./SDK/PS3SDK/lib/*.lib")
-
-#PS4 SDK
-FILE (GLOB PS4SDK_HEADERS "./SDK/PS4SDK/include/*.h")
-FILE (GLOB PS4SDK_LIBS "./SDK/PS4SDK/lib/*.lib")
-
-#XBOX SDK
-FILE (GLOB XBOXSDK_HEADERS "./SDK/XBOXSDK/include/*.h")
-FILE (GLOB XBOXSDK_LIBS "./SDK/XBOXSDK/lib/*.lib")
-#DirectX 8 SDK
-FILE (GLOB DIRECTX8SDK_HEADERS "./SDK/DIRECTX8SDK/include/*.h")
-FILE (GLOB DIRECTX8SDK_LIBS "./SDK/DIRECTX8SDK/lib/*.lib")
-
-#DirectX 9 SDK
-FILE (GLOB DIRECTX9SDK_HEADERS "./SDK/DIRECTX9SDK/include/*.h")
-FILE (GLOB DIRECTX9SDK_LIBS "./SDK/DIRECTX9SDK/lib/*.lib")
-
-#DirectX 10 SDK
-FILE (GLOB DIRECTX10SDK_HEADERS "./SDK/DIRECTX10SDK/include/*.h")
-FILE (GLOB DIRECTX10SDK_LIBS "./SDK/DIRECTX10SDK/lib/*.lib")
-
-#DirectX 11 SDK
-FILE (GLOB DIRECTX11SDK_HEADERS "./SDK/DIRECTX11SDK/include/*.h")
-FILE (GLOB DIRECTX11SDK_LIBS "./SDK/DIRECTX11SDK/lib/*.lib")
-
-#DirectX 12 SDK
-FILE (GLOB DIRECTX12SDK_HEADERS "./SDK/DIRECTX12SDK/include/*.h")
-FILE (GLOB DIRECTX12SDK_LIBS "./SDK/DIRECTX12SDK/lib/*.lib")
-
-#SDL SDK
-FILE (GLOB SDLSDK_HEADERS "./SDK/SDLSDK/include/*.h")
-FILE (GLOB SDLSDK_LIBS "./SDK/SDLSDK/lib/*.lib")
-
-#SMFL SDK
-FILE (GLOB SMFLSDK_HEADERS "./SDK/SMFLSDK/include/*.h")
-FILE (GLOB SMFLSDK_LIBS "./SDK/SMFLSDK/lib/*.lib")
-
-#ZIP библиотеки 
-
-#Windows9X
-if(WIN9X)
-    message(STATUS "Настройка для Windows 9X")
-    # Можно подключить специфичные для Windows библиотеки или опции
-	add_subdirectory (zlib)
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
+if(EXISTS "${DIRECTX8_INCLUDE_DIR}")
+    message(STATUS "DirectX8 SDK found: ${DIRECTX8_INCLUDE_DIR}")
 endif()
 
-#DirectX9
-if(WINX86D9)
-    message(STATUS "Настройка для Windows X86 DirectX 9")
-    # Можно подключить специфичные для Windows библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
+# Глобально НЕ подключаем DirectX, чтобы не ломать утилиты (Misc и др.)
+# INCLUDE_DIRECTORIES(${DIRECTX8_INCLUDE_DIR})
+# LINK_DIRECTORIES(${DIRECTX8_LIB_DIR})
+
+# Глобальные пути include
+INCLUDE_DIRECTORIES(
+    ${CMAKE_SOURCE_DIR}/..
+    ${CMAKE_SOURCE_DIR}
+)
+
+# ============================================================
+# Загрузка TinyXML-2 для StreamIO
+# ============================================================
+include(FetchContent)
+
+FetchContent_Declare(
+    tinyxml2
+    GIT_REPOSITORY https://github.com/leethomason/tinyxml2.git
+    GIT_TAG master
+    GIT_SHALLOW TRUE
+)
+
+FetchContent_GetProperties(tinyxml2)
+if(NOT tinyxml2_POPULATED)
+    FetchContent_Populate(tinyxml2)
+    add_subdirectory(${tinyxml2_SOURCE_DIR} ${tinyxml2_BINARY_DIR})
 endif()
 
-#DirectX10
-if(WINX86D10)
-    message(STATUS "Настройка для Windows X86 DirectX 10")
-    # Можно подключить специфичные для Windows библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
-#DirectX11
-if(WINX86D11)
-    message(STATUS "Настройка для Windows X86 DirectX 11")
-    # Можно подключить специфичные для Windows библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
+# ============================================================
+# Модули проекта (в порядке зависимостей из A7.dsw)
+# ============================================================
 
-#DirectX12
-if(WINX86D12)
-    message(STATUS "Настройка для Windows X86 DirectX 12")
-    # Можно подключить специфичные для Windows библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
-#OpenGL
-if(WINX86GL)
-    message(STATUS "Настройка для Windows X86 OpenGL")
-    # Можно подключить специфичные для Windows библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
-#Windows X64
-#DirectX9
-if(WINX64D9)
-    message(STATUS "Настройка для Windows X64 DirectX 9")
-    # Можно подключить специфичные для Windows библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
-#DirectX10
-if(WINX64D10)
-    message(STATUS "Настройка для Windows X64 DirectX 10")
-    # Можно подключить специфичные для Windows библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
-#DirectX11
-if(WINX64D11)
-    message(STATUS "Настройка для Windows X64 DirectX 11")
-    # Можно подключить специфичные для Windows библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
+# === БАЗОВЫЕ БИБЛИОТЕКИ ===
+# BugSlay отключен: конфликт DirectX 8 с Windows SDK 10
+# add_subdirectory(BugSlay)
+add_subdirectory(zlib)
+# add_subdirectory(libpng)  # Требует BugSlay
 
-#DirectX12
-if(WINX64D12)
-    message(STATUS "Настройка для Windows X64 DirectX 12")
-    # Можно подключить специфичные для Windows библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
-#OpenGL
-if(WINX64GL)
-    message(STATUS "Настройка для Windows X64 OpenGL")
-    # Можно подключить специфичные для Windows библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
+# === БИБЛИОТЕКИ ПЕРВОГО УРОВНЯ ===
+add_subdirectory(Misc)
+# add_subdirectory(Formats)        # Требует CPtr исправлений
+# add_subdirectory(Common)         # Зависит от BugSlay
+# add_subdirectory(GameSpy)        # Зависит от BugSlay
+add_subdirectory(LuaLib)
+# add_subdirectory(RandomMapGen)   # Зависит от Image -> BugSlay
+add_subdirectory(StreamIOLib)
+# add_subdirectory(Image)          # Требует BugSlay
 
+# === БИБЛИОТЕКИ ВТОРОГО УРОВНЯ ===
+add_subdirectory(StreamIO)
+# add_subdirectory(Input)          # Зависит от BugSlay
+# add_subdirectory(Anim)           # Зависит от BugSlay
+# add_subdirectory(GFX)            # Зависит от BugSlay, DirectX 8
+# add_subdirectory(SFX)            # Зависит от BugSlay
+# add_subdirectory(UI)             # Зависит от BugSlay
+# add_subdirectory(Net)            # Зависит от BugSlay
+# add_subdirectory(scl)            # Зависит от BugSlay, DirectX 8
 
-#PS2
+# === БИБЛИОТЕКИ ТРЕТЬЕГО УРОВНЯ ===
+# add_subdirectory(Scene)          # Зависит от BugSlay
+# add_subdirectory(AILogic)        # Зависит от BugSlay
+# add_subdirectory(ELK)            # Зависит от BugSlay
+# add_subdirectory(GameTT)         # Зависит от BugSlay
 
-if(PS2)
-    message(STATUS "Настройка для PS2")
-    # Можно подключить специфичные для PS3 библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
+# === БИБЛИОТЕКИ ЧЕТВЁРТОГО УРОВНЯ ===
+# add_subdirectory(Main)           # Зависит от BugSlay
 
-#PS3
-if(PS3)
-    message(STATUS "Настройка для PS3")
-    # Можно подключить специфичные для PS3 библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
+# === ПРИЛОЖЕНИЯ ===
+# add_subdirectory(A7ExportModel)  # Требует Maya SDK
+# add_subdirectory(AutoRun)        # Зависит от BugSlay
+# add_subdirectory(betakeygen)     # Зависит от BugSlay
+# add_subdirectory(buildversion)   # Зависит от BugSlay
+# add_subdirectory(bzmconvertor)   # Зависит от BugSlay
+# add_subdirectory(editor)         # Зависит от BugSlay
+# add_subdirectory(excelexporter)  # Зависит от BugSlay
+# add_subdirectory(FontGen)        # Зависит от BugSlay
+# add_subdirectory(Game)           # Зависит от BugSlay
+# add_subdirectory(imagedefrag)    # Зависит от BugSlay
+# add_subdirectory(InterfaceSystemTest) # Зависит от BugSlay
+# add_subdirectory(MapEditor)      # Зависит от BugSlay
+# add_subdirectory(PlanePathTest)  # Зависит от BugSlay
+# add_subdirectory(soundverifycation) # Требует FMOD
+# add_subdirectory(spcomp)         # Зависит от BugSlay
 
-#PS4
-if(PS4)
-    message(STATUS "Настройка для PS4")
-    # Можно подключить специфичные для PS4 библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
+# === УТИЛИТЫ ===
+# add_subdirectory(Tools)          # Зависит от BugSlay
 
-#XBOX
-if(XBOX)
-    message(STATUS "Настройка для XBOX")
-    # Можно подключить специфичные для XBOX библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
-
-#Linux X86
-if(LINX86)
-    message(STATUS "Настройка для LINUX X86")
-    # Можно подключить специфичные для Linux библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
-if(LINX86SDL)
-    message(STATUS "Настройка для LINUX X86")
-    # Можно подключить специфичные для Linux библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
-
-if(LINX86SMFL)
-    message(STATUS "Настройка для LINUX X86")
-    # Можно подключить специфичные для Linux библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
-
-#Linux X64
-if(LINX64)
-    message(STATUS "Настройка для LINUX X64")
-    # Можно подключить специфичные для Linux библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
-
-if(LINX64SDL)
-    message(STATUS "Настройка для LINUX X64 SDL")
-    # Можно подключить специфичные для Linux библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
-
-if(LINX64SMLF)
-    message(STATUS "Настройка для LINUX X64 SMFL")
-    # Можно подключить специфичные для Linux библиотеки или опции
-    add_definitions(-DWINDOWS_SPECIFIC)
-    list(APPEND SOURCES windows_specific.cpp)
-endif()
+# ============================================================
+message(STATUS "=== Blitzkrieg Build Configuration ===")
+message(STATUS "Enabled modules: zlib, Misc, LuaLib, StreamIOLib, StreamIO")
+message(STATUS "Disabled: BugSlay + DirectX 8 dependent modules")
+message(STATUS "==========================================")

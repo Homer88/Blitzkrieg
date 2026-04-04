@@ -1,18 +1,20 @@
-# Минимальная версия CMake
+# StreamIOLib - StreamIO библиотека
+# Библиотека-заглушка - содержит только заголовочные файлы
+
 cmake_minimum_required(VERSION 2.4)
 
-# Название проекта
-project(Misc)
+project(StreamIOLib)
 
-# Установка стандарта C++
-set(CMAKE_CXX_STANDARD 99)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+# Создаём пустую библиотеку-заглушку
+FILE(GLOB STREAMIOLIB_HEADERS "*.h")
 
-FILE(GLOB MISC_SOURCE "*.cpp")
-FILE(GLOB MISC_HEADERS "*.h")
+# Создаём минимальный исходник если нет cpp файлов
+set(STREAMIOLIB_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/stub.cpp)
+file(WRITE ${STREAMIOLIB_SOURCES} "// Auto-generated stub\n")
 
-add_definitions( -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS)
-add_definitions( -D_WIN32_WINNT=0x0501)
+add_library(StreamIOLib STATIC ${STREAMIOLIB_SOURCES} ${STREAMIOLIB_HEADERS})
 
-add_library(Misc STATIC ${MISC_HEADERS} ${MISC_SOURCE})
-
+INCLUDE_DIRECTORIES(
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
+)

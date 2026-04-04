@@ -2,30 +2,15 @@
 
 #ifndef __STRUCTURESAVER_INTERNAL_H__
 #define __STRUCTURESAVER_INTERNAL_H__
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "StructureSaver.h"
 #include "Streams.h"
 #include "BasicHash.h"
-
 #include "..\Misc\BasicObjectFactory.h"
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class CSaveLoadSystem : public ISaveLoadSystem
-{
-	CBasicObjectFactory *pFactory;
-	IGDB *pGDB;
-public:
-	CSaveLoadSystem();
-	virtual ~CSaveLoadSystem();
-	//
-	virtual void STDCALL AddFactory( IObjectFactory *pFactory );
-	virtual void STDCALL SetGDB( IGDB *_pGDB ) { pGDB = _pGDB; }
-	virtual IObjectFactory* STDCALL GetCommonFactory() { return pFactory; }
-	// Исправленная сигнатура - соответствует интерфейсу FIX 
-	virtual IStructureSaver* STDCALL CreateStructureSaver(IDataStream* pStream, IStructureSaver::EAccessMode eAccessMode, IProgressHook* pLoadHook = 0);
-	virtual IDataTree* STDCALL CreateDataTreeSaver(IDataStream* pStream, IDataTree::EAccessMode eAccessMode, DTChunkID idBaseNode);
-};
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // a) chunk structure
 // b) ptr/ref storage
 // system is able to store ref/ptr only for objectbase ancestors
@@ -43,13 +28,13 @@ class CStructureSaver : public IStructureSaver
 	CPtr<IDataStream> pDstStream;
 	IObjectFactory *pFactory;
 	IGDB *pGDB;
-	
+
 	struct CChunkLevel
 	{
 		SSChunkID idChunk;
 		int nStart, nLength;
 		int nChunkNumber; // номер чанка по порядку для считывания - используется при записи/считывании vector/list
-		
+
 		void Clear() { idChunk = (SSChunkID)0xff; nChunkNumber = 1; nStart = 0; nLength = 0; }
 		CChunkLevel() { Clear(); }
 	};
@@ -61,13 +46,13 @@ class CStructureSaver : public IStructureSaver
 	typedef std::list<CChunkLevel>::iterator CChunkLevelIterator;
 	typedef std::list<CChunkLevel>::reverse_iterator CChunkLevelReverseIterator;
 	bool bReading;
-	
+
 	IStructureSaver::EStoreMode eStoreMode;	// we can store data only and can store with objects re-creation...
 	// maps objects addresses during save(first) to addresses during load(second) - during loading
 	// or serves as a sign that some object has been already stored - during storing
 	typedef stdext::hash_map<void*, CPtr<IRefCount>, SDefaultPtrHashCompare> CObjectsHash;
 	CObjectsHash objects;
-	typedef std::hash_map<void*,bool,SDefaultPtrHashCompare> CPObjectsHash;
+	typedef stdext::hash_map<void*,bool,SDefaultPtrHashCompare> CPObjectsHash;
 	CPObjectsHash storedObjects;
 	std::list< CPtr<IRefCount> > toStore;
 
@@ -111,5 +96,6 @@ public:
 	// получить указатель на игровую базу данных
 	virtual interface IGDB* STDCALL GetGDB() { return pGDB; }
 };
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __STRUCTURESAVER_INTERNAL_H__

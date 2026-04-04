@@ -1,18 +1,45 @@
-# Минимальная версия CMake
+# =============================================================================
+# CMakeLists.txt для проекта Misc
+# Совместимость: CMake 2.4+ (для сборки под Windows 98/2000)
+# =============================================================================
 cmake_minimum_required(VERSION 2.4)
 
-# Название проекта
 project(Misc)
 
-# Установка стандарта C++
-set(CMAKE_CXX_STANDARD 99)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+# =============================================================================
+# Настройки компилятора
+# =============================================================================
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS")
 
-FILE(GLOB MISC_SOURCE "*.cpp")
+# Windows-specific определения
+if(WIN32)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0501 -D_CRT_SECURE_NO_WARNINGS -DWIN32_LEAN_AND_MEAN")
+endif()
+
+# =============================================================================
+# Сбор исходных файлов
+# =============================================================================
+FILE(GLOB MISC_SOURCES "*.cpp")
 FILE(GLOB MISC_HEADERS "*.h")
 
-add_definitions( -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS)
-add_definitions( -D_WIN32_WINNT=0x0501)
+# =============================================================================
+# Создание библиотеки
+# =============================================================================
+add_library(${PROJECT_NAME} STATIC ${MISC_HEADERS} ${MISC_SOURCES})
 
-add_library(Misc STATIC ${MISC_HEADERS} ${MISC_SOURCE})
+# =============================================================================
+# Include директории
+# =============================================================================
+INCLUDE_DIRECTORIES(
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
+)
 
+# =============================================================================
+# Зависимости и линковка (платформо-зависимые)
+# =============================================================================
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} comsuppw.lib ole32.lib oleaut32.lib)
+elseif(UNIX)
+    target_link_libraries(${PROJECT_NAME} dl pthread)
+endif()

@@ -20,7 +20,7 @@ namespace NMemTools
 	inline int MSVCMustDie_toupper( int a ) { return toupper(a); }
 	void ToLower( std::string &szString ) 
 	{ 
-		std::transform( szString.begin(), szString.end(), szString.begin(), std::ptr_fun(MSVCMustDie_tolower) ); 
+		std::transform( szString.begin(), szString.end(), szString.begin(), MSVCMustDie_tolower ); 
 	}
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

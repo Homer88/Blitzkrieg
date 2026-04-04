@@ -28,7 +28,8 @@ interface IRefCount
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #ifdef _DO_ASSERT_SLOW
 #define ADD_REF_PREGUARD( ref ) const int __nOldRef = ref
-#define ADD_REF_POSTGUARD( ref ) if ( (__nOldRef & (~nMask)) != (ref & (~(nMask))) ) { _asm { int 3 } }
+// Кроссплатформенный breakpoint - работает на x86, x64 и MSVC
+#define ADD_REF_POSTGUARD( ref ) if ( (__nOldRef & (~nMask)) != (ref & (~(nMask))) ) { __debugbreak(); }
 #else
 #define ADD_REF_PREGUARD( ref )
 #define ADD_REF_POSTGUARD( ref )
@@ -546,7 +547,7 @@ public:
 	TPtrBase& operator=( TUserObj *_pObj ) { Set( _pObj ); return *this; }
 	TPtrBase& operator=( const TPtrBase &ptr ) { Set( ptr.pObj ); return *this; }
 	// object access operators (dereference and pointer access)
-	//operator TUserObj*() const { return pObj; }
+	operator TUserObj*() const { return pObj; }
 	operator void*() const { return pObj; }   // ← добавить эту строку
 	TUserObj* operator->() const { return pObj; }
 	// check for empty and valid object
@@ -611,8 +612,8 @@ inline TOut const_cast_ptr( const CPtrBase<TUserObj, TRefFunc> &ptr )
 template <class TOut, class TUserObj, class TRefFunc>
 inline TOut checked_cast_ptr( const CPtrBase<TUserObj, TRefFunc> &ptr )
 {
-	if ( dynamic_cast_ptr<TOut, TUserObj, TRefFunc>(ptr) == 0 ) { _asm { int 3 } }
-	
+	if ( dynamic_cast_ptr<TOut, TUserObj, TRefFunc>(ptr) == 0 ) { __debugbreak(); }
+
 	return static_cast_ptr<TOut, TUserObj, TRefFunc>(ptr);
 }
 #else

@@ -925,13 +925,16 @@ inline void Copy32Bytes( void* fpDst, const void* fpSrc )
 const DWORD CPUID_MMX_FEATURE_PRESENT = 0x00800000;
 const DWORD CPUID_SSE_FEATURE_PRESENT = 0x02000000;
 //#define GET_CPUID __asm _emit 0x0f __asm _emit 0xa2
+#if defined(_MSC_VER)
 #include <intrin.h>
 
-DWORD GetCPUID_EDX() {
+// Inline версия GetCPUID_EDX для избежания LNK2005
+__forceinline DWORD GetCPUID_EDX() {
     int cpuInfo[4];
-    __cpuid(cpuInfo, 1);          // вызов CPUID с функцией 1
-    return cpuInfo[3];             // EDX находится в cpuInfo[3]
+    __cpuid(cpuInfo, 1);
+    return cpuInfo[3];
 }
+#endif
 inline DWORD GetCPUID()
 {
 	/*DWORD dwRes;

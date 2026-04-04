@@ -2,47 +2,13 @@
 
 #include "StructureSaver.h"
 #include "StructureSaverInternal.h"
+#include "SaveLoadSystem.h"
 #include "DataTreeXML.h"
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CSaveLoadSystem theSaveLoadSystem;
-ISaveLoadSystem* STDCALL GetSLS()
-{
-	return &theSaveLoadSystem;
-}
+// Глобальные переменные уже определены в SaveLoadSystem.cpp и GlobalsLoader.cpp
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CSaveLoadSystem::CSaveLoadSystem()
-{
-}
-CSaveLoadSystem::~CSaveLoadSystem()
-{
-	if ( pFactory )
-		delete pFactory;
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CSaveLoadSystem::AddFactory( IObjectFactory *_pFactory )
-{
-	if ( pFactory == 0 )	
-		pFactory = new CBasicObjectFactory();
-	NI_ASSERT_SLOW_TF( pFactory != 0, "basic save-load factory was not created", return );
-	pFactory->Aggregate( _pFactory );
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-IStructureSaver* CSaveLoadSystem::CreateStructureSaver(IDataStream* pStream, IStructureSaver::EAccessMode eAccessMode, IProgressHook* pLoadHook)
-{
-	NI_ASSERT_TF(pStream != 0, "Can't create structure saver from NULL stream", return 0);
-	// Используем режим ALL по умолчанию, так как IProgressHook не используется
-	return new CStructureSaver(pStream, eAccessMode, IStructureSaver::ALL, pFactory, pGDB);
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-IDataTree* CSaveLoadSystem::CreateDataTreeSaver( IDataStream *pStream, IDataTree::EAccessMode eAccessMode, DTChunkID idBaseNode )
-{
-	NI_ASSERT_TF( pStream != 0, "Can't create data tree saver from NULL stream", return 0 );
-	//InitCOM();
-	CDataTreeXML *pDT = new CDataTreeXML( eAccessMode );
-	pDT->Open( pStream, idBaseNode );
-	return pDT;
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Реализация CSaveLoadSystem находится в SaveLoadSystem.cpp
+
 // chunks operations with whole saves
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool ReadShortChunkSave( IDataStream *pFile, SSChunkID &dwID, CMemoryStream &chunk )
@@ -257,7 +223,7 @@ void CStructureSaver::StoreObject( IRefCount *pObject )
 	if ( (pObject != 0) && (storedObjects.find(pObject) == storedObjects.end()) && !IsDataOnly() )
 	{
 		toStore.push_back(CPtr<IRefCount>(pObject) );
-		storedObjects[pObject] = true;			// важно присвоить хоть что-нибудь
+		storedObjects[pObject] = true;			// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅ
 	}
 	RawData( &pObject, 4 );
 }

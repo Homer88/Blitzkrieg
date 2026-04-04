@@ -2,21 +2,27 @@
 #ifndef __BASIC_HASH_H_
 #define __BASIC_HASH_H_
 
+#include <cstddef>
 
-// ��� stdext::hash_map � stdext::hash_set
-struct SDefaultPtrHashCompare : public stdext::hash_compare<void*>
+// Для stdext::hash_map и stdext::hash_set
+// Хеш-функтор для указателей (совместим с C++98)
+struct SDefaultPtrHashCompare
 {
-    static const size_t bucket_size = 4;
+    // C++98 compatible - enum вместо static const
+    enum { bucket_size = 4 };
 
+    // Оператор хеширования (унарный)
     size_t operator()(const void* ptr) const
     {
+        // C++98 совместимое хеширование указателя
         return reinterpret_cast<size_t>(ptr);
     }
 
+    // Оператор сравнения (бинарный) для упорядочивания
     bool operator()(const void* a, const void* b) const
     {
         return a < b;
     }
 };
 
-#endif // 
+#endif // __BASIC_HASH_H_

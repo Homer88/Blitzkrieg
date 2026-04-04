@@ -196,7 +196,7 @@ public:
 		: pManipulator( _pManipulator ), pPropLocal( 0 ), nPropIndexLocal( -1 )
 	{
 		pProperties = 0;
-		if ( pManipulator )
+		if ( pManipulator.GetPtr() )
 		{
 			pProperties = pManipulator->GetAllProperties();
 			itProps = pProperties->begin();
@@ -301,12 +301,12 @@ public:
 	CMultiManipulatorIterator( CMultiManipulator *_pManipulator )
 		: pManipulator( _pManipulator )
 	{
-		if ( pManipulator )
+		if ( pManipulator.GetPtr() )
 			itProp = pManipulator->propsList.begin();
 	}
 	virtual bool STDCALL Next()
 	{
-		if ( (pManipulator == 0) || (itProp == pManipulator->propsList.end()) )
+		if ( (pManipulator.GetPtr() == 0) || (itProp == pManipulator->propsList.end()))
 			return false;
 		++itProp;
 		return !IsEnd();

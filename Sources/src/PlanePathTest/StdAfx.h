@@ -11,9 +11,9 @@
 #endif // _MSC_VER > 1000
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
-#define _STLP_USE_MFC 1
-#include "stl_user_config.h"
-#include <stl/_config.h>
+// #define _STLP_USE_MFC 1
+//////// STLPort: #include "stl_user_config.h"
+//////// STLPort: #include <stl/_config.h>
 
 
 #include <assert.h>

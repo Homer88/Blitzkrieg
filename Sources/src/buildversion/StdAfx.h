@@ -11,14 +11,14 @@
 #endif // _MSC_VER > 1000
 
 // STLport configuration defines
-#define _NOTHREADS 1
+// #define _NOTHREADS 1
 #define __STL_DEBUG_TERMINATE 1
 #define __STL_DEBUG_MESSAGE 1
 //
 #ifndef __AFX__
 #define WIN32_LEAN_AND_MEAN							// Exclude rarely-used stuff from Windows headers
-#include "stl_user_config.h"
-#include <stl/_config.h>
+//////// STLPort: #include "stl_user_config.h"
+//////// STLPort: #include <stl/_config.h>
 
 #include <comutil.h>
 #include <assert.h>
@@ -31,8 +31,8 @@
 #endif // CreateObject
 #else
 #define __STL_USE_MFC 1
-#include "stl_user_config.h"
-#include <stl/_config.h>
+//////// STLPort: #include "stl_user_config.h"
+//////// STLPort: #include <stl/_config.h>
 
 #include <afxwin.h>											// MFC core and standard components
 #include <afxext.h>											// MFC extensions

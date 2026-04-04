@@ -1,22 +1,20 @@
-# Минимальная версия CMake
-cmake_minimum_required(VERSION 2.4)
+# LuaLib - Lua библиотека
+# Без зависимостей
 
-# Название проекта
-project(LuaLib)
+FILE(GLOB LUALIB_SOURCES "*.c")
+FILE(GLOB LUALIB_HEADERS "*.h")
 
-# Установка стандарта C++
-set(CMAKE_CXX_STANDARD 98)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+add_library(LuaLib STATIC
+    ${LUALIB_SOURCES}
+    ${LUALIB_HEADERS}
+)
 
-FILE(GLOB LUA_LIB_SOURCE "*.cpp")
-FILE(GLOB LUA_LIB_HEADERS "*.h")
+target_compile_definitions(LuaLib PRIVATE
+    WIN32
+    _WINDOWS
+    _LIB
+    _CRT_SECURE_NO_WARNINGS
+    _WIN32_WINNT=0x0400
+)
 
-FILE(GLOB LUA_LIB_SCR_SOURCE "./LuaSrc/*.cpp")
-FILE(GLOB LUA_LIB_SCR_HEADERS "./LuaSrc/*.h")
-
-
-#add_definitions( -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS)
-add_definitions( -D_WIN32_WINNT=0x0501)
-
-add_library(LuaLib STATIC ${LUA_LIB_SOURCE} ${LUA_LIB_SCR_SOURCE} ${LUA_LIB_HEADERS} ${LUA_LIB_SCR_HEADERS})
-
+target_include_directories(LuaLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

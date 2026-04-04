@@ -71,10 +71,10 @@ const SPropertyDesc* STDCALL CManipulator::GetPropertyDesc( const char *pszName 
 	if ( pProperty->nodeType != SBaseProperty::LEAF )
 	{
 		// non-leaf props
-		CPtr<IManipulator> pMan = GetPropertyAsManipulator( const_cast<SBaseProperty*>(pProperty), nIndex );
-		if ( pMan != 0 )
+		IManipulator* pManRaw = GetPropertyAsManipulator( const_cast<SBaseProperty*>(pProperty), nIndex );
+		if ( pManRaw != 0 )
 		{
-			if ( const SPropertyDesc *pDesc = pMan->GetPropertyDesc(szRestName.c_str()) )
+			if ( const SPropertyDesc *pDesc = pManRaw->GetPropertyDesc(szRestName.c_str()) )
 			{
 				tempPropDesc = *pDesc;
 				return &tempPropDesc;
@@ -149,7 +149,7 @@ IManipulator* CManipulator::GetPropertyAsManipulator( SBaseProperty *pProp, int 
 	else
 	{
 		IManipulator* pMan = reinterpret_cast<IManipulator*>( varMan.byref );
-		NI_ASSERT_TF( pMan != 0 && dynamic_cast<IManipulator*>(pMan) != 0, "returned value for property is not a manipulator", return 0 );
+		NI_ASSERT_TF( pManRaw != 0 && dynamic_cast<IManipulator*>(pMan) != 0, "returned value for property is not a manipulator", return 0 );
 		varMan.vt = VT_EMPTY;
 		return pMan;
 	}
@@ -171,8 +171,8 @@ bool CManipulator::GetValue( const char *pszValueName, variant_t *pValue )
 		return pProp->Get( this, pValue );
 	else
 	{
-		CPtr<IManipulator> pMan = GetPropertyAsManipulator( pProp, nIndex );
-		return pMan != 0 ? pMan->GetValue( szRest.c_str(), pValue ) : 0;
+		IManipulator* pManRaw = GetPropertyAsManipulator( pProp, nIndex );
+		return pManRaw != 0 ? pManRaw->GetValue( szRest.c_str(), pValue ) : 0;
 	}
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,8 +192,8 @@ bool CManipulator::SetValue( const char *pszValueName, const variant_t &value )
 		return pProp->Set( this, value );
 	else
 	{
-		CPtr<IManipulator> pMan = GetPropertyAsManipulator( pProp, nIndex );
-		return pMan != 0 ? pMan->SetValue( szRest.c_str(), value ) : 0;
+		IManipulator* pManRaw = GetPropertyAsManipulator( pProp, nIndex );
+		return pManRaw != 0 ? pManRaw->SetValue( szRest.c_str(), value ) : 0;
 	}
 }
 
@@ -220,17 +220,18 @@ const SPropertyDesc* CManipulatorIterator::GetFirst()
 	if ( (pPropLocal->nodeType == SBaseProperty::VECTOR) && (nPropIndexLocal < 0) )
 		return 0;
 	//
-	CPtr<IManipulator> pMan;
+	IManipulator* pManRaw = 0;
 	// get manipulator from SINGLE or VECTOR property
 	{
 		variant_t var;
 		pPropLocal->Get( pManipulator, &var, nPropIndexLocal );
-		pMan = reinterpret_cast<IManipulator*>( var.byref );
+		pManRaw = reinterpret_cast<IManipulator*>( var.byref );
 		var.vt = VT_EMPTY;
 	}
 	//
-	if ( pMan == 0 )
+	if ( pManRaw == 0 )
 		return 0;
+	CPtr<IManipulator> pMan(pManRaw);
 	pItLocal = pMan->Iterate();
 	if ( pItLocal->IsEnd() )
 		return GetNext();
@@ -301,7 +302,7 @@ const SPropertyDesc* CManipulatorIterator::GetFirstProperty()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const SPropertyDesc* CManipulatorIterator::GetNextProperty()
 {
-	if ( pItLocal )
+	if ( !pItLocal.IsEmpty() )
 	{
 		// iterate through external manipulator props
 		const SPropertyDesc *pDesc = GetNext();
@@ -411,10 +412,12 @@ struct SVariantCmpEq1
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMultiManipulator::AddManipulator( IManipulator *pMan )
 {
-	CPtr<IManipulator> pTempMan = pMan;
+	CPtr<IManipulator> pTempMan(pMan);
 	bPropsAlreadyBuilt = false;
 	int nOrder = 0;
-	for ( CPtr<IManipulatorIterator> pIt = pMan->Iterate(); !pIt->IsEnd(); pIt->Next(), ++nOrder )
+	IManipulatorIterator* pItRaw = pTempMan->Iterate();
+	CPtr<IManipulatorIterator> pIt(pItRaw);
+	for ( ; !pIt->IsEnd(); pIt->Next(), ++nOrder )
 	{
 		const SPropertyDesc *pDesc = pIt->GetPropertyDesc();
 		if ( pDesc )
@@ -447,7 +450,8 @@ void CMultiManipulator::AddManipulator( IManipulator *pMan )
 		}
 	}
 	//
-	manipulators.push_back( pMan );
+	CPtr<IManipulator> pManPtr(pMan);
+	manipulators.push_back(pManPtr);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct SMultiManPropCmpLess

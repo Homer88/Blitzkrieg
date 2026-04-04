@@ -157,7 +157,7 @@ class CSaverAccessor
 			// hash_set => list
 			if ( !IsReading() )
 			{
-				for ( std::hash_set<T1, T2, T3, T4>::iterator it = pData->begin(); it != pData->end(); ++it )
+				for ( std::hash_set<T1, T2, T3>::iterator it = pData->begin(); it != pData->end(); ++it )
 					elements.push_back( *it );
 			}
 			// add container

@@ -18,7 +18,7 @@ CDataTreeXML::~CDataTreeXML()
     {
         FinishChunk();
 
-        if (pStream && xmlDocument && !IsReading())
+        if (pStream.GetPtr() && xmlDocument && !IsReading())
         {
             // Save XML document to stream
             XMLPrinter printer;
@@ -46,7 +46,7 @@ bool CDataTreeXML::Open(IDataStream* _pStream, const char* idBaseNode)
 
     if (IsReading())
     {
-        if (!pStream)
+        if (pStream.IsEmpty())
             return false;
 
         // Read entire stream into memory
