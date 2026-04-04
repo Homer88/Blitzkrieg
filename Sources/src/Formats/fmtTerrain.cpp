@@ -12,7 +12,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int STileMapsDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "maps0", &( maps[0] ) );
 	saver.Add( "maps1", &( maps[1] ) );
 	saver.Add( "maps2", &( maps[2] ) );
@@ -22,7 +22,7 @@ int STileMapsDesc::operator&( IDataTree &ss )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SMainTileDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "index", &nIndex );
 	if ( saver.IsReading() )
 		saver.Add( "probability", &fProbFrom );
@@ -36,7 +36,7 @@ int SMainTileDesc::operator&( IDataTree &ss )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int STileTypeDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "tiles", &tiles );
 	if ( saver.IsReading() )
 	{
@@ -59,14 +59,14 @@ int STileTypeDesc::operator&( IDataTree &ss )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*int STerrTypeDesc::STerrainLoopedSound::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "Name", &szName );
 	saver.Add( "Peaceful", &bPeaceful );
 	return 0;
 }
 int STerrTypeDesc::STerrainSound::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "Name", &szName );
 	saver.Add( "Probability", &fProbability );
 	if ( saver.IsReading() )
@@ -76,7 +76,7 @@ int STerrTypeDesc::STerrainSound::operator&( IDataTree &ss )
 }*/
 int STerrTypeDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 
 	saver.Add( "name", &szName );
 	saver.AddTypedSuper( static_cast<STileTypeDesc*>(this) );
@@ -95,7 +95,7 @@ int STerrTypeDesc::operator&( IDataTree &ss )
 }
 int STilesetDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "name", &szName );
 	saver.Add( "terrtypes", &terrtypes );
 	saver.Add( "tilemaps", &tilemaps );
@@ -105,13 +105,13 @@ int STilesetDesc::operator&( IDataTree &ss )
 /**
 int SRoadTileTypeDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.AddTypedSuper( static_cast<STileTypeDesc*>(this) );
 	return 0;
 }
 int SRoadDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "name", &szName );
 	saver.Add( "roadtiles", &tiles );
 	saver.Add( "priority", &nPriority );
@@ -119,7 +119,7 @@ int SRoadDesc::operator&( IDataTree &ss )
 }
 int SRoadsetDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "roads", &roads );
 	saver.Add( "tilemaps", &tilemaps );
 	return 0;
@@ -128,21 +128,21 @@ int SRoadsetDesc::operator&( IDataTree &ss )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SCrossTileTypeDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.AddTypedSuper( static_cast<STileTypeDesc*>(this) );
 	saver.Add( "name", &szName );
 	return 0;
 }
 int SCrossDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "name", &szName );
 	saver.Add( "crosstiles", &tiles );
 	return 0;
 }
 int SCrossetDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "crosses", &crosses );
 	saver.Add( "tilemaps", &tilemaps );
 	return 0;

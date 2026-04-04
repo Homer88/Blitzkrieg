@@ -548,7 +548,7 @@ public:
 	TPtrBase& operator=( const TPtrBase &ptr ) { Set( ptr.pObj ); return *this; }
 	// object access operators (dereference and pointer access)
 	operator TUserObj*() const { return pObj; }
-	operator void*() const { return pObj; }   // ← добавить эту строку
+	// operator void*() const { return pObj; }   // Removed to avoid ambiguity
 	TUserObj* operator->() const { return pObj; }
 	// check for empty and valid object
 	bool IsEmpty() const { return pObj == 0; }

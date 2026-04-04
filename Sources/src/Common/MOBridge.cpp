@@ -46,7 +46,7 @@ bool CMOBridgeSpan::Create( IRefCount *_pAIObj, const SGDBObjectDesc *pDesc, int
 	pAIObj = _pAIObj;
 	nIndex = nFrameIndex;
 	//
-	return pSlab != 0;
+	return pSlab.GetPtr() != 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CMOBridgeSpan::operator&( IStructureSaver &ss )
@@ -82,16 +82,16 @@ void CMOBridgeSpan::SetPlacement( const CVec3 &vPos, const WORD &wDir )
 	// slab
 	pSlab->SetPlacement( vPos, wDir );
 	// back girder
-	if ( pBackGirder )
+	if (pBackGirder.GetPtr())
 		pBackGirder->SetPlacement( vPos + pRPGStats->GetSegmentStats(span.nBackGirder).vRelPos, wDir );
 	// front girder
-	if ( pFrontGirder )
+	if (pFrontGirder.GetPtr())
 		pFrontGirder->SetPlacement( vPos + pRPGStats->GetSegmentStats(span.nFrontGirder).vRelPos, wDir );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMOBridgeSpan::GetPlacement( CVec3 *pvPos, WORD *pwDir )
 {
-	if ( pSlab ) 
+	if (pSlab.GetPtr()) 
 		pSlab->GetPlacement( pvPos, pwDir );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,9 +119,9 @@ void CMOBridgeSpan::GetActions( CUserActions *pActions, EActionsType eActions ) 
 void CMOBridgeSpan::AIUpdatePlacement( const struct SAINotifyPlacement &placement, const NTimer::STime &currTime, IScene *pScene )
 {
 	pSlab->AIUpdatePlacement( placement, currTime, pScene );
-	if ( pBackGirder ) 
+	if (pBackGirder.GetPtr()) 
 		pBackGirder->AIUpdatePlacement( placement, currTime, pScene );
-	if ( pFrontGirder ) 
+	if (pFrontGirder.GetPtr()) 
 		pFrontGirder->AIUpdatePlacement( placement, currTime, pScene );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@ TAnim* GetAnim( IVisObj *pVisObj )
 void ChangeModel( SMapObject *pMO, const SGDBObjectDesc *pDesc, const SBridgeRPGStats::SSegmentRPGStats &segment, 
 								  const float fNewHP, const NTimer::STime &currTime, IVisObjBuilder *pVOB )
 {
-	if ( pMO == 0 ) 
+	if ( pMO.GetPtr() == 0 ) 
 		return;
 	const std::string szPartName = pDesc->szPath + "\\" + segment.szModel;
 	//
@@ -194,9 +194,9 @@ void CMOBridgeSpan::AIUpdateHit( const struct SAINotifyHitInfo &hit, const NTime
 void CMOBridgeSpan::Visit( IMapObjVisitor *pVisitor )
 {
 	pSlab->Visit( pVisitor );
-	if ( pBackGirder ) 
+	if (pBackGirder.GetPtr()) 
 		pBackGirder->Visit( pVisitor );
-	if ( pFrontGirder ) 
+	if (pFrontGirder.GetPtr()) 
 		pFrontGirder->Visit( pVisitor );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

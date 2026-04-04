@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SAIGeneralParcelInfo::SReinforcePointInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	
 	saver.Add( "Center", &vCenter );
 	saver.Add( "Direction", &wDir );
@@ -27,7 +27,7 @@ int SAIGeneralParcelInfo::SReinforcePointInfo::operator&( IStructureSaver &ss )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SAIGeneralParcelInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	
 	saver.Add( "Center", &vCenter );
 	saver.Add( "Direction", &wDefenceDirection );
@@ -56,7 +56,7 @@ int SAIGeneralParcelInfo::operator&( IStructureSaver &ss )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SAIGeneralSideInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	
 	saver.Add( "MobileReinforcement", &mobileScriptIDs );
 	saver.Add( "Parcels", &parcels );
@@ -77,7 +77,7 @@ int SAIGeneralSideInfo::operator&( IStructureSaver &ss )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SAIGeneralMapInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 
 	saver.Add( "Sides", &sidesInfo );
 	

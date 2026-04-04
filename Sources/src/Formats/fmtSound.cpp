@@ -4,7 +4,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CMapSoundInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "Name", &szName );
 	saver.Add( "Position", &vPos );
 	return 0;

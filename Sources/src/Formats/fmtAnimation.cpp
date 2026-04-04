@@ -14,10 +14,10 @@
 bool SSpriteAnimationFormat::Load( const bool bPreLoad )
 {
 	const std::string szStreamName = GetSharedResourceFullName();
-	CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream( szStreamName.c_str(), STREAM_ACCESS_READ );
+	CPtr<IDataStream> pStream( GetSingleton<IDataStorage>()->OpenStream( szStreamName.c_str(), STREAM_ACCESS_READ ) );
 	if ( pStream == 0 )
 		return false;
-	CPtr<IStructureSaver> pSaver = CreateStructureSaver( pStream, IStructureSaver::READ );
+	CPtr<IStructureSaver> pSaver( CreateStructureSaver( pStream, IStructureSaver::READ ) );
 	CSaverAccessor saver = pSaver;
 	DWORD dwSignature = 0;
 	saver.Add( 127, &dwSignature );

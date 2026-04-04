@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SVectorStripeObjectPoint::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "Pos", &vPos );
 	saver.Add( "Norm", &vNorm );
 	saver.Add( "Radius", &fRadius );
@@ -18,7 +18,7 @@ int SVectorStripeObjectPoint::operator&( IDataTree &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SVectorStripeObjectDesc::SLayer::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "OpacityCenter", &opacityCenter );
 	saver.Add( "OpacityBorder", &opacityBorder );
 	saver.Add( "StreamSpeed", &fStreamSpeed );
@@ -50,7 +50,7 @@ int SVectorStripeObjectDesc::SLayer::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SVectorStripeObjectDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	
 	saver.Add( "Type", &eType );
 	saver.Add( "Priority", &nPriority );
@@ -90,7 +90,7 @@ int SVectorStripeObjectDesc::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SVectorStripeObject::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.AddTypedSuper( static_cast<SVectorStripeObjectDesc*>(this) );
 	saver.Add( "DescName", &szDescName );
 	saver.Add( "Points", &points );
@@ -99,10 +99,10 @@ int SVectorStripeObject::operator&( IDataTree &ss )
 	// read descriptor in the case of existance
 	if ( saver.IsReading() && !szDescName.empty() )
 	{
-		CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream( (szDescName + ".xml").c_str(), STREAM_ACCESS_READ );
+		CPtr<IDataStream> pStream( GetSingleton<IDataStorage>()->OpenStream( (szDescName + ".xml").c_str(), STREAM_ACCESS_READ ) );
 		if ( pStream ) 
 		{
-			CTreeAccessor saver1 = CreateDataTreeSaver( pStream, IDataTree::READ );
+			CTreeAccessor saver1( CreateDataTreeSaver( pStream, IDataTree::READ ) );
 			SVectorStripeObjectDesc desc;
 			saver1.Add( "VSODescription", &desc );
 			*( static_cast<SVectorStripeObjectDesc*>(this) ) = desc;
@@ -123,10 +123,10 @@ int SVectorStripeObject::operator&( IStructureSaver &ss )
 	// read descriptor in the case of existance
 	if ( saver.IsReading() && !szDescName.empty() )
 	{
-		CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream( (szDescName + ".xml").c_str(), STREAM_ACCESS_READ );
+		CPtr<IDataStream> pStream( GetSingleton<IDataStorage>()->OpenStream( (szDescName + ".xml").c_str(), STREAM_ACCESS_READ ) );
 		if ( pStream ) 
 		{
-			CTreeAccessor saver1 = CreateDataTreeSaver( pStream, IDataTree::READ );
+			CTreeAccessor saver1( CreateDataTreeSaver( pStream, IDataTree::READ ) );
 			SVectorStripeObjectDesc desc;
 			saver1.Add( "VSODescription", &desc );
 			*( static_cast<SVectorStripeObjectDesc*>(this) ) = desc;

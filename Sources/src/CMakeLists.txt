@@ -65,56 +65,55 @@ endif()
 # ============================================================
 
 # === БАЗОВЫЕ БИБЛИОТЕКИ ===
-# BugSlay отключен: конфликт DirectX 8 с Windows SDK 10
-# add_subdirectory(BugSlay)
+# BugSlay (исправлен пользователем)
+add_subdirectory(BugSlay)
 add_subdirectory(zlib)
-# add_subdirectory(libpng)  # Требует BugSlay
+add_subdirectory(libpng)
 
 # === БИБЛИОТЕКИ ПЕРВОГО УРОВНЯ ===
 add_subdirectory(Misc)
-# add_subdirectory(Formats)        # Требует CPtr исправлений
-# add_subdirectory(Common)         # Зависит от BugSlay
-# add_subdirectory(GameSpy)        # Зависит от BugSlay
+add_subdirectory(Formats)
+add_subdirectory(Common)
+add_subdirectory(GameSpy)
 add_subdirectory(LuaLib)
-# add_subdirectory(RandomMapGen)   # Зависит от Image -> BugSlay
+# add_subdirectory(RandomMapGen)   # Зависит от Image (пока нет CMakeLists.txt)
 add_subdirectory(StreamIOLib)
-# add_subdirectory(Image)          # Требует BugSlay
+# add_subdirectory(Image)          # Нет CMakeLists.txt
 
 # === БИБЛИОТЕКИ ВТОРОГО УРОВНЯ ===
 add_subdirectory(StreamIO)
-# add_subdirectory(Input)          # Зависит от BugSlay
-# add_subdirectory(Anim)           # Зависит от BugSlay
-# add_subdirectory(GFX)            # Зависит от BugSlay, DirectX 8
-# add_subdirectory(SFX)            # Зависит от BugSlay
-# add_subdirectory(UI)             # Зависит от BugSlay
-# add_subdirectory(Net)            # Зависит от BugSlay
-# add_subdirectory(scl)            # Зависит от BugSlay, DirectX 8
+# add_subdirectory(Input)          # Нет CMakeLists.txt
+# add_subdirectory(Anim)           # Зависит от Image
+# add_subdirectory(GFX)            # Зависит от Image
+# add_subdirectory(SFX)            # Требует FMOD
+add_subdirectory(Net)
+add_subdirectory(scl)
 
 # === БИБЛИОТЕКИ ТРЕТЬЕГО УРОВНЯ ===
-# add_subdirectory(Scene)          # Зависит от BugSlay
-# add_subdirectory(AILogic)        # Зависит от BugSlay
-# add_subdirectory(ELK)            # Зависит от BugSlay
-# add_subdirectory(GameTT)         # Зависит от BugSlay
+# add_subdirectory(Scene)          # Зависит от Image
+# add_subdirectory(AILogic)        # Зависит от Image
+# add_subdirectory(ELK)            # Нет CMakeLists.txt
+# add_subdirectory(GameTT)         # Нет CMakeLists.txt
 
 # === БИБЛИОТЕКИ ЧЕТВЁРТОГО УРОВНЯ ===
-# add_subdirectory(Main)           # Зависит от BugSlay
+# add_subdirectory(Main)           # Нет CMakeLists.txt
 
 # === ПРИЛОЖЕНИЯ ===
-# add_subdirectory(A7ExportModel)  # Требует Maya SDK
-# add_subdirectory(AutoRun)        # Зависит от BugSlay
-# add_subdirectory(betakeygen)     # Зависит от BugSlay
-# add_subdirectory(buildversion)   # Зависит от BugSlay
-# add_subdirectory(bzmconvertor)   # Зависит от BugSlay
-# add_subdirectory(editor)         # Зависит от BugSlay
-# add_subdirectory(excelexporter)  # Зависит от BugSlay
-# add_subdirectory(FontGen)        # Зависит от BugSlay
-# add_subdirectory(Game)           # Зависит от BugSlay
-# add_subdirectory(imagedefrag)    # Зависит от BugSlay
-# add_subdirectory(InterfaceSystemTest) # Зависит от BugSlay
-# add_subdirectory(MapEditor)      # Зависит от BugSlay
-# add_subdirectory(PlanePathTest)  # Зависит от BugSlay
+# add_subdirectory(a7exportmodel)  # Maya SDK headers incompatible with VS2022
+add_subdirectory(AutoRun)
+# add_subdirectory(betakeygen)     # Нет CMakeLists.txt
+# add_subdirectory(buildversion)   # Нет CMakeLists.txt
+# add_subdirectory(bzmconvertor)   # Нет CMakeLists.txt
+# add_subdirectory(editor)         # Нет CMakeLists.txt
+# add_subdirectory(excelexporter)  # Нет CMakeLists.txt
+# add_subdirectory(FontGen)        # Нет CMakeLists.txt
+# add_subdirectory(Game)           # Нет CMakeLists.txt
+# add_subdirectory(imagedefrag)    # Нет CMakeLists.txt
+# add_subdirectory(InterfaceSystemTest) # Нет CMakeLists.txt
+# add_subdirectory(MapEditor)      # Зависит от Image
+# add_subdirectory(PlanePathTest)  # Нет CMakeLists.txt
 # add_subdirectory(soundverifycation) # Требует FMOD
-# add_subdirectory(spcomp)         # Зависит от BugSlay
+add_subdirectory(spcomp)
 
 # === УТИЛИТЫ ===
 # add_subdirectory(Tools)          # Зависит от BugSlay

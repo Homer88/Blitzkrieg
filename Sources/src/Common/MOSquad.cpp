@@ -22,8 +22,8 @@ bool CMOSquad::Create( IRefCount *_pAIObj, const SGDBObjectDesc *_pDesc, int nSe
 	pAIObj = _pAIObj;
 	pDesc = _pDesc;
 	pRPG = NGDB::GetRPGStats<SHPObjectRPGStats>( pGDB, pDesc );
-	NI_ASSERT_TF( pRPG != 0, NStr::Format("Can't find RPG stats for object \"%s\"", pDesc->szKey.c_str()), return 0 );
-	return pRPG != 0;
+	NI_ASSERT_TF( pRPG.GetPtr() != 0, NStr::Format("Can't find RPG stats for object \"%s\"", pDesc->szKey.c_str()), return 0 );
+	return pRPG.GetPtr() != 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMOSquad::SetPlacement( const CVec3 &vPos, const WORD &wDir )
@@ -80,7 +80,7 @@ void CMOSquad::Select( ISelector *pSelector, bool bSelect, bool bSelectSuper )
 // load unit onboard or unload it
 bool CMOSquad::Load( interface IMOUnit *pUnit, bool bEnter )
 {
-	if ( bEnter )
+	if (bEnter.GetPtr())
 	{
 		if ( GetUnit(pUnit) == 0 ) 
 		{
@@ -107,10 +107,10 @@ bool CMOSquad::Load( interface IMOUnit *pUnit, bool bEnter )
 	return true;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// get all passangers from container. return number of passangers. if pBuffer == 0, only returns number of passangers
+// get all passangers from container. return number of passangers. if pBuffer.GetPtr() == 0, only returns number of passangers
 int CMOSquad::GetPassangers( IMOUnit **pBuffer, const bool bCanSelectOnly ) const
 {
-	if ( pBuffer != 0 ) 
+	if ( pBuffer.GetPtr() != 0 ) 
 	{
 		for ( CUnitsList::const_iterator it = passangers.begin(); it != passangers.end(); ++it )
 			*pBuffer++ = it->pUnit;
@@ -154,7 +154,7 @@ void CMOSquad::GetActions( CUserActions *pActions, EActionsType eActions ) const
 	const SSquadRPGStats *pRPGStats = static_cast_gdb<const SSquadRPGStats*>( pRPG );
 	*pActions = eActions == IMapObj::ACTIONS_WITH ? pRPGStats->availExposures : pRPGStats->availActions;
 	//
-	if ( (pRPGStats->members.size() > 1) || ((pRPGStats->members.size() == 1) && (pRPGStats->type != 0)) ) 
+	if ( (pRPGStats->members.size() > 1) || ((pRPGStats->members.size() == 1) && (pRPGStats->type.GetPtr() != 0)) ) 
 		pActions->RemoveAction( USER_ACTION_FORM_SQUAD );
 	//
 	if ( passangers.size() == 1 ) 

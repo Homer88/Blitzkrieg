@@ -18,8 +18,8 @@ bool CMOObject::Create( IRefCount *pAIObjLocal, const SGDBObjectDesc *pDescLocal
 	bDead = false;
 	pDesc = pDescLocal;
 	pRPG = NGDB::GetRPGStats<SHPObjectRPGStats>( pGDB, pDesc );
-	NI_ASSERT_TF( pRPG != 0, NStr::Format("Can't find RPG stats for object \"%s\"", pDesc->szKey.c_str()), return 0 );
-	if ( pRPG == 0 )
+	NI_ASSERT_TF( pRPG.GetPtr() != 0, NStr::Format("Can't find RPG stats for object \"%s\"", pDesc->szKey.c_str()), return 0 );
+	if ( pRPG.GetPtr() == 0 )
 		return false;
 	//
 	if ( pDesc->eGameType == SGVOGT_FLAG )
@@ -36,13 +36,13 @@ bool CMOObject::Create( IRefCount *pAIObjLocal, const SGDBObjectDesc *pDescLocal
 			{
 				const char *pszName = nSeason == 1 ? "\\1w" : "\\1";
 				pVisObj = pVOB->BuildObject( (pDesc->szPath + pszName).c_str(), 0, pDesc->eVisType );
-				if ( pVisObj )									// try to create normal object (take season into account)
+				if (pVisObj.GetPtr())									// try to create normal object (take season into account)
 					pShadow = pVOB->BuildObject( (pDesc->szPath + pszName + "s").c_str(), 0, SGVOT_SPRITE );
 				else														// try to create summer (default) object, if correct one failed
 				{
 					const char *pszName = "\\1";
 					pVisObj = pVOB->BuildObject( (pDesc->szPath + pszName).c_str(), 0, pDesc->eVisType );
-					if ( pVisObj )
+					if (pVisObj.GetPtr())
 						pShadow = pVOB->BuildObject( (pDesc->szPath + pszName + "s").c_str(), 0, SGVOT_SPRITE );
 				}
 			}
@@ -72,7 +72,7 @@ bool CMOObject::Create( IRefCount *pAIObjLocal, const SGDBObjectDesc *pDescLocal
 				if ( segment.szModel.empty() || segment.nFrameIndex == -1 ) 
 					return false;
 				pVisObj = pVOB->BuildObject( (pDesc->szPath + "\\" + segment.szModel).c_str(), 0, SGVOT_SPRITE );
-				if ( pVisObj == 0 )				// bridge have no this part... skip it
+				if ( pVisObj.GetPtr() == 0 )				// bridge have no this part... skip it
 					return false;
 				if ( fNewHP < 0 )					// special case - "blueprint" of the bridge
 					pVisObj->SetOpacity( 0x80 );
@@ -82,13 +82,13 @@ bool CMOObject::Create( IRefCount *pAIObjLocal, const SGDBObjectDesc *pDescLocal
 			break;
 		case SGVOGT_FENCE:
 			pVisObj = pVOB->BuildObject( (pDesc->szPath + "\\1").c_str(), 0, pDesc->eVisType );
-			if ( pVisObj ) 
+			if (pVisObj.GetPtr()) 
 				pShadow = pVOB->BuildObject( (pDesc->szPath + "\\1s").c_str(), 0, SGVOT_SPRITE );
 			break;
 		default:
 			pVisObj = pVOB->BuildObject( (pDesc->szPath + "\\1").c_str(), 0, pDesc->eVisType );
 	}
-	NI_ASSERT_T( pVisObj != 0, NStr::Format("Can't create object \"%s\" from path \"%s\"", pDesc->szKey.c_str(), pDesc->szPath.c_str()) );
+	NI_ASSERT_T( pVisObj.GetPtr() != 0, NStr::Format("Can't create object \"%s\" from path \"%s\"", pDesc->szKey.c_str(), pDesc->szPath.c_str()) );
 	//
 	if ( pDesc->eVisType == SGVOT_SPRITE )
 	{
@@ -96,7 +96,7 @@ bool CMOObject::Create( IRefCount *pAIObjLocal, const SGDBObjectDesc *pDescLocal
 		ISpriteAnimation *pAnim = static_cast<ISpriteAnimation*>( static_cast_ptr<IObjVisObj*>(pVisObj)->GetAnimation() );
 		pAnim->SetFrameIndex( nFrameIndex );
 		// shadow
-		if ( pShadow )
+		if (pShadow.GetPtr())
 		{
 			pAnim = static_cast<ISpriteAnimation*>( static_cast_ptr<IObjVisObj*>(pShadow)->GetAnimation() );
 			pAnim->SetFrameIndex( nFrameIndex );
@@ -116,7 +116,7 @@ bool CMOObject::Create( IRefCount *pAIObjLocal, const SGDBObjectDesc *pDescLocal
 void CMOObject::Visit( IMapObjVisitor *pVisitor )
 {
 	pVisitor->VisitSprite( pVisObj, pDesc->eGameType, pDesc->eVisType );
-	if ( pShadow ) 
+	if (pShadow.GetPtr()) 
 		pVisitor->VisitSprite( pShadow, SGVOGT_SHADOW, SGVOT_SPRITE );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,12 +150,12 @@ void CMOObject::FillActions()
 void CMOObject::SetPlacement( const CVec3 &vPos, const WORD &wDir )
 {
 	pVisObj->SetPlacement( vPos, wDir );
-	if ( pShadow )
+	if (pShadow.GetPtr())
 		pShadow->SetPlacement( vPos, wDir );
 	if ( !szFlagSide.empty() )
 	{
 		IUIScreen *pUIScreen = GetSingleton<IScene>()->GetMissionScreen();
-		if ( pUIScreen )
+		if (pUIScreen.GetPtr())
 		{
 			if ( IUIMiniMap *pUIMiniMap = checked_cast<IUIMiniMap*>( pUIScreen->GetChildByID( 20000 ) ) )
 			{
@@ -223,7 +223,7 @@ void CMOObject::AIUpdatePlacement( const SAINotifyPlacement &placement, const NT
 	pScene->MoveObject( pVisObj, vPos );
 	pVisObj->Update( currTime, true );
 	// move shadow
-	if ( pShadow )
+	if (pShadow.GetPtr())
 	{
 		pScene->MoveObject( pShadow, vPos );
 		pShadow->Update( currTime, true );
@@ -252,7 +252,7 @@ void CMOObject::UpdateModelWithHP( const float fNewHP, IVisObjBuilder *pVOB )
 		if ( (pDesc->eVisType == SGVOT_SPRITE) && (pDesc->eGameType == SGVOGT_BUILDING) )
 		{
 			pVOB->ChangeObject( pVisObj, NStr::Format( "%s\\%d", pDesc->szPath.c_str(), nNewState + 1 ), 0, SGVOT_SPRITE );
-			if ( pShadow )
+			if (pShadow.GetPtr())
 				pVOB->ChangeObject( pShadow, NStr::Format( "%s\\%ds", pDesc->szPath.c_str(), nNewState + 1 ), 0, SGVOT_SPRITE );
 		}
 	}
@@ -267,7 +267,7 @@ bool CMOObject::AIUpdateRPGStats( const SAINotifyRPGStats &stats, IVisObjBuilder
 	if ( fHP != fNewHP ) 
 	{
 		ISceneIconBar *pBar = static_cast<ISceneIconBar*>( static_cast_ptr<IObjVisObj*>(pVisObj)->GetIcon( ICON_HP_BAR ) );
-		if ( pBar )
+		if (pBar.GetPtr())
 		{
 			pBar->SetLength( fHP );
 			if ( fHP >= 0.5f )
@@ -332,7 +332,7 @@ int CMOObject::AIUpdateActions( const struct SAINotifyAction &action, const NTim
 			{
 				static_cast<ISpriteAnimation*>(static_cast_ptr<IObjVisObj*>(pVisObj)->GetAnimation())->SetFrameIndex( action.nParam );
 				pVisObj->Update( currTime, true );
-				if ( pShadow ) 
+				if (pShadow.GetPtr()) 
 				{
 					static_cast<ISpriteAnimation*>(static_cast_ptr<IObjVisObj*>(pShadow)->GetAnimation())->SetFrameIndex( action.nParam );
 					pShadow->Update( currTime, true );
@@ -340,7 +340,7 @@ int CMOObject::AIUpdateActions( const struct SAINotifyAction &action, const NTim
 			}
 			break;
 		case ACTION_NOTIFY_SIDE_CHANGED:
-			for ( CPtr<IPlayerScenarioInfoIterator> pIt = GetSingleton<IScenarioTracker>()->CreatePlayerScenarioInfoIterator();
+			for ( CPtr<IPlayerScenarioInfoIterator> pIt( GetSingleton<IScenarioTracker>()->CreatePlayerScenarioInfoIterator() );
 				    !pIt->IsEnd(); pIt->Next() )
 			{
 				IPlayerScenarioInfo *pPlayer = pIt->Get();
@@ -394,7 +394,7 @@ int CMOObject::AIUpdateActions( const struct SAINotifyAction &action, const NTim
 							pDesc = pNewDesc;
 							pRPG = NGDB::GetRPGStats<SObjectBaseRPGStats>( pDesc );
 							pVisObj->Update( currTime, true );
-							if ( pShadow )
+							if (pShadow.GetPtr())
 							{
 								pVOB->ChangeObject( pShadow, (szFlagFileName + "s").c_str(), 0, SGVOT_SPRITE );
 								pShadow->Update( currTime, true );

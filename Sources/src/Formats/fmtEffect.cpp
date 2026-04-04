@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SSpriteEffectDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "path", &szPath );
 	saver.Add( "start", &nStart );
 	saver.Add( "repeat", &nRepeat );
@@ -13,7 +13,7 @@ int SSpriteEffectDesc::operator&( IDataTree &ss )
 };
 int SParticleEffectDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	if ( saver.IsReading() )
 	{
 		fScale = 1.0f;
@@ -27,7 +27,7 @@ int SParticleEffectDesc::operator&( IDataTree &ss )
 };
 int SSmokinParticleEffectDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	if ( saver.IsReading() )
 	{
 		fScale = 1.0f;
@@ -42,7 +42,7 @@ int SSmokinParticleEffectDesc::operator&( IDataTree &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SEffectDesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "sprites", &sprites );
 	saver.Add( "particles", &particles );
 	saver.Add( "SmokinParticles", &smokinParticles );

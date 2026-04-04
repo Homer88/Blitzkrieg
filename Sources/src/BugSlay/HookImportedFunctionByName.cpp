@@ -188,7 +188,7 @@ BOOL STDCALL HookImportedFunctionsByName( HMODULE hModule,
         if ( 0 != paOrigFuncs )
           paOrigFuncs[i] = (PROC)pRealThunk->u1.Function;
         // Do the actual hook.
-        pRealThunk->u1.Function = (PDWORD)paHookArray[i].pProc;
+        pRealThunk->u1.Function = (DWORD)paHookArray[i].pProc;
 
         DWORD dwOldProtect;
 

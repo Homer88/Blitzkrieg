@@ -1,13 +1,20 @@
 #include "StdAfx.h"
 //
-// Copyright (C) 2001 Nival Interactive 
-// 
+// Copyright (C) 2001 Nival Interactive
+//
 // File: pluginMain.cpp
 //
 // Author: Maya SDK Wizard
 //
 
+// Maya SDK fix
+#define bool MBool
+#define false kFalse
+#define true kTrue
 #include <maya/MFnPlugin.h>
+#undef bool
+#undef false
+#undef true
 
 #include "A7ExportModel.h"
 

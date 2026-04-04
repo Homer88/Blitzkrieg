@@ -29,7 +29,7 @@ namespace NBugSlayer
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void STDCALL NBugSlayer::AddEmergencyCommand( IBaseCommand *pCommand )
 {
-	emergencyCommands.push_back( pCommand );
+	emergencyCommands.push_back( CPtr<IBaseCommand>(pCommand) );
 }
 void STDCALL NBugSlayer::RemoveAllEmergencyCommands()
 {
@@ -39,7 +39,7 @@ void STDCALL NBugSlayer::ExecuteEmergencyCommands()
 {
 	for ( CEmergencyCommandsList::iterator it = emergencyCommands.begin(); it != emergencyCommands.end(); ++it )
 	{
-		if ( (*it) != 0 )
+		if ( (*it).GetPtr() != 0 )
 			(*it)->Do();
 	}
 }

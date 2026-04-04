@@ -2,6 +2,16 @@
 
 #include <stdio.h>
 #include <math.h>
+
+// Maya SDK uses 'bool' as typedef and 'false'/'true' in enums, conflict with C++ keywords
+// Replace keywords to avoid errors
+#ifndef __MAYA_FIX__
+#define __MAYA_FIX__
+#define bool MBool
+#define false kFalse
+#define true kTrue
+#endif
+
 #include <maya\MDagPathArray.h>
 #include <maya\MSelectionList.h>
 #include <maya\MGlobal.h>
@@ -18,6 +28,8 @@
 #include <maya\MFnTransform.h>
 #include <maya\MQuaternion.h>
 #include <maya\MFnIkJoint.h>
+
+#pragma pop_macro("bool")
 #include <maya\MMatrix.h>
 #include <maya\MFnNumericAttribute.h>
 #include <maya\MFnNumericData.h>
@@ -26,6 +38,9 @@
 #include <maya\MFnMeshData.h>
 #include <maya\MTime.h>
 
+#undef bool
+#undef false
+#undef true
 
 #include "Data.h"
 #include "A7ExportModel.h"
@@ -564,7 +579,7 @@ MStatus CA7ExportModel::ProcessMeshes()
 		{
 			CVec2 uv;
 			mesh.getUV( j, uv.u, uv.v );
-			uv.v = 1.0f - uv.v;								// Maya считает за 0 левый нижний угол, а все нормальные пакеты - левый верхний
+			uv.v = 1.0f - uv.v;								// Maya пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 0 пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			NConverter::AddUV( uv );
 		}
 		//
@@ -655,7 +670,7 @@ MStatus CA7ExportModel::ProcessAnimations()
 		for ( int i=0; i<anim->nNumKeys; ++i )
 		{
 			double fFrame = anim->nStart + i;
-			// set global time (в единицах слайдера в Maya, т.е. в кадрах)
+			// set global time (пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ Maya, пїЅ.пїЅ. пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)
 			MGlobal::viewFrame( fFrame );
 			// extract placement data
 			// iterate through all previously collected transform nodes and extract joints information

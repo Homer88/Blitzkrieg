@@ -16,7 +16,7 @@ const int STerrainPatchInfo::nSizeY = 16;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SMapObjectInfo::SLinkInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	
 	saver.Add( "LinkID", &nLinkID );
 	saver.Add( "Intention", &bIntention );
@@ -34,7 +34,7 @@ SMapObjectInfo::SMapObjectInfo()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SMapObjectInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 
 	saver.Add( "Name", &szName );
 	saver.Add( "Position", &vPos );
@@ -78,7 +78,7 @@ int SMapObjectInfo::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SEntrenchmentInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "Sections", &sections );
 	return 0;
 }
@@ -102,7 +102,7 @@ int SEntrenchmentInfo::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SCrossTileInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "x", &x );
 	saver.Add( "y", &y );
 	saver.Add( "tile", &tile );
@@ -114,7 +114,7 @@ int SCrossTileInfo::operator&( IDataTree &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRoadTileInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "x", &x );
 	saver.Add( "y", &y );
 	saver.Add( "tile", &tile );
@@ -124,7 +124,7 @@ int SRoadTileInfo::operator&( IDataTree &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRoadItem::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "rect", &rect );
 	saver.Add( "type", &nType );
 	saver.Add( "dir", &nDir );
@@ -134,7 +134,7 @@ int SRoadItem::operator&( IDataTree &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int STerrainPatchInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "start_x", &nStartX );
 	saver.Add( "start_y", &nStartY );
 	saver.Add( "BaseCrosses", &basecrosses );
@@ -150,7 +150,7 @@ int STerrainPatchInfo::operator&( IDataTree &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int STerrainInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	
 	saver.Add( "tileset", &szTilesetDesc );
 	saver.Add( "crosset", &szCrossetDesc );
@@ -265,7 +265,7 @@ void STerrainInfo::FillMinMaxHeights()
 const std::string SScriptArea::names[2] = { "Rectangle", "Circle" };
 int SScriptArea::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	
 	std::string szType;
 	if ( saver.IsReading() )
@@ -309,7 +309,7 @@ int SScriptArea::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SReinforcementGroupInfo::SGroupsVector::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "Groups", &ids );
 	return 0;
 }
@@ -317,7 +317,7 @@ int SReinforcementGroupInfo::SGroupsVector::operator&( IDataTree &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SReinforcementGroupInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 	saver.Add( "Reinforcements", &groups );
 	return 0;
 }

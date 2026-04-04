@@ -62,7 +62,7 @@ int GetAABB_DIndex( int nAABB ) { return GetAABBIndex( mapAABB_DIndices, nAABB )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SetActiveMesh( const char *pszName )
 {
-	// посмотрим, а нет ли у нас уже такого меша
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	for ( int i=0; i != meshes.size(); ++i )
 	{
 		if ( meshes[i].szName == pszName )
@@ -121,9 +121,13 @@ struct SMeshesLessFunctional
 {
 	bool operator()( const SMeshFormat &m1, const SMeshFormat &m2 ) const { return m1.nIndex < m2.nIndex; }
 };
+struct IsSlash {
+    bool operator()(char c) const { return c == '/'; }
+};
+
 bool SaveModel( std::string &szFileName )
 {
-	std::replace_if( szFileName.begin(), szFileName.end(), std::bind2nd( std::equal_to<char>(), '/' ), '\\' );
+	std::replace_if( szFileName.begin(), szFileName.end(), IsSlash(), '\\' );
 	// check for extension alerady exist and add it
 	int nPos = szFileName.rfind( '.' );
 	if ( nPos != std::string::npos )
@@ -134,7 +138,7 @@ bool SaveModel( std::string &szFileName )
 	else
 		szFileName += ".mod";
 	//
-	CPtr<IDataStream> pStream = CreateFileStream( szFileName.c_str(), STREAM_ACCESS_WRITE );
+	CPtr<IDataStream> pStream( CreateFileStream( szFileName.c_str(), STREAM_ACCESS_WRITE ) );
 	if ( pStream == 0 )
 	{
 		fprintf( stderr, "can't create file \"%s\" to write model\n", szFileName.c_str() );
@@ -143,7 +147,7 @@ bool SaveModel( std::string &szFileName )
 	//
 	// sort meshes by index
 	std::sort( meshes.begin(), meshes.end(), SMeshesLessFunctional() );
-	// вычислить для каждого меша miniball и AABB
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ miniball пїЅ AABB
 	using namespace MiniBall;
 	for ( std::vector<SMeshFormat>::iterator it = meshes.begin(); it != meshes.end(); ++it )
 	{
@@ -181,7 +185,7 @@ bool SaveModel( std::string &szFileName )
 		*/
 	}
 	//
-	CPtr<IStructureSaver> pSaver = CreateStructureSaver( pStream, IStructureSaver::WRITE );
+	CPtr<IStructureSaver> pSaver( CreateStructureSaver( pStream, IStructureSaver::WRITE ) );
 	CSaverAccessor saver = pSaver;
 	saver.Add( 1, &skeleton );
 	saver.Add( 2, &meshes );

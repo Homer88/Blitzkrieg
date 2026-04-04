@@ -6,6 +6,7 @@
 #include "BugSlayer.h"
 // The project internal header file.
 #include "Internal.h"
+#define POINTER_64 __ptr64
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 HMODULE* STDCALL AllocAndFillProcessModuleList( HANDLE hHeap, LPUINT puiCount )
 {

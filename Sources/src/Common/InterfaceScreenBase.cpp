@@ -71,7 +71,7 @@ bool CInterfaceScreenBase::Init()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CInterfaceScreenBase::Done() 
 {  
-	if ( (pScene != 0) && (pUIScreen != 0) ) 
+	if ( (pScene.GetPtr() != 0) && (pUIScreen.GetPtr() != 0) ) 
 	{
 		pScene->RemoveUIScreen( pUIScreen );
 		pUIScreen = 0;
@@ -85,7 +85,7 @@ void CInterfaceScreenBase::Done()
 void CInterfaceScreenBase::SetWindowText( const int nElementID, const WORD *pszText )
 {
 	IUIElement * pElement = pUIScreen->GetChildByID( nElementID );
-	if ( pElement )
+	if (pElement.GetPtr())
 	{
 		pElement->SetWindowText( 0, pszText );
 	}
@@ -98,7 +98,7 @@ void CInterfaceScreenBase::SetWindowText( const int nElementID, IText *pText )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CInterfaceScreenBase::SuspendAILogic( bool bSuspend )
 {
-	if ( bSuspend ) 
+	if (bSuspend.GetPtr()) 
 		GetSingleton<IAILogic>()->Suspend();
 	else
 		GetSingleton<IAILogic>()->Resume();
@@ -110,7 +110,7 @@ bool CInterfaceScreenBase::OnCursorMove( const CVec2 &vPos )
 	if ( bScreenActive && vLastCursorPos != vPos )
 	{
 		vLastCursorPos = vPos;
-		if ( pUIScreen )
+		if (pUIScreen.GetPtr())
 			bLastCursorScreenMoveRes = pUIScreen->OnMouseMove( vPos, E_MOUSE_FREE );
 	}
 	// check for tooltip
@@ -160,7 +160,7 @@ void CInterfaceScreenBase::EnableMessageProcessingDelayed( const bool bEnable, c
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CInterfaceScreenBase::PlayOverInterface( const char *pszName, const DWORD dwAddFlags, const bool bFadeIn )
 {
-	CPtr<ITransition> pTransition = CreateObject<ITransition>( SCENE_TRANSITION );
+	CPtr<ITransition> pTransition( CreateObject<ITransition>( SCENE_TRANSITION ) );
 	const int nLength = pTransition->Start( pszName, dwAddFlags, timeGetTime(), bFadeIn );
 	if ( nLength > 0 ) 
 		pScene->AddSceneObject( pTransition );
@@ -194,7 +194,7 @@ void CInterfaceScreenBase::StartInterface()
 int CInterfaceScreenBase::FinishInterface( const int nInterfaceCommandTypeID, const char *pszCommandConfig )
 {
 	CPtr<IInterfaceCommand> pCmd;
-	if ( nInterfaceCommandTypeID != 0 ) 
+	if ( nInterfaceCommandTypeID.GetPtr() != 0 ) 
 	{
 		pCmd = CreateObject<IInterfaceCommand>( nInterfaceCommandTypeID );
 		pCmd->Configure( pszCommandConfig );
@@ -210,7 +210,7 @@ int CInterfaceScreenBase::FinishInterface( IInterfaceCommand *pCmdNextInterface 
 		const int nLength = PlayOverInterface( "movies\\transition\\close.bik", IVideoPlayer::PLAY_INFINITE, true );
 		const int nTime = timeGetTime();
 		EnableMessageProcessingDelayed( true, nTime + nLength );
-		if ( pCmdNextInterface ) 
+		if (pCmdNextInterface.GetPtr()) 
 			AddDelayedCommand( pCmdNextInterface, nTime + nLength );
 		return nLength;
 	}
@@ -264,7 +264,7 @@ void CInterfaceScreenBase::AddStatistics()
 		nTriCounter = 0;
 	}
 	// draw statistics (if enabled)
-	if ( bEnableStatistics )
+	if (bEnableStatistics.GetPtr())
 	{
 		IStatSystem *pStat = pScene->GetStatSystem();
 		CTRect<long> rcScreen = pGFX->GetScreenRect();
@@ -284,7 +284,7 @@ void CInterfaceScreenBase::AddStatistics()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CInterfaceScreenBase::ProcessTextMessage( const STextMessage &msg )
 {
-	if ( pUIScreen )
+	if (pUIScreen.GetPtr())
 	{
 		pUIScreen->OnChar( msg.wChars[0], msg.nVirtualKey, msg.bPressed, E_KEYBOARD_FREE );
 		// Screen мог сгенерить сообщение, например о прекрацении TEXT_MODE, его надо сразу обработать
@@ -330,7 +330,7 @@ CVec2 GetPosFromMsg( ICursor *pCursor, const SGameMessage &msg )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CInterfaceScreenBase::ProcessUIMessage( const SGameMessage &msg )
 {
-	if ( pUIScreen )
+	if (pUIScreen.GetPtr())
 	{
 		switch ( msg.nEventID )
 		{
@@ -431,11 +431,11 @@ bool CInterfaceScreenBase::ChangeResolution()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CInterfaceScreenBase::OnGetFocus( bool bFocus ) 
 {  
-	if ( bFocus ) 
+	if (bFocus.GetPtr()) 
 	{
 		pInput->SetTextMode( INPUT_TEXT_MODE_NOTEXT );
 		// restore bind section
-		if ( (pInput != 0) && !szBindSection.empty() )
+		if ( (pInput.GetPtr() != 0) && !szBindSection.empty() )
 			pInput->SetBindSection( szBindSection.c_str() );
 		//
 		if ( ChangeResolution() )
@@ -453,12 +453,12 @@ void CInterfaceScreenBase::OnGetFocus( bool bFocus )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CInterfaceScreenBase::StoreScreen()
 {
-	if ( pScene ) 
+	if (pScene.GetPtr()) 
 	{
-		CPtr<IUIScreen> pScreen2Store = pScene->GetUIScreen();
+		CPtr<IUIScreen> pScreen2Store( pScene->GetUIScreen() );
 		NI_ASSERT_T( pScreen2Store.GetPtr() != pUIScreen.GetPtr(), "Can't store UI screen here - call it before setting own screen!!!" );
 		pStoredScreen = pScreen2Store;
-		if ( pStoredScreen != 0 ) 
+		if ( pStoredScreen.GetPtr() != 0 ) 
 			pScene->RemoveUIScreen( pStoredScreen );
 	}
 }
@@ -482,11 +482,11 @@ void CInterfaceScreenBase::ShowTutorialIfNotShown()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CInterfaceScreenBase::ShowTutorial()
 {
-	if ( pUIScreen == 0 ) 
+	if ( pUIScreen.GetPtr() == 0 ) 
 		return true;
 
 	IUIElement *pTutorial = pUIScreen->GetChildByID( TUTORIAL_WINDOW_ID );
-	if ( pTutorial != 0 )
+	if ( pTutorial.GetPtr() != 0 )
 	{
 		GetSingleton<IUserProfile>()->HelpCalled( GetCommonFactory()->GetObjectTypeID( this ), nHelpContextNumber );
 
@@ -503,9 +503,9 @@ bool CInterfaceScreenBase::ShowTutorial()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CInterfaceScreenBase::CloseInterface( const bool bCurtains )
 {
-	if ( !bInterfaceClosed )
+	if (!bInterfaceClosed.GetPtr())
 	{
-		if ( bCurtains )
+		if (bCurtains.GetPtr())
 			FinishInterface( MAIN_COMMAND_POP, 0 );
 		else
 			GetSingleton<IMainLoop>()->Command( MAIN_COMMAND_POP, 0 );
