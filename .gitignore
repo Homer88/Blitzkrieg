@@ -25,3 +25,7 @@ Sources/src/build_output.txt
 /Sources/src/Net/build
 /Sources/src/Image/build
 /Sources/src/spcomp/build
+/Sources/src/Input/build
+/Sources/src/libpng/build
+/Sources/src/MapEditor/build/.vs
+/Sources/src/MapEditor/build

@@ -1,7 +1,7 @@
 # LuaLib - Lua библиотека
 # Без зависимостей
 
-FILE(GLOB LUALIB_SOURCES "*.c")
+FILE(GLOB LUALIB_SOURCES "*.cpp")
 FILE(GLOB LUALIB_HEADERS "*.h")
 
 add_library(LuaLib STATIC

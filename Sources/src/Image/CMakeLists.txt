@@ -17,10 +17,11 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/../BugSlay
     ${CMAKE_CURRENT_SOURCE_DIR}/../Misc
     ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${CMAKE_SOURCE_DIR}/../sdk/S3TC
 )
 
-target_link_libraries(Image 
-    libpng
+target_link_libraries(Image
+    LibPng
     zlib
     BugSlay
     Misc

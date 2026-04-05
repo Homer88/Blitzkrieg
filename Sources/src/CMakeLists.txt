@@ -76,22 +76,22 @@ add_subdirectory(Formats)
 add_subdirectory(Common)
 add_subdirectory(GameSpy)
 add_subdirectory(LuaLib)
-# add_subdirectory(RandomMapGen)   # Зависит от Image (пока нет CMakeLists.txt)
+add_subdirectory(RandomMapGen)   
 add_subdirectory(StreamIOLib)
-add_subdirectory(Image)          # Нет CMakeLists.txt
+add_subdirectory(Image)
 
 # === БИБЛИОТЕКИ ВТОРОГО УРОВНЯ ===
 add_subdirectory(StreamIO)
 # add_subdirectory(Input)          # Нет CMakeLists.txt
 # add_subdirectory(Anim)           # Зависит от Image
 # add_subdirectory(GFX)            # Зависит от Image
- add_subdirectory(SFX)            # Требует FMOD
-add_subdirectory(Net)
+add_subdirectory(SFX)            # Требует FMOD (отключено, т.к. нет fmod.h)
+add_subdirectory(Net)            
 add_subdirectory(scl)
 
 # === БИБЛИОТЕКИ ТРЕТЬЕГО УРОВНЯ ===
-# add_subdirectory(Scene)          # Зависит от Image
-# add_subdirectory(AILogic)        # Зависит от Image
+#add_subdirectory(Scene)          # Зависит от Image
+add_subdirectory(AILogic)        # Зависит от Image
 # add_subdirectory(ELK)            # Нет CMakeLists.txt
 # add_subdirectory(GameTT)         # Нет CMakeLists.txt
 
@@ -110,10 +110,10 @@ add_subdirectory(AutoRun)
 # add_subdirectory(Game)           # Нет CMakeLists.txt
 # add_subdirectory(imagedefrag)    # Нет CMakeLists.txt
 # add_subdirectory(InterfaceSystemTest) # Нет CMakeLists.txt
-# add_subdirectory(MapEditor)      # Зависит от Image
+#add_subdirectory(MapEditor)      # Зависит от Image
 # add_subdirectory(PlanePathTest)  # Нет CMakeLists.txt
-add_subdirectory(soundverifycation) # Требует FMOD
-add_subdirectory(spcomp)
+# add_subdirectory(soundverifycation) # Требует FMOD (и конфликт имен Misc)
+# add_subdirectory(spcomp) # Ошибки компиляции (CTreeAccessor)
 
 # === УТИЛИТЫ ===
 add_subdirectory(Tools)          # Зависит от BugSlay

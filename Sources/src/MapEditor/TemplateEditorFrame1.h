@@ -69,7 +69,7 @@ public:
 	
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver  (& ss);
 		
 		saver.Add( "GameParameters", &szGameParameters );
 		saver.Add( "SaveAsBZM", &bSaveAsBZM );

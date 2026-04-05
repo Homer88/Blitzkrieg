@@ -1,18 +1,18 @@
 # Минимальная версия CMake
-cmake_minimum_required(VERSION 2.4)
+cmake_minimum_required(VERSION 3.5)
 
 # Название проекта
-project(Misc)
+project(Scene)
 
 # Установка стандарта C++
-set(CMAKE_CXX_STANDARD 99)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_STANDARD 98)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-FILE(GLOB MISC_SOURCE "*.cpp")
-FILE(GLOB MISC_HEADERS "*.h")
+FILE(GLOB SCENE_SOURCE "*.cpp")
+FILE(GLOB SCENE_HEADERS "*.h")
 
 add_definitions( -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS)
 add_definitions( -D_WIN32_WINNT=0x0501)
 
-add_library(Misc STATIC ${MISC_HEADERS} ${MISC_SOURCE})
+add_library(Scene STATIC ${SCENE_HEADERS} ${SCENE_SOURCE})
 
