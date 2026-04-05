@@ -1,116 +1,160 @@
 #include "StdAfx.h"
-
 #include "SampleSounds.h"
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include "SoundEngine.h"
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ************************************************************************************************************************ //
-// **
-// ** base shared sound sample resource
-// **
-// **
-// **
-// ************************************************************************************************************************ //
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CSoundSample::SwapData( ISharedResource *pResource )
+extern FMOD::System* g_pFMODSystem;
+
+// ========================================================================
+// CSoundSample
+// ========================================================================
+bool CSoundSample::Load(const bool bPreLoad)
 {
-	CSoundSample *pRes = dynamic_cast<CSoundSample*>( pResource );
-	NI_ASSERT_TF( pRes != 0, NStr::Format("shared resource is not a \"%s\"", typeid(*this).name()), return );
-	//
-	std::swap( sample, pRes->sample );
+    if (m_pSound != nullptr || bPreLoad) return true;
+
+    std::string szStreamName = GetSharedResourceFullName();
+    CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream(szStreamName.c_str(), STREAM_ACCESS_READ);
+    if (pStream == nullptr) return false;
+
+    int nSize = pStream->GetSize();
+    std::vector<char> buffer(nSize);
+    if (pStream->Read(&buffer[0], nSize) != nSize) return false;
+
+    FMOD_CREATESOUNDEXINFO exinfo = { 0 };
+    exinfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+    exinfo.length = nSize;
+
+    FMOD_MODE mode = FMOD_OPENMEMORY_POINT | FMOD_CREATECOMPRESSEDSAMPLE | GetMode();
+    if (m_bLooped) mode |= FMOD_LOOP_NORMAL;
+    else mode |= FMOD_LOOP_OFF;
+
+    FMOD::Sound* pSound = nullptr;
+    FMOD_RESULT res = g_pFMODSystem->createSound(&buffer[0], mode, &exinfo, &pSound);
+    if (res != FMOD_OK) return false;
+
+    SetSound(pSound);
+    return true;
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CSoundSample::SetLoop( bool bEnable ) 
-{ 
-	bLooped = bEnable; 
-	if ( sample )
-		FSOUND_Sample_SetLoopMode( sample, bEnable ? FSOUND_LOOP_NORMAL : FSOUND_LOOP_OFF ); 
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CSoundSample::Load( const bool bPreLoad )
+
+void CSoundSample::SetLoop(bool bEnable)
 {
-	if ( (sample != 0) || bPreLoad ) 
-		return true;
-	const std::string szStreamName = GetSharedResourceFullName();
-	//
-	CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream( szStreamName.c_str(), STREAM_ACCESS_READ );
-	if ( pStream == 0 )
-		return false;
-	const int nSize = pStream->GetSize();
-	std::vector<char> buffer( nSize );
-	const int nCheck = pStream->Read( &(buffer[0]), nSize );
-	//
-	NI_ASSERT_SLOW_TF( nCheck == nSize, "Readed size doesn't match requested", return false );
-	FSOUND_SAMPLE *sample = FSOUND_Sample_Load( FSOUND_UNMANAGED, &(buffer[0]), GetMode() | FSOUND_LOADMEMORY, nSize );
-	if ( sample == 0 )
-		return false;
-	SetSample( sample );
-	return true;
+    m_bLooped = bEnable;
+    if (m_pSound)
+    {
+        FMOD_MODE mode;
+        m_pSound->getMode(&mode);
+        if (bEnable) mode |= FMOD_LOOP_NORMAL;
+        else mode &= ~FMOD_LOOP_NORMAL;
+        m_pSound->setMode(mode);
+    }
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ************************************************************************************************************************ //
-// **
-// ** sounds...
-// **
-// **
-// **
-// ************************************************************************************************************************ //
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int CSound2D::Visit( interface ISFXVisitor *pVisitor ) 
-{ 
-	return pVisitor->VisitSound2D( this ); 
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int CSound3D::Visit( interface ISFXVisitor *pVisitor ) 
-{ 
-	return pVisitor->VisitSound3D( this, vPos ); 
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CSound3D::SetPosition( const CVec3 &vPos3 )
+
+void CSoundSample::SwapData(ISharedResource* pResource)
 {
-	// FMOD treats +X as right, +Y as up, and +Z as forwards
-	CVec3 vLocalPos( vPos3.x, vPos3.z, vPos3.y );
-	if ( IsPlaying() )
-	{
-		if ( !bDopplerFlag )
-			FSOUND_3D_SetAttributes( GetChannel(), (float *) vLocalPos.m, 0 );			//0 потому что мы не используем доплеровский эффект
-		else
-		{
-			// вычислим скорость
-			/*
-			NTimer::STime time = GetSingleton<IGameTimer>()->GetGameTime();
-			float fSpeed = sqrt( (vPos3.x-vLastPos.x)*(vPos3.x-vLastPos.x) + (vPos3.y-vLastPos.y)*(vPos3.y-vLastPos.y) + (vPos3.z-vLastPos.z)*(vPos3.z-vLastPos.z) );
-			float fDeltaTime = (float) (time - lastUpdateTime) / 1000.0f;		//delta t in seconds
-			CVec3 vSpeed;
-			vSpeed.x = (vPos3.x - vLastPos.x) / fDeltaTime;
-			vSpeed.y = (vPos3.y - vLastPos.y) / fDeltaTime;
-			vSpeed.z = (vPos3.z - vLastPos.z) / fDeltaTime;
-			vLastPos = vPos3;
-			*/
-			FSOUND_3D_SetAttributes( GetChannel(), (float *) vLocalPos.m, 0 );
-		}
-	}
-	//
-	vPos = vLocalPos;
+    CSoundSample* pRes = dynamic_cast<CSoundSample*>(pResource);
+    NI_ASSERT_TF(pRes != 0, NStr::Format("shared resource is not a \"%s\"", typeid(*this).name()), return);
+    std::swap(m_pSound, pRes->m_pSound);
+    std::swap(m_nMode, pRes->m_nMode);
+    std::swap(m_bLooped, pRes->m_bLooped);
+    std::swap(m_fMinDistance, pRes->m_fMinDistance);
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ========================================================================
+// CBaseSound
+// ========================================================================
+void CBaseSound::SetLooping(bool bEnable, int nStart, int nEnd)
+{
+    if (m_pSample && m_pSample->GetInternalSound())
+    {
+        FMOD::Sound* pSound = m_pSample->GetInternalSound();
+        FMOD_MODE mode;
+        pSound->getMode(&mode);
+        if (bEnable) mode |= FMOD_LOOP_NORMAL;
+        else mode &= ~FMOD_LOOP_NORMAL;
+        pSound->setMode(mode);
+        if (nStart >= 0 && nEnd >= 0)
+            pSound->setLoopPoints(nStart, FMOD_TIMEUNIT_PCM, nEnd, FMOD_TIMEUNIT_PCM);
+    }
+}
+
+unsigned int CBaseSound::GetLenght()
+{
+    if (!m_pSample) return 0;
+    FMOD::Sound* pSound = m_pSample->GetInternalSound();
+    if (!pSound) return 0;
+    unsigned int length = 0;
+    pSound->getLength(&length, FMOD_TIMEUNIT_PCM);
+    return length;
+}
+
+unsigned int CBaseSound::GetSampleRate()
+{
+    if (!m_pSample) return 0;
+    FMOD::Sound* pSound = m_pSample->GetInternalSound();
+    if (!pSound) return 0;
+    float freq = 0;
+    int priority = 0;
+    pSound->getDefaults(&freq, &priority);
+    return static_cast<int>(freq);
+}
+
+// ========================================================================
+// CSound2D
+// ========================================================================
+int CSound2D::Play()
+{
+    if (!m_pSample) return -1;
+    FMOD::Sound* pSound = m_pSample->GetInternalSound();
+    if (!pSound) return -1;
+
+    FMOD::Channel* pChannel = nullptr;
+    FMOD_RESULT res = g_pFMODSystem->playSound(pSound, nullptr, true, &pChannel);
+    if (res != FMOD_OK) return -1;
+
+    pChannel->setVolume(m_fVolume);
+    pChannel->setPan(m_fPan);
+    pChannel->setPaused(false);
+
+    SetChannel(pChannel);
+    return 0;
+}
+
+int CSound2D::Visit(ISFXVisitor* pVisitor)
+{
+    return pVisitor->VisitSound2D(this);
+}
+
+// ========================================================================
+// CSound3D
+// ========================================================================
 int CSound3D::Play()
 {
-	FSOUND_SAMPLE *sample = GetSample()->GetInternalContainer();
-	int nChannel = -1;
-	if ( FSOUND_SAMPLE *sample = GetSample()->GetInternalContainer() )
-	{
-		//
-		//nChannel = FSOUND_PlaySound3DAttrib( FSOUND_FREE, sample, -1, -1, -1, vPos.m, 0 );
+    if (!m_pSample) return -1;
+    FMOD::Sound* pSound = m_pSample->GetInternalSound();
+    if (!pSound) return -1;
 
-		//nChannel = FSOUND_PlaySoundEx( FSOUND_FREE, sample, 0,	true );
-		//FSOUND_3D_SetAttributes( nChannel, vPos.m, 0 );
-		//FSOUND_SetPaused( nChannel, false );
-		nChannel = FSOUND_PlaySound( FSOUND_FREE, sample );
-		
-	}
-	SetChannel( nChannel );
-	return nChannel;
+    FMOD::Channel* pChannel = nullptr;
+    FMOD_RESULT res = g_pFMODSystem->playSound(pSound, nullptr, true, &pChannel);
+    if (res != FMOD_OK) return -1;
+
+    FMOD_VECTOR pos = { m_vPos.x, m_vPos.z, m_vPos.y };
+    pChannel->set3DAttributes(&pos, nullptr);
+    pChannel->setPaused(false);
+
+    SetChannel(pChannel);
+    return 0;
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void CSound3D::SetPosition(const CVec3& vPos3)
+{
+    m_vPos = vPos3;
+    if (IsPlaying())
+    {
+        FMOD_VECTOR pos = { vPos3.x, vPos3.z, vPos3.y };
+        m_pChannel->set3DAttributes(&pos, nullptr);
+    }
+}
+
+int CSound3D::Visit(ISFXVisitor* pVisitor)
+{
+    return pVisitor->VisitSound3D(this, m_vPos);
+}

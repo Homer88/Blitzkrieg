@@ -1,7 +1,3 @@
-#include <d3d8.h>
-#include <d3d8types.h>
-#include <d3d8caps.h>
-
 #include "..\Misc\Win32Helper.h"
 
 #include "GFX.h"

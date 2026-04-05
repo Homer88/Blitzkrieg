@@ -25,7 +25,7 @@ struct SBindsConfig
 		//
 		int operator&( IDataTree &ss )
 		{
-			CTreeAccessor saver = &ss;
+			CTreeAccessor saver( &ss );
 			saver.Add( "Control", &szControlName );
 			saver.Add( "Power", &fPower );
 			return 0;
@@ -47,7 +47,7 @@ struct SBindsConfig
 			//
 			int operator&( IDataTree &ss )
 			{
-				CTreeAccessor saver = &ss;
+				CTreeAccessor saver( &ss );
 				saver.Add( "Name", &szName );
 				saver.Add( "Type", &szBindType );
 				saver.Add( "Controls", &controls );
@@ -60,7 +60,7 @@ struct SBindsConfig
 		//
 		int operator&( IDataTree &ss )
 		{
-			CTreeAccessor saver = &ss;
+			CTreeAccessor saver( &ss );
 			saver.Add( "Name", &szName );
 			saver.Add( "Commands", &commands );
 			return 0;
@@ -75,7 +75,7 @@ struct SBindsConfig
 	void Clear() { powers.clear(); dblclks.clear(); syscmds.clear(); sections.clear(); }
 	int operator&( IDataTree &ss )
 	{
-		CTreeAccessor saver = &ss;
+		CTreeAccessor saver( &ss );
 		saver.Add( "Powers", &powers );
 		saver.Add( "DoubleClicks", &dblclks );
 		saver.Add( "SysCommands", &syscmds );

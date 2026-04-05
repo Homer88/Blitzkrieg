@@ -6,7 +6,7 @@ inline long Width( const RECT &rc ) { return rc.right - rc.left; }
 inline long Height( const RECT &rc ) { return rc.bottom - rc.top; }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//Вспомогательные структурки
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct SDirDesc
 {
@@ -59,20 +59,20 @@ RECT AnalyzeSubrect( const CImageAccessor &image, const RECT &rect )
 	return ret;
 }*/
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Serialize( CTreeAccessor *pFile, SDirDesc *pData )
+void Serialize( CTreeAccessor &file, SDirDesc &data )
 {
-	pFile->AddDataContainer( "seq", &pData->frames );
-	pFile->AddObject( "shift", &pData->ptFrameShift );
+	file.Add( "seq", &data.frames );
+	file.Add( "shift", &data.ptFrameShift );
 }
-void Serialize( CTreeAccessor *pFile, SAnimationDesc *pData )
+void Serialize( CTreeAccessor &file, SAnimationDesc &data )
 {
-	pFile->AddObject( "name", &pData->szName );
-	pFile->AddContainer( "dirs", &pData->dirs );
-	pFile->AddContainer( "frames", &pData->frames );
-	pFile->AddData( "frame_time", &pData->nFrameTime );
-	pFile->AddObject( "shift", &pData->ptFrameShift );
-	pFile->AddData( "speed", &pData->fSpeed );
-	pFile->AddData( "cycled", &pData->bCycled );
+	file.Add( "name", &data.szName );
+	file.Add( "dirs", &data.dirs );
+	file.Add( "frames", &data.frames );
+	file.Add( "frame_time", &data.nFrameTime );
+	file.Add( "shift", &data.ptFrameShift );
+	file.Add( "speed", &data.fSpeed );
+	file.Add( "cycled", &data.bCycled );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // spcomp.exe <sprite sequence dir> <output name>
@@ -102,7 +102,7 @@ int main( int argc, char *argv[] )
 	IImageProcessor *pIP = GetImageProcessor();
 	// read .ini file with animation description info
 	CPtr<IDataBase> pDB = OpenDataBase( szSpriteDir.c_str(), TABLE_ACCESS_READ );
-	CTableAccessor reg = pDB->OpenTable( "anims.txt", TABLE_ACCESS_READ );
+	CTableAccessor reg( pDB->OpenTable( "anims.txt", TABLE_ACCESS_READ ) );
 	std::vector<std::string> szSections;
 	reg.GetRowNames( szSections );
 	std::vector<SAnimationDesc> animdescs( szSections.size() );
@@ -150,17 +150,19 @@ int main( int argc, char *argv[] )
 	//
 	int nFirstFrame = 0, nLastFrame = 0;
 	SSpriteAnimationFormat animations;
+	std::map<std::string, int> animNameToIndex;
 	for ( int i=0; i<animdescs.size(); ++i )
 	{
 		SAnimationDesc &animdesc = animdescs[i];
-		SSpriteAnimationFormat::SSpriteAnimation *pAnimation = &( animations.animations[animdesc.szName] );
+		animNameToIndex[animdesc.szName] = i;
+		SSpriteAnimationFormat::SSpriteAnimation *pAnimation = &( animations.animations[i] );
 		pAnimation->fSpeed = animdesc.fSpeed;
 		pAnimation->bCycled = animdesc.bCycled;
 		pAnimation->dirs.resize( animdesc.dirs.size() );
 		pAnimation->nFrameTime = animdesc.nFrameTime;
 		for ( int j=0; j<pAnimation->dirs.size(); ++j )
 			pAnimation->dirs[j].frames = animdesc.dirs[j].frames;
-		// CRAP{ сейчас предполагаем что в анимации задействованы все кадры 
+		// CRAP{ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 
 		pAnimation->rects.resize( animdesc.frames.size() );
 		// CRAP}
 		for ( int j=0; j<pAnimation->rects.size(); ++j )
@@ -201,8 +203,8 @@ int main( int argc, char *argv[] )
 	for ( int i=0; i<animdescs.size(); ++i )
 	{
 		SAnimationDesc &animdesc = animdescs[i];
-		SSpriteAnimationFormat::SSpriteAnimation *pAnimation = &( animations.animations[animdesc.szName] );
-		NI_ASSERT_T( pAnimation->rects.size() == animdesc.nLastSprite - animdesc.nFirstSprite, NStr::Format("Not enought sprites for animation \"%s\"", animdesc.szName.c_str()) );
+		SSpriteAnimationFormat::SSpriteAnimation *pAnimation = &( animations.animations[i] );
+		NI_ASSERT_TF( pAnimation->rects.size() == animdesc.nLastSprite - animdesc.nFirstSprite, NStr::Format("Not enought sprites for animation \"%s\"", animdesc.szName.c_str()), );
 		for ( int j=0; j<pAnimation->rects.size(); ++j )
 		{
 			const RECT &rcSubRect = rects[ animdesc.nFirstSprite + j ];
@@ -224,8 +226,8 @@ int main( int argc, char *argv[] )
 	NI_ASSERT_TF( pStream != 0, NStr::Format("Can't write sprite animation data to the stream \"%s\"", szFileName.c_str()), return 0xDEAD );
 	{
 		CPtr<IStructureSaver> pSaver = CreateStructureSaver( pStream, IStructureSaver::WRITE );
-		CSaverAccessor saver = pSaver;
-		saver.AddObject( 1, &animations );
+		CSaverAccessor saver( pSaver );
+		saver.Add( 'S', &animations );
 	}
 	pStream = 0;
 	//

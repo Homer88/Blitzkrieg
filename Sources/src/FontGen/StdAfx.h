@@ -97,6 +97,10 @@ typedef unsigned __int64 QWORD;					// quadra word
 #include "..\StreamIO\SSHelper.h"				// strucutre saver helper classes
 #include "..\StreamIO\DTHelper.h"				// data tree helper classes
 
+// Image library headers
+#include "..\Image\Image.h"
+#include "..\Image\ImageProcessor.h"
+
 #include "..\Main\GameTimer.h"
 #include "..\Main\GameDB.h"
 // in the file 'Specific.h' one can define own project-specific includes

@@ -181,7 +181,7 @@ void CCombo::NotifyControlStateChanged( const bool bActivated, const DWORD time,
 		if ( nSuppressCounter == 0 ) 
 			NotifyBinds( bFormedLocal, time );
 	}
-	else if ( bFormedLocal && (nSuppressCounter == 0) )	// повторная активация с другим значением возможна только для 'rotational axis'
+	else if ( bFormedLocal && (nSuppressCounter == 0) )	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ 'rotational axis'
 		NotifyBinds( bFormedLocal, time, true );
 	bFormed = bFormedLocal;
 	//
@@ -553,7 +553,7 @@ void CInputBinder::Repair( IDataTree *pSS, const bool bToDefault )
 	const std::string szOldBindSection = szCurrentMapping;
 	SBindsConfig repairs;
 	{
-		CTreeAccessor saver = pSS;
+		CTreeAccessor saver( pSS );
 		saver.Add( "Binds", &repairs );
 	}
 	//
@@ -641,11 +641,11 @@ void CInputBinder::Repair( IDataTree *pSS, const bool bToDefault )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CInputBinder::SerializeConfig( IDataTree *pSS )
 {
-	if ( pSS == 0 ) 
+	if ( pSS == 0 )
 		return false;
 	//
-	CTreeAccessor saver = pSS;
-	if ( saver.IsReading() ) 
+	CTreeAccessor saver( pSS );
+	if ( saver.IsReading() )
 		config.Clear();
 	saver.Add( "Binds", &config );
 	if ( saver.IsReading() ) 

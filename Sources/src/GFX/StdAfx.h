@@ -3,6 +3,20 @@
 //      are changed infrequently
 //
 
+// MUST include windows.h BEFORE anything else that might define conflicting types
+#ifndef _WINDOWS_
+// Fix for POINTER_64 not defined issue in newer Windows SDK
+#ifndef POINTER_64
+#if defined(_WIN64)
+#define POINTER_64 __ptr64
+#else
+#define POINTER_64
+#endif
+#endif
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
 #if !defined(AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_)
 #define AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_
 
@@ -16,7 +30,6 @@
 // #define _STLP_DEBUG_MESSAGE 1
 //
 #ifndef __AFX__
-#define WIN32_LEAN_AND_MEAN							// Exclude rarely-used stuff from Windows headers
 ////////// STLPort: #include "stl_user_config.h"
 ////////// STLPort: #include <stl/_config.h>
 
@@ -59,13 +72,21 @@
 //
 typedef __int64 int64;									// due to lack of 'long long' type support
 typedef unsigned __int64 QWORD;					// quadra word
-#define for if(false); else for					// to achive standard variable scope resolving, declared inside 'for'
 #define STDCALL __stdcall								// to use with interface function calls
 // define 'interface' keyword
 #ifndef interface
 #define interface struct
 #endif // interface
-// define pragma once
+// define ASSERT for easy access and common usage. in the non-_DEBUG mode turn it off
+#ifdef _DEBUG
+#ifndef ASSERT
+#define ASSERT( x ) assert( x )
+#endif // ASSERT
+#else
+#ifndef ASSERT
+#define ASSERT( x )
+#endif // ASSERT
+#endif // _DEBUG
 #if _MSC_VER > 1000
 #define ONCE once
 #else
@@ -96,6 +117,11 @@ typedef unsigned __int64 QWORD;					// quadra word
 #include "..\StreamIO\StructureSaver.h"	// strucutre saver base interfaces
 #include "..\StreamIO\SSHelper.h"				// strucutre saver helper classes
 #include "..\StreamIO\DTHelper.h"				// data tree helper classes
+
+// DirectX 8 headers (нужны до Specific.h)
+#include <d3d8.h>
+#include <d3d8types.h>
+#include <d3d8caps.h>
 
 #include "..\Main\GameTimer.h"
 #include "..\Main\GameDB.h"

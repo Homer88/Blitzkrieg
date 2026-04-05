@@ -1,15 +1,45 @@
 #ifndef __BASICSHARE_H__
 #define __BASICSHARE_H__
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma ONCE
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template < class TKey, class TValue, int NClassTypeID, class THash = std::hash<TKey> >
+
+// Fix for std::hash_map bucket_size requirement in modern MSVC
+template<typename T>
+struct SBlitzHash
+{
+	enum { bucket_size = 4 };
+	
+	size_t operator()(const T& val) const
+	{
+		return std::hash<T>()(val);
+	}
+	
+	bool operator()(const T& a, const T& b) const
+	{
+		return a == b;
+	}
+};
+
+// Specialization for std::string
+template<>
+struct SBlitzHash<std::string>
+{
+	enum { bucket_size = 4 };
+	size_t operator()(const std::string& val) const
+	{
+		return std::hash<std::string>()(val);
+	}
+	bool operator()(const std::string& a, const std::string& b) const
+	{
+		return a == b;
+	}
+};
+
+template < class TKey, class TValue, int NClassTypeID, class THash = SBlitzHash<TKey> >
 class CBasicShare
 {
-public:	
+public:
 	typedef std::hash_map< TKey, CObj<TValue>, THash > CDataHash;
-	typedef CDataHash::iterator iterator;
-	typedef CDataHash::const_iterator const_iterator;
+	typedef typename CDataHash::iterator iterator;
+	typedef typename CDataHash::const_iterator const_iterator;
 private:
 	int nID;															// data identifier for this share
 	CDataHash data;												// data

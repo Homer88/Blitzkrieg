@@ -1,160 +1,164 @@
 #ifndef __SAMPLESOUNDS_H__
 #define __SAMPLESOUNDS_H__
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ************************************************************************************************************************ //
-// **
-// ** base shared sound sample resource
-// **
-// **
-// **
-// ************************************************************************************************************************ //
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include "fmod.hpp"
+#include "SFX.h"
+
+// ========================================================================
+// Базовый класс для сэмпла (звукового ресурса)
+// ========================================================================
 class CSoundSample : public ISharedResource
 {
-	OBJECT_NORMAL_METHODS( CSoundSample );
-	SHARED_RESOURCE_METHODS( nRefData.a, "Sound" );
-	//
-	FSOUND_SAMPLE *sample;								// FMOD sound sample
-	int nMode;														// FMOD sound sample mode
-	bool bLooped;													// is this sample looped ?
-	float fMinDistance;										// minimal distance
-	//
-	void Close() { if ( sample ) FSOUND_Sample_Free( sample ); sample = 0; }
+    OBJECT_NORMAL_METHODS(CSoundSample);
+    SHARED_RESOURCE_METHODS(nRefData.a, "Sound");
+
+    FMOD::Sound* m_pSound;
+    FMOD_MODE      m_nMode;
+    bool           m_bLooped;
+    float          m_fMinDistance;
+
+    void Close() { if (m_pSound) m_pSound->release(); m_pSound = nullptr; }
+
 public:
-	CSoundSample() : sample( 0 ), nMode( 0 ), fMinDistance( 45 ) {  }
-	~CSoundSample() { Close(); }
-	//
-	void SetSample( FSOUND_SAMPLE *_sample ) 
-	{ 
-		Close(); 
-		sample = _sample; 
-		if ( sample )
-			FSOUND_Sample_SetMinMaxDistance( sample, fMinDistance, 1000000000.0f );
-	}
-	int GetMode() const { return nMode; }
-	bool IsLooped() const { return bLooped; }
-	FSOUND_SAMPLE* GetInternalContainer() { Load(); return sample; }
-	//
-	void Set3D( bool b3D ) { nMode = b3D ? FSOUND_HW3D : FSOUND_2D; }
-	void SetLoop( bool bEnable );
-	void SetMinDistance( float _fMinDistance ) 
-	{ 
-		fMinDistance = _fMinDistance;
-		if ( sample )
-			FSOUND_Sample_SetMinMaxDistance( sample, fMinDistance, 1000000000.0f );
-	}
-	//
-	void STDCALL SwapData( ISharedResource *pResource );
-	// internal container clearing
-	void STDCALL ClearInternalContainer() {  }
-	bool STDCALL Load( const bool bPreLoad = false );
+    CSoundSample() : m_pSound(nullptr), m_nMode(FMOD_2D), m_bLooped(false), m_fMinDistance(45.0f) {}
+    ~CSoundSample() { Close(); }
+
+    void SetSound(FMOD::Sound* pSound)
+    {
+        Close();
+        m_pSound = pSound;
+        if (m_pSound)
+            m_pSound->set3DMinMaxDistance(m_fMinDistance, 1000000000.0f);
+    }
+
+    FMOD_MODE GetMode() const { return m_nMode; }
+    bool IsLooped() const { return m_bLooped; }
+    FMOD::Sound* GetInternalSound() { Load(); return m_pSound; }
+
+    void Set3D(bool b3D) { m_nMode = b3D ? (FMOD_3D | FMOD_3D_WORLDRELATIVE) : FMOD_2D; }
+    void SetLoop(bool bEnable);
+    void SetMinDistance(float fMinDistance)
+    {
+        m_fMinDistance = fMinDistance;
+        if (m_pSound)
+            m_pSound->set3DMinMaxDistance(fMinDistance, 1000000000.0f);
+    }
+
+    void STDCALL SwapData(ISharedResource* pResource) override;
+    void STDCALL ClearInternalContainer() override {}
+    bool STDCALL Load(const bool bPreLoad = false) override;
 };
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ************************************************************************************************************************ //
-// **
-// ** other sounds
-// **
-// **
-// **
-// ************************************************************************************************************************ //
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ========================================================================
+// Базовый класс для звука (воспроизводимый экземпляр)
+// ========================================================================
 class CBaseSound : public ISound
 {
-	DECLARE_SERIALIZE;
-	//
-	CPtr<CSoundSample> pSample;
-	int nChannel;
+    DECLARE_SERIALIZE;
+
+protected:
+    CPtr<CSoundSample> m_pSample;
+    FMOD::Channel* m_pChannel;
+    float              m_fCurrentVolume;
+    float              m_fCurrentPan;
+
 public:
-	CBaseSound() : nChannel( -1 ) {  }
-	virtual ~CBaseSound() {  }
-	//
-	void SetSample( CSoundSample *_pSample ) { pSample = _pSample; }
-	CSoundSample* GetSample() { return pSample; }
-	int GetChannel() const { return nChannel; }
-	void SetChannel( int _nChannel ) { nChannel = _nChannel; }
-	//
-	bool IsPlaying() 
-	{ 
-		if ( (nChannel != -1) && FSOUND_IsPlaying(nChannel) )
-			return FSOUND_GetCurrentSample( nChannel ) == pSample->GetInternalContainer();
-		else
-			return false;
-	}
-	// distance
-	void STDCALL SetMinDistance( float fDistance ) { pSample->SetMinDistance( fDistance ); }
-	// looping
-	void STDCALL SetLooping( bool bEnable, int nStart = -1, int nEnd = -1 )
-	{
-		FSOUND_Sample_SetLoopMode( pSample->GetInternalContainer(), bEnable ? FSOUND_LOOP_NORMAL : FSOUND_LOOP_OFF );
-		if ( (nStart != -1) && (nEnd != -1) )
-			FSOUND_Sample_SetLoopPoints( pSample->GetInternalContainer(), nStart, nEnd );
-	}
+    CBaseSound() : m_pChannel(nullptr), m_fCurrentVolume(1.0f), m_fCurrentPan(0.0f) {}
+    virtual ~CBaseSound() { Stop(); }
 
-	unsigned int STDCALL GetLenght()
-	{
-		return FSOUND_Sample_GetLength( pSample->GetInternalContainer() );
-	}
-	unsigned int STDCALL GetSampleRate()
-	{
-		int freq = 44000;
-		FSOUND_Sample_GetDefaults( pSample->GetInternalContainer(), &freq, 0, 0, 0 );
-		return freq;
-	}
+    void SetSample(CSoundSample* pSample) { m_pSample = pSample; }
+    CSoundSample* GetSample() const { return m_pSample; }
+    FMOD::Channel* GetChannel() const { return m_pChannel; }
+    void SetChannel(FMOD::Channel* pChannel) { m_pChannel = pChannel; }
 
-	void STDCALL SetVolume( float nVolume ) {  }
-	float STDCALL GetVolume() const { return 1.0f; }
-	void STDCALL SetPan( float nPan ) {  }
-	float STDCALL GetPan() const { return 0.0f; }
+    void Stop()
+    {
+        if (m_pChannel)
+        {
+            m_pChannel->stop();
+            m_pChannel = nullptr;
+        }
+    }
+    bool IsPlaying()
+    {
+        if (!m_pChannel) return false;
+        bool playing = false;
+        m_pChannel->isPlaying(&playing);
+        return playing;
+    }
+
+    // Реализация ISound
+    virtual int STDCALL Visit(ISFXVisitor* pVisitor) override = 0;
+    virtual void STDCALL SetMinDistance(float fDistance) override { if (m_pSample) m_pSample->SetMinDistance(fDistance); }
+    virtual void STDCALL SetLooping(bool bEnable, int nStart = -1, int nEnd = -1) override;
+    virtual unsigned int STDCALL GetLenght() override;
+    virtual unsigned int STDCALL GetSampleRate() override;
+
+    virtual void STDCALL SetVolume(float nVolume) override
+    {
+        m_fCurrentVolume = nVolume;
+        if (m_pChannel) m_pChannel->setVolume(nVolume);
+    }
+    virtual float STDCALL GetVolume() const override { return m_fCurrentVolume; }
+
+    virtual void STDCALL SetPan(float nPan) override
+    {
+        m_fCurrentPan = nPan;
+        if (m_pChannel) m_pChannel->setPan(nPan);
+    }
+    virtual float STDCALL GetPan() const override { return m_fCurrentPan; }
+
+    // Метод воспроизведения (чисто виртуальный, реализуется в наследниках)
+    virtual int STDCALL Play() = 0;
 };
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ========================================================================
+// 2D звук
+// ========================================================================
 class CSound2D : public CBaseSound
 {
-	OBJECT_NORMAL_METHODS( CSound2D );
-	DECLARE_SERIALIZE;
-	//
-	float fVolume;
-	float fPan;
+    OBJECT_NORMAL_METHODS(CSound2D);
+    DECLARE_SERIALIZE;
+
+    float m_fVolume;
+    float m_fPan;
+
 public:
-	CSound2D() : fVolume( 1.0f ), fPan( 0.0f ) {  }
-	virtual ~CSound2D() {  }
-	// visiting
-	int STDCALL Visit( interface ISFXVisitor *pVisitor );
-	//
-	int STDCALL Play() 
-	{ 
-		int nChannel = FSOUND_PlaySound( FSOUND_FREE, GetSample()->GetInternalContainer() );
-		SetChannel( nChannel );
-		return nChannel;
-	}
-	void STDCALL SetPosition( const CVec3 &vPos3 ) {  }
-	const CVec3 STDCALL GetPosition() { return VNULL3; }
+    CSound2D() : m_fVolume(1.0f), m_fPan(0.0f) {}
+    virtual ~CSound2D() {}
 
-	void STDCALL SetVolume( float _fVolume ) { fVolume = _fVolume; }
-	float STDCALL GetVolume() const { return fVolume; }
-	void STDCALL SetPan( float _fPan ) { fPan = _fPan; }
-	float STDCALL GetPan() const { return fPan; }
-
+    virtual int STDCALL Visit(ISFXVisitor* pVisitor) override;
+    virtual int STDCALL Play() override;   // переопределяем
+    virtual void STDCALL SetPosition(const CVec3& vPos3) override {}
+    virtual const CVec3 STDCALL GetPosition() override { return VNULL3; }
+    virtual void STDCALL SetVolume(float fVolume) override { m_fVolume = fVolume; CBaseSound::SetVolume(fVolume); }
+    virtual float STDCALL GetVolume() const override { return m_fVolume; }
+    virtual void STDCALL SetPan(float fPan) override { m_fPan = fPan; CBaseSound::SetPan(fPan); }
+    virtual float STDCALL GetPan() const override { return m_fPan; }
 };
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ========================================================================
+// 3D звук
+// ========================================================================
 class CSound3D : public CBaseSound
 {
-	OBJECT_NORMAL_METHODS( CSound3D );
-	DECLARE_SERIALIZE;
-	//
-	CVec3 vPos;														// current position
-	bool bDopplerFlag;
-	NTimer::STime lastUpdateTime;
-	CVec3 vLastPos;
+    OBJECT_NORMAL_METHODS(CSound3D);
+    DECLARE_SERIALIZE;
+
+    CVec3 m_vPos;
+    bool  m_bDopplerFlag;
+    NTimer::STime m_lastUpdateTime;
+    CVec3 m_vLastPos;
+
 public:
-	CSound3D() : bDopplerFlag( 0 ), lastUpdateTime( 0 ), vLastPos( VNULL3 ) {  }
-	virtual ~CSound3D() {}
-	// visiting
-	int STDCALL Visit( interface ISFXVisitor *pVisitor );
-	//
-	int STDCALL Play();
-	void STDCALL SetDopplerFlag( bool bDoppler ) { bDopplerFlag = bDoppler; }
-	void STDCALL SetPosition( const CVec3 &vPos3 );
-	const CVec3 STDCALL GetPosition() { return vPos; }
+    CSound3D() : m_bDopplerFlag(false), m_lastUpdateTime(0), m_vLastPos(VNULL3) {}
+    virtual ~CSound3D() {}
+
+    virtual int STDCALL Visit(ISFXVisitor* pVisitor) override;
+    virtual int STDCALL Play() override;   // переопределяем
+    void STDCALL SetDopplerFlag(bool bDoppler) { m_bDopplerFlag = bDoppler; }
+    virtual void STDCALL SetPosition(const CVec3& vPos3) override;
+    virtual const CVec3 STDCALL GetPosition() override { return m_vPos; }
 };
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 #endif // __SAMPLESOUNDS_H__

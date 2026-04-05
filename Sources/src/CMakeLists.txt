@@ -82,38 +82,39 @@ add_subdirectory(Image)
 
 # === БИБЛИОТЕКИ ВТОРОГО УРОВНЯ ===
 add_subdirectory(StreamIO)
-# add_subdirectory(Input)          # Нет CMakeLists.txt
-# add_subdirectory(Anim)           # Зависит от Image
-# add_subdirectory(GFX)            # Зависит от Image
-add_subdirectory(SFX)            # Требует FMOD (отключено, т.к. нет fmod.h)
-add_subdirectory(Net)            
+add_subdirectory(Input)          # Зависит от BugSlay, Misc, StreamIO
+add_subdirectory(Anim)           # Зависит от Image
+add_subdirectory(GFX)            # Зависит от BugSlay, Image, Misc, StreamIO, Formats
+add_subdirectory(SFX)            # Зависит от BugSlay, Misc, StreamIO
+add_subdirectory(Net)
 add_subdirectory(scl)
+add_subdirectory(UI)             # Зависит от BugSlay, Misc, StreamIO, LuaLib
 
 # === БИБЛИОТЕКИ ТРЕТЬЕГО УРОВНЯ ===
-#add_subdirectory(Scene)          # Зависит от Image
+add_subdirectory(Scene)          # Зависит от Image
 add_subdirectory(AILogic)        # Зависит от Image
-# add_subdirectory(ELK)            # Нет CMakeLists.txt
-# add_subdirectory(GameTT)         # Нет CMakeLists.txt
+add_subdirectory(ELK)            # Зависит от Misc, RandomMapGen, zlib, StreamIO, BugSlay, Image, Formats
+add_subdirectory(GameTT)         # Зависит от BugSlay, Misc, StreamIO, Common, Formats, RandomMapGen
 
 # === БИБЛИОТЕКИ ЧЕТВЁРТОГО УРОВНЯ ===
-# add_subdirectory(Main)           # Нет CMakeLists.txt
+# add_subdirectory(Main)           # Проблемы с CMake (требует доработки)
+add_subdirectory(Game)           # Зависит от BugSlay, Main, Misc, StreamIO, GameTT, RandomMapGen, Formats, LuaLib, Net
 
 # === ПРИЛОЖЕНИЯ ===
 add_subdirectory(a7exportmodel)
 add_subdirectory(AutoRun)
-# add_subdirectory(betakeygen)     # Нет CMakeLists.txt
-# add_subdirectory(buildversion)   # Нет CMakeLists.txt
-# add_subdirectory(bzmconvertor)   # Нет CMakeLists.txt
-# add_subdirectory(editor)         # Нет CMakeLists.txt
-# add_subdirectory(excelexporter)  # Нет CMakeLists.txt
-# add_subdirectory(FontGen)        # Нет CMakeLists.txt
-# add_subdirectory(Game)           # Нет CMakeLists.txt
-# add_subdirectory(imagedefrag)    # Нет CMakeLists.txt
-# add_subdirectory(InterfaceSystemTest) # Нет CMakeLists.txt
-#add_subdirectory(MapEditor)      # Зависит от Image
-# add_subdirectory(PlanePathTest)  # Нет CMakeLists.txt
-# add_subdirectory(soundverifycation) # Требует FMOD (и конфликт имен Misc)
-# add_subdirectory(spcomp) # Ошибки компиляции (CTreeAccessor)
+add_subdirectory(betakeygen)
+add_subdirectory(buildversion)
+# add_subdirectory(bzmconvertor)   # Зависит от Main
+# add_subdirectory(editor)         # Зависит от Main
+add_subdirectory(excelexporter)
+# add_subdirectory(FontGen)        # Проблемы со сборкой
+add_subdirectory(imagedefrag)
+add_subdirectory(InterfaceSystemTest)
+add_subdirectory(MapEditor)      # Зависит от Image
+add_subdirectory(PlanePathTest)
+# add_subdirectory(soundverifycation) # Требует FMOD
+add_subdirectory(spcomp)
 
 # === УТИЛИТЫ ===
 add_subdirectory(Tools)          # Зависит от BugSlay
