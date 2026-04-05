@@ -188,8 +188,8 @@ public:
 	std::wstring szMessageText;
 
 	SChatMessage() : szPlayerName( L"" ) { }
-	SChatMessage( const	WORD *pszMessageText, bool _bWhisper ) : szMessageText( pszMessageText ), bWhisper( _bWhisper ) { }
-	SChatMessage( const	WORD *pszMessageText, const WORD *pszPlayerName, bool _bWhisper ) : szMessageText( pszMessageText ), szPlayerName( pszPlayerName ), bWhisper( _bWhisper ) { }
+	SChatMessage( const	WORD *pszMessageText, bool _bWhisper ) : szMessageText( (const wchar_t *)pszMessageText ), bWhisper( _bWhisper ) { }
+	SChatMessage( const	WORD *pszMessageText, const WORD *pszPlayerName, bool _bWhisper ) : szMessageText( (const wchar_t *)pszMessageText ), szPlayerName( (const wchar_t *)pszPlayerName ), bWhisper( _bWhisper ) { }
 
 	virtual int STDCALL operator&( interface IStructureSaver &ss ) 
 	{
@@ -253,11 +253,11 @@ public:
 	SUIServerInfo( const WORD _wServerID, const WORD *pszName, const char *pszMapName,
 		const int _nPlayers, const int _nPlayersMax,
 		const bool _bPassword, const bool _bCanJoin, const float _fPing,
-		const char *_pszModName, const char *_pszModVersion, const bool _bSamePatch, 
+		const char *_pszModName, const char *_pszModVersion, const bool _bSamePatch,
 		const CMapInfo::GAME_TYPE _eGameType, const SMultiplayerGameSettings &_gameSettings )
-		: wServerID( _wServerID ), szName( pszName ), szMapName( pszMapName ), 
-			nPlayers( _nPlayers ), nPlayersMax( _nPlayersMax ), 
-			bPassword( _bPassword ), bCanJoin( _bCanJoin ), fPing( _fPing ), 
+		: wServerID( _wServerID ), szName( (const wchar_t *)pszName ), szMapName( pszMapName ),
+			nPlayers( _nPlayers ), nPlayersMax( _nPlayersMax ),
+			bPassword( _bPassword ), bCanJoin( _bCanJoin ), fPing( _fPing ),
 			szModName( _pszModName ), szModVersion( _pszModVersion ), bSamePatch( _bSamePatch ),
 			eGameType( _eGameType ), settings( _gameSettings ) { }
 };
@@ -279,7 +279,7 @@ public:
 	SUIRelationNotify( ) {  }
 
 	SUIRelationNotify( const WORD * pszName, const EPlayerRelation _eRelation )
-		: szName( pszName ), eRelation( _eRelation)
+		: szName( (const wchar_t *)pszName ), eRelation( _eRelation)
 	{  }
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -297,8 +297,8 @@ public:
 	const std::wstring GetID() const { return szName; }
 
 	SUIChatPlayerInfo() {  }
-	SUIChatPlayerInfo( const WORD * pszName ) 
-		: eRelation( EPR_NORMAL ), eState( EPCS_IN_CHAT ), szName( pszName ) { }
+	SUIChatPlayerInfo( const WORD * pszName )
+		: eRelation( EPR_NORMAL ), eState( EPCS_IN_CHAT ), szName( (const wchar_t*)pszName ) { }
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct SUIChatPlayerChangedNick : public IRefCount
@@ -310,7 +310,7 @@ struct SUIChatPlayerChangedNick : public IRefCount
 public:
 	SUIChatPlayerChangedNick() : wszOldNick( L"" ), wszNewNick( L"" ) { }
 	SUIChatPlayerChangedNick( const WORD *pwszOldNick, const WORD *pwszNewNick )
-		: wszOldNick( pwszOldNick ), wszNewNick( pwszNewNick ) { }
+		: wszOldNick( (const wchar_t *)pwszOldNick ), wszNewNick( (const wchar_t *)pwszNewNick ) { }
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // to notify UI that local player changes side
@@ -340,7 +340,7 @@ public:
 	
 	SUIPlayerInfo() { }
 	SUIPlayerInfo( const int _nID, const char *pszSide, const bool _bReady, const float _fPing, const WORD *pszName, const int _nDownloadCount )
-		: nID( _nID ), szSide( pszSide ), bReady( _bReady ), fPing( _fPing ), szName( pszName ), nDownloadCount( _nDownloadCount ) { }
+		: nID( _nID ), szSide( pszSide ), bReady( _bReady ), fPing( _fPing ), szName( (const wchar_t *)pszName ), nDownloadCount( _nDownloadCount ) { }
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 enum EMultiplayerConnectionType
