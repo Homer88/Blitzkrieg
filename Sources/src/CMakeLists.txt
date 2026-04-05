@@ -78,14 +78,14 @@ add_subdirectory(GameSpy)
 add_subdirectory(LuaLib)
 # add_subdirectory(RandomMapGen)   # Зависит от Image (пока нет CMakeLists.txt)
 add_subdirectory(StreamIOLib)
-# add_subdirectory(Image)          # Нет CMakeLists.txt
+add_subdirectory(Image)          # Нет CMakeLists.txt
 
 # === БИБЛИОТЕКИ ВТОРОГО УРОВНЯ ===
 add_subdirectory(StreamIO)
 # add_subdirectory(Input)          # Нет CMakeLists.txt
 # add_subdirectory(Anim)           # Зависит от Image
 # add_subdirectory(GFX)            # Зависит от Image
-# add_subdirectory(SFX)            # Требует FMOD
+ add_subdirectory(SFX)            # Требует FMOD
 add_subdirectory(Net)
 add_subdirectory(scl)
 
@@ -112,11 +112,11 @@ add_subdirectory(AutoRun)
 # add_subdirectory(InterfaceSystemTest) # Нет CMakeLists.txt
 # add_subdirectory(MapEditor)      # Зависит от Image
 # add_subdirectory(PlanePathTest)  # Нет CMakeLists.txt
-# add_subdirectory(soundverifycation) # Требует FMOD
+add_subdirectory(soundverifycation) # Требует FMOD
 add_subdirectory(spcomp)
 
 # === УТИЛИТЫ ===
-# add_subdirectory(Tools)          # Зависит от BugSlay
+add_subdirectory(Tools)          # Зависит от BugSlay
 
 # ============================================================
 message(STATUS "=== Blitzkrieg Build Configuration ===")

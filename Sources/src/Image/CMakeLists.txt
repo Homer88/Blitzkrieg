@@ -19,7 +19,7 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/..
 )
 
-target_link_libraries(Image
+target_link_libraries(Image 
     libpng
     zlib
     BugSlay
