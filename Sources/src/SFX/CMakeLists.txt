@@ -20,6 +20,6 @@ add_library(SFX STATIC ${SFX_SOURCE} ${SFX_HEADERS})
 target_include_directories(SFX PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
-    ${CMAKE_SOURCE_DIR}/../sdk/fmod/lowlevel/inc
+    ${CMAKE_SOURCE_DIR}/../sdk/fmod/api/lowlevel/inc
 )
 
