@@ -9,11 +9,11 @@ extern FMOD::System* g_pFMODSystem;
 // ========================================================================
 bool CSoundSample::Load(const bool bPreLoad)
 {
-    if (m_pSound != nullptr || bPreLoad) return true;
+    if (m_pSound != 0 || bPreLoad) return true;
 
     std::string szStreamName = GetSharedResourceFullName();
     CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream(szStreamName.c_str(), STREAM_ACCESS_READ);
-    if (pStream == nullptr) return false;
+    if (pStream == 0) return false;
 
     int nSize = pStream->GetSize();
     std::vector<char> buffer(nSize);
@@ -27,7 +27,7 @@ bool CSoundSample::Load(const bool bPreLoad)
     if (m_bLooped) mode |= FMOD_LOOP_NORMAL;
     else mode |= FMOD_LOOP_OFF;
 
-    FMOD::Sound* pSound = nullptr;
+    FMOD::Sound* pSound = 0;
     FMOD_RESULT res = g_pFMODSystem->createSound(&buffer[0], mode, &exinfo, &pSound);
     if (res != FMOD_OK) return false;
 
@@ -106,8 +106,8 @@ int CSound2D::Play()
     FMOD::Sound* pSound = m_pSample->GetInternalSound();
     if (!pSound) return -1;
 
-    FMOD::Channel* pChannel = nullptr;
-    FMOD_RESULT res = g_pFMODSystem->playSound(pSound, nullptr, true, &pChannel);
+    FMOD::Channel* pChannel = 0;
+    FMOD_RESULT res = g_pFMODSystem->playSound(pSound, 0, true, &pChannel);
     if (res != FMOD_OK) return -1;
 
     pChannel->setVolume(m_fVolume);
@@ -132,12 +132,12 @@ int CSound3D::Play()
     FMOD::Sound* pSound = m_pSample->GetInternalSound();
     if (!pSound) return -1;
 
-    FMOD::Channel* pChannel = nullptr;
-    FMOD_RESULT res = g_pFMODSystem->playSound(pSound, nullptr, true, &pChannel);
+    FMOD::Channel* pChannel = 0;
+    FMOD_RESULT res = g_pFMODSystem->playSound(pSound, 0, true, &pChannel);
     if (res != FMOD_OK) return -1;
 
     FMOD_VECTOR pos = { m_vPos.x, m_vPos.z, m_vPos.y };
-    pChannel->set3DAttributes(&pos, nullptr);
+    pChannel->set3DAttributes(&pos, 0);
     pChannel->setPaused(false);
 
     SetChannel(pChannel);
@@ -150,11 +150,75 @@ void CSound3D::SetPosition(const CVec3& vPos3)
     if (IsPlaying())
     {
         FMOD_VECTOR pos = { vPos3.x, vPos3.z, vPos3.y };
-        m_pChannel->set3DAttributes(&pos, nullptr);
+        m_pChannel->set3DAttributes(&pos, 0);
     }
 }
 
 int CSound3D::Visit(ISFXVisitor* pVisitor)
 {
     return pVisitor->VisitSound3D(this, m_vPos);
+}
+
+// ========================================================================
+// Сериализация CBaseSound
+// ========================================================================
+int CBaseSound::operator&(IStructureSaver &ss)
+{
+    CSaverAccessor saver(&ss);
+    std::string sampleName;
+    if (saver.IsReading())
+    {
+        saver.Add(1, &sampleName);
+        if (!sampleName.empty())
+        {
+            ISoundManager* pMgr = GetSingleton<ISoundManager>();
+            if (pMgr)
+            {
+                // TODO: Реализовать GetSample2D/GetSample3D в ISoundManager
+                // CSound2D* p2D = dynamic_cast<CSound2D*>(this);
+                // if (p2D)
+                //     m_pSample = pMgr->GetSample2D(sampleName.c_str());
+                // else
+                //     m_pSample = pMgr->GetSample3D(sampleName.c_str());
+            }
+        }
+    }
+    else
+    {
+        ISoundManager* pMgr = GetSingleton<ISoundManager>();
+        if (pMgr && m_pSample)
+        {
+            const char* pName = pMgr->GetSoundName(this);
+            if (pName) sampleName = pName;
+        }
+        saver.Add(1, &sampleName);
+    }
+    saver.Add(2, &m_fCurrentVolume);
+    saver.Add(3, &m_fCurrentPan);
+    return 0;
+}
+
+// ========================================================================
+// Сериализация CSound2D
+// ========================================================================
+int CSound2D::operator&(IStructureSaver &ss)
+{
+    CBaseSound::operator&(ss);
+    CSaverAccessor saver(&ss);
+    saver.Add(1, &m_fVolume);
+    saver.Add(2, &m_fPan);
+    return 0;
+}
+
+// ========================================================================
+// Сериализация CSound3D
+// ========================================================================
+int CSound3D::operator&(IStructureSaver &ss)
+{
+    CBaseSound::operator&(ss);
+    CSaverAccessor saver(&ss);
+    saver.Add(1, &m_vPos);
+    saver.Add(2, &m_bDopplerFlag);
+    // m_lastUpdateTime и m_vLastPos не сериализуем
+    return 0;
 }

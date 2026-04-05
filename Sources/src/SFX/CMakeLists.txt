@@ -53,7 +53,9 @@ if(SFX_BUILD_DLL)
     target_include_directories(SFX PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/..
-        ${FMOD_INCLUDE_DIR}
+        ${CMAKE_SOURCE_DIR}/../sdk/fmod/api/lowlevel/inc
+        ${CMAKE_SOURCE_DIR}/StreamIO
+        ${CMAKE_SOURCE_DIR}/Misc
     )
     
     # Подключение зависимостей и FMOD
@@ -112,7 +114,9 @@ else()
     target_include_directories(SFX_STATIC PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/..
-        ${FMOD_INCLUDE_DIR}
+        ${CMAKE_SOURCE_DIR}/../sdk/fmod/api/lowlevel/inc
+        ${CMAKE_SOURCE_DIR}/StreamIO
+        ${CMAKE_SOURCE_DIR}/Misc
     )
     
     # Подключение зависимостей

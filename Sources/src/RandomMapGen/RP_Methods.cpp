@@ -34,7 +34,7 @@ int SRoadPoint::operator&( IStructureSaver &ss )
 // serializing...
 int SRoadPoint::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss );
 
 	saver.Add( "x", &x );	
 	saver.Add( "y", &y );	
@@ -91,7 +91,7 @@ int SRoadMakeParameter::operator&( IStructureSaver &ss )
 // serializing...
 int SRoadMakeParameter::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss );
 
 	saver.Add( "MinMiddleDistance", &nMinMiddleDistance );	
 	saver.Add( "LockedRects", &lockedRects );

@@ -31,7 +31,7 @@ bool LoadDataResource( const std::string &rszResourceFileName, const std::string
 				return false;
 			}
 			CPtr<IDataTree> pSaver = CreateDataTreeSaver( pStreamXML, IDataTree::READ );
-			CTreeAccessor saver = pSaver;
+			CTreeAccessor saver( pSaver );
 			saver.Add( rszChunkLabel.c_str(), &rResource );
 		}
 		return true;
@@ -71,7 +71,7 @@ bool LoadTypedSuperDataResource( const std::string &rszResourceFileName, const s
 				return false;
 			}
 			CPtr<IDataTree> pSaver = CreateDataTreeSaver( pStreamXML, IDataTree::READ );
-			CTreeAccessor saver = pSaver;
+			CTreeAccessor saver( pSaver );
 			saver.AddTypedSuper( &rResource );
 		}
 		return true;
@@ -111,7 +111,7 @@ bool SaveDataResource( const std::string &rszResourceFileName, const std::string
 				return false;
 			}
 			CPtr<IDataTree> pSaver = CreateDataTreeSaver( pStreamXML, IDataTree::WRITE );
-			CTreeAccessor saver = pSaver;
+			CTreeAccessor saver( pSaver );
 			saver.Add( rszChunkLabel.c_str(), &rResource );
 		}
 		return true;
@@ -151,7 +151,7 @@ bool SaveTypedSuperDataResource( const std::string &rszResourceFileName, const s
 				return false;
 			}
 			CPtr<IDataTree> pSaver = CreateDataTreeSaver( pStreamXML, IDataTree::WRITE );
-			CTreeAccessor saver = pSaver;
+			CTreeAccessor saver( pSaver );
 			saver.AddTypedSuper( &rResource );
 		}
 		return true;
@@ -201,7 +201,7 @@ bool LoadLatestDataResource( const std::string &rszResourceFileName, const std::
 				return false;
 			}
 			CPtr<IDataTree> pSaver = CreateDataTreeSaver( pStreamXML, IDataTree::READ );
-			CTreeAccessor saver = pSaver;
+			CTreeAccessor saver( pSaver );
 			saver.Add( rszChunkLabel.c_str(), &rResource );
 		}
 		return true;
@@ -259,7 +259,7 @@ bool LoadTypedSuperLatestDataResource( const std::string &rszResourceFileName, c
 				return false;
 			}
 			CPtr<IDataTree> pSaver = CreateDataTreeSaver( pStreamXML, IDataTree::READ );
-			CTreeAccessor saver = pSaver;
+			CTreeAccessor saver( pSaver );
 			saver.AddTypedSuper( &rResource );
 		}
 		return true;

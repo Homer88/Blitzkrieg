@@ -31,7 +31,7 @@ int SVAGradient::operator&( IStructureSaver &ss )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SVAGradient::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss );
 
 	saver.Add( "Heights", &heights );	
 	saver.Add( "Range", &range );
@@ -200,7 +200,7 @@ int SVAPattern::operator&( IStructureSaver &ss )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SVAPattern::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss );
 
 	saver.Add( "Pos", &pos );	
 	saver.Add( "Ratio", &fRatio );

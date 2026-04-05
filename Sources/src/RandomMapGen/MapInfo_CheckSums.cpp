@@ -303,7 +303,7 @@ void CMapInfo::GetAIConstsCheckSum( uLong *pResourcesCheckSum, uLong *pMapCheckS
 {
 	SCheckSumBufferStorage bufRes;
 
-	CTableAccessor constsTbl = NDB::OpenDataTable( "consts.xml" );
+	CTableAccessor constsTbl( NDB::OpenDataTable( "consts.xml" ) );
 	std::vector<std::string> entryNames;
 	constsTbl.GetEntryNames( "AI", entryNames );
 	for ( std::vector<std::string>::iterator iter = entryNames.begin(); iter != entryNames.end(); ++iter )

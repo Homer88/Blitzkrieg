@@ -32,7 +32,7 @@ int SRMImageCreateParameter::operator&( IStructureSaver &ss )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMImageCreateParameter::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 
 	saver.Add( "FileName", &szImageFileName );
 	saver.Add( "Size", &size );
@@ -66,7 +66,7 @@ int SRMMiniMapCreateParameter::SMiniMapLayer::operator&( IStructureSaver &ss )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMMiniMapCreateParameter::SMiniMapLayer::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 
 	saver.Add( "Color", &color );
 	saver.Add( "BorderColor", &borderColor );
@@ -100,7 +100,7 @@ int SRMMiniMapCreateParameter::operator&( IStructureSaver &ss )
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMMiniMapCreateParameter::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss );
 
 	saver.Add( "Layers", &layers );
 	saver.Add( "WoodRadius", &nWoodRadius ); 

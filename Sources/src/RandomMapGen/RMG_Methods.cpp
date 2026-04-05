@@ -29,7 +29,7 @@ int SRMLevelVSOParameter::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMLevelVSOParameter::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	saver.Add( "ProfileFileName", &szProfileFileName );
 	saver.Add( "Height", &fHeight );
@@ -56,7 +56,7 @@ int SRMPatch::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMPatch::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	saver.Add( "Size", &size );	
 	saver.Add( "FileName", &szFileName );	
@@ -92,7 +92,7 @@ int SRMContainer::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMContainer::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	if ( saver.IsReading() )
 	{
@@ -224,7 +224,7 @@ int SRMGraphNode::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMGraphNode::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	saver.Add( "Rect", &rect );	
 	saver.Add( "Container", &szContainerFileName );	
@@ -252,7 +252,7 @@ int SRMGraphLink::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMGraphLink::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	saver.Add( "Link", &link );
 	saver.Add( "Type", &nType );
@@ -290,7 +290,7 @@ int SRMGraph::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMGraph::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	if ( saver.IsReading() )
 	{
@@ -417,7 +417,7 @@ int SRMObjectSetShell::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMObjectSetShell::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	saver.Add( "Objects", &objects );
 	saver.Add( "Width", &fWidth );
@@ -441,7 +441,7 @@ int SRMTileSetShell::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMTileSetShell::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	saver.Add( "Tiles", &tiles );
 	saver.Add( "Width", &fWidth );
@@ -469,7 +469,7 @@ int SRMFieldSet::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMFieldSet::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	saver.Add( "ObjectsShells", &objectsShells );
 	saver.Add( "TilesShells", &tilesShells );
@@ -520,7 +520,7 @@ int SRMVSODesc::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMVSODesc::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	saver.Add( "Desc", &szVSODescFileName );
 	saver.Add( "Width", &fWidth );
@@ -588,7 +588,7 @@ int SRMTemplate::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMTemplate::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	if ( saver.IsReading() )
 	{
@@ -1189,7 +1189,7 @@ int SRMTemplateUnitsTable::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMTemplateUnitsTable::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	saver.Add( "UnitCreation", &unitCreationInfo );
 	saver.Add( "RandomMissionBonus", &bonuses );
@@ -1256,7 +1256,7 @@ int SRMContext::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMContext::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	saver.Add( "Levels", &levels );
 	
@@ -1453,7 +1453,7 @@ int SRMSetting::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SRMSetting::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss; 
+	CTreeAccessor saver( &ss ); 
 
 	saver.Add( "Fields", &fields );
 	

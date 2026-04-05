@@ -66,7 +66,7 @@ int SQuickLoadMapInfo::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SQuickLoadMapInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver( &ss );
 
 	saver.Add( "Parties", &playerParties );
 	saver.Add( "Diplomacies", &diplomacies );
@@ -136,7 +136,7 @@ int CMapInfo::operator&( IStructureSaver &ss )
 
 	if ( saver.IsReading() )
 	{
-		// CRAP{ Когда нет массива diplomacies
+		// CRAP{ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ diplomacies
 		FillDefaultDiplomacies();
 		// CRAP}
 		if ( szSeasonFolder.empty() )
@@ -157,8 +157,8 @@ int CMapInfo::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CMapInfo::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
-	
+	CTreeAccessor saver( &ss );
+
 	saver.Add( "Terrain", &terrain );
 	saver.Add( "Objects", &objects );
 	saver.Add( "ScenarioObjects", &scenarioObjects );
@@ -188,7 +188,7 @@ int CMapInfo::operator&( IDataTree &ss )
 
 	if ( saver.IsReading() )
 	{
-		// CRAP{ Когда нет массива diplomacies
+		// CRAP{ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ diplomacies
 		FillDefaultDiplomacies();
 		// CRAP}
 		if ( szSeasonFolder.empty() )
@@ -429,13 +429,13 @@ bool CMapInfo::MakeRoad( const SRoadPoint &rFrom, const SRoadPoint &rTo, int nRo
 /**
 bool CMapInfo::UpdateTerrainRoads( const CTRect<int> &rUpdateRect )
 {
-	//считываем информацию о расположении дорожных тайлов
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	if ( IDataStorage* pDataStorage = GetSingleton<IDataStorage>() )
 	{
 		SRoadsetDesc roadsetDesc;
 		{
 			CPtr<IDataStream> pStream = pDataStorage->OpenStream( ( terrain.szRoadsetDesc + std::string( ".xml" ) ).c_str(), STREAM_ACCESS_READ );
-			CTreeAccessor tree = CreateDataTreeSaver( pStream, IDataTree::READ );
+			CTreeAccessor tree( CreateDataTreeSaver( pStream, IDataTree::READ ) );
 			tree.Add( "roadset", &roadsetDesc );
 		}
 		return UpdateTerrainRoads( &terrain, rUpdateRect, roadsetDesc );
@@ -444,7 +444,7 @@ bool CMapInfo::UpdateTerrainRoads( const CTRect<int> &rUpdateRect )
 }
 /**/
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// basement storage  
+// basement storage
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
 	if ( IDataStorage* pDataStorage = GetSingleton<IDataStorage>() )
@@ -452,19 +452,19 @@ bool CMapInfo::UpdateTerrainRoads( const CTRect<int> &rUpdateRect )
 		STilesetDesc tilesetDesc;
 		{
 			CPtr<IDataStream> pStream = pDataStorage->OpenStream( ( terrain.szTilesetDesc + std::string( ".xml" ) ).c_str(), STREAM_ACCESS_READ );
-			CTreeAccessor tree = CreateDataTreeSaver( pStream, IDataTree::READ );
+			CTreeAccessor tree( CreateDataTreeSaver( pStream, IDataTree::READ ) );
 			tree.Add( "tileset", &tilesetDesc );
 		}
 		SCrossetDesc crossetDesc;
 		{
 			CPtr<IDataStream> pStream = pDataStorage->OpenStream( ( terrain.szCrossetDesc + std::string( ".xml" ) ).c_str(), STREAM_ACCESS_READ );
-			CTreeAccessor tree = CreateDataTreeSaver( pStream, IDataTree::READ );
+			CTreeAccessor tree( CreateDataTreeSaver( pStream, IDataTree::READ ) );
 			tree.Add( "crosset", &crossetDesc );
 		}
 		SRoadsetDesc roadsetDesc;
 		{
 			CPtr<IDataStream> pStream = pDataStorage->OpenStream( ( terrain.szRoadsetDesc + std::string( ".xml" ) ).c_str(), STREAM_ACCESS_READ );
-			CTreeAccessor tree = CreateDataTreeSaver( pStream, IDataTree::READ );
+			CTreeAccessor tree( CreateDataTreeSaver( pStream, IDataTree::READ ) );
 			tree.Add( "roadset", &roadsetDesc );
 		}
 		bool result = ApplyTemplate( this, rRMTemplate, tilesetDesc,
@@ -501,7 +501,7 @@ bool CMapInfo::UpdateTerrainRoads( const CTRect<int> &rUpdateRect )
 /**/
 
 	/**
-	// CRAP{ Когда нет массива diplomacies
+	// CRAP{ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ diplomacies
 	if ( saver.IsReading() )
 	{
 		if ( (  diplomacies.GetSizeX() == 0 ) || 
@@ -532,7 +532,7 @@ bool CMapInfo::UpdateTerrainRoads( const CTRect<int> &rUpdateRect )
 	/**/
 
 	/**
-	// CRAP{ Когда нет массива diplomacies
+	// CRAP{ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ diplomacies
 	if ( saver.IsReading() )
 	{
 		if ( (  diplomacies.GetSizeX() == 0 ) || 

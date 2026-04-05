@@ -113,7 +113,8 @@ add_subdirectory(imagedefrag)
 add_subdirectory(InterfaceSystemTest)
 add_subdirectory(MapEditor)      # Зависит от Image
 add_subdirectory(PlanePathTest)
-# add_subdirectory(soundverifycation) # Требует FMOD
+add_subdirectory(soundverifycation)  # Утилита проверки звука с FMOD
+add_subdirectory(buildversion)
 add_subdirectory(spcomp)
 
 # === УТИЛИТЫ ===
