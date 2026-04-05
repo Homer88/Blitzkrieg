@@ -17,7 +17,7 @@ int CUIVideoButton::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CUIVideoButton::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver(&ss);
 	saver.AddTypedSuper( static_cast<CSimpleWindow*>(this) );
 	saver.Add( "BinkFile", &szBinkFile );
 

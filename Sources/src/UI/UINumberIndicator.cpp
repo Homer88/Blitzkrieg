@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CUINumberIndicator::SValueColor::operator &( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver(&ss);
 
 	saver.Add( "Value", &fVal );
 	saver.Add( "Color", &dwColor );
@@ -23,7 +23,7 @@ int CUINumberIndicator::SValueColor::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CUINumberIndicator::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver(&ss);
 	saver.AddTypedSuper( static_cast<CSimpleWindow*>(this) );
 
 	saver.Add( "Value", &m_fVal );
@@ -60,13 +60,13 @@ void CUINumberIndicator::Visit( interface ISceneVisitor *pVisitor )
 		return;
 	CSimpleWindow::Visit( pVisitor );
 	
-	// рисуем информацию
+	// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	DWORD dwColor = 0xffffffff;
 	if ( valueColors.size() >= 2 )
 	{
 		do
 		{
-			//интерполируем цвет
+			//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 			if ( m_fVal <= valueColors[0].fVal )
 			{
 				dwColor = valueColors[0].dwColor;
@@ -119,14 +119,14 @@ void CUINumberIndicator::Draw( IGFX *pGFX )
 		return;
 	CSimpleWindow::Draw( pGFX );
 	
-	//рисуем информацию
+	//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	pGFX->SetShadingEffect( 3 );
 	DWORD dwColor = 0xffffffff;
 	if ( valueColors.size() >= 2 )
 	{
 		do
 		{
-			//интерполируем цвет
+			//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 			if ( m_fVal <= valueColors[0].fVal )
 			{
 				dwColor = valueColors[0].dwColor;

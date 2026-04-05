@@ -49,7 +49,7 @@ void CStaticMap::LoadPassabilities( const struct STerrainInfo &terrainInfo )
 
 	STilesetDesc tilesetDesc;
 	CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream( NStr::Format("%s.xml", terrainInfo.szTilesetDesc.c_str()), STREAM_ACCESS_READ );
-	CTreeAccessor tree = CreateDataTreeSaver( pStream, IDataTree::READ );
+	CTreeAccessor tree ( CreateDataTreeSaver( pStream, IDataTree::READ ));
 	tree.Add( "tileset", &tilesetDesc );
 
 	std::vector<bool> tileEntrenchPossibility;

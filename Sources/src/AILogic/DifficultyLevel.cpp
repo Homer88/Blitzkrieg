@@ -31,7 +31,7 @@ void CDifficultyLevel::Init()
 
 	coeff[2].Set( 1.0f );
 
-	CTableAccessor constsTbl = NDB::OpenDataTable( "consts.xml" );
+	CTableAccessor constsTbl  (NDB::OpenDataTable( "consts.xml" ));
 
 	for ( int nLevel = 0; nLevel < levelsNames.size(); ++nLevel )
 	{

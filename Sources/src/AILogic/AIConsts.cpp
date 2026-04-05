@@ -353,7 +353,7 @@ float SConsts::REINFORCEMENT_GROUP_DISTANCE = 900.0f;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SConsts::Load()
 {
-	CTableAccessor constsTbl = NDB::OpenDataTable( "consts.xml" );
+	CTableAccessor constsTbl  (NDB::OpenDataTable( "consts.xml" ));
 
 	TIME_BEFORE_SNIPER_CAMOUFLAGE = constsTbl.GetInt( "AI", "Infantry.TimeBeforeSniperCamouflage", 1000 );
 	TIME_OF_LYING_UNDER_FIRE = constsTbl.GetInt( "AI", "Infantry.TimeOfLyingUnderFire", 20000 );

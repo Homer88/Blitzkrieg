@@ -1,23 +1,88 @@
-# Минимальная версия CMake
+# AILogic - ИИ логика игры
+# Согласно AILogic.dsp - это DLL (Dynamic-Link Library)
+# Зависимости: BugSlay, StreamIO, Misc, Image, LuaLib, Formats, zlib, RandomMapGen
+
 cmake_minimum_required(VERSION 3.0)
 
-# Название проекта
-project( AILogic LANGUAGES CXX)
+project(AILogic LANGUAGES CXX)
 
 # Установка стандарта C++
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-
-#AI логика 
+# Исходные файлы
 FILE(GLOB AILOGIC_SOURCE "*.cpp")
 FILE(GLOB AILOGIC_HEADERS "*.h")
 
-FILE(GLOB SCRIPTS_SOURCE "./Scripts/*.cpp")
-FILE(GLOB SCRIPTS_HEADERS "./Scripts/*.h")
-add_library (Scripts ${SCRIPTS_SOURCE} ${SCRIPTS_HEADERS})
+# Создаем DLL (согласно .dsp файлу)
+add_library(AILogic SHARED 
+    ${AILOGIC_SOURCE} 
+    ${AILOGIC_HEADERS}
+    AILogic.rc
+)
 
+# Используем .def файл для экспорта функций
+if(WIN32)
+    set_target_properties(AILogic PROPERTIES
+        DEFINE_FILE "AILogic.def"
+    )
+endif()
 
-add_executable(AILogic ${AILOGIC_SOURCE} ${AILOGIC_HEADERS})
+# Прекомпилированные заголовки
+set_target_properties(AILogic PROPERTIES
+    COMPILE_FLAGS "/YuStdAfx.h"
+)
 
-target_link_libraries(AILogic   Formats  StreamIOLib zlib BugSlay Image LuaLib RandomMapGen)
+set_source_files_properties(StdAfx.cpp PROPERTIES
+    COMPILE_FLAGS "/YcStdAfx.h"
+)
+
+# Определения для Windows (согласно .dsp)
+target_compile_definitions(AILogic PRIVATE
+    WIN32
+    _WINDOWS
+    _USRDLL
+    AILogic_EXPORTS
+    _CRT_SECURE_NO_WARNINGS
+    _CRT_NONSTDC_NO_DEPRECATE
+    _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
+    _WIN32_WINNT=0x0400
+    WINVER=0x0400
+)
+
+# Подключение заголовочных файлов
+target_include_directories(AILogic PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${CMAKE_SOURCE_DIR}/BugSlay
+    ${CMAKE_SOURCE_DIR}/Misc
+    ${CMAKE_SOURCE_DIR}/StreamIO
+    ${CMAKE_SOURCE_DIR}/Image
+    ${CMAKE_SOURCE_DIR}/LuaLib
+    ${CMAKE_SOURCE_DIR}/Formats
+    ${CMAKE_SOURCE_DIR}/zlib
+    ${CMAKE_SOURCE_DIR}/RandomMapGen
+)
+
+# Подключение зависимостей (согласно AILogic.dsp)
+target_link_libraries(AILogic PRIVATE
+    BugSlay
+    StreamIO_STATIC  # Используем статическую версию для линковки
+    Misc
+    Image
+    LuaLib
+    Formats
+    zlib
+    RandomMapGen
+    # Системные библиотеки Windows
+    kernel32.lib
+    user32.lib
+    gdi32.lib
+    winspool.lib
+    comdlg32.lib
+    advapi32.lib
+    shell32.lib
+    ole32.lib
+    oleaut32.lib
+    uuid.lib
+)

@@ -46,7 +46,7 @@ int CAILogic::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CUnitCreation::STankPitInfo::operator&( IDataTree  &ss )
 {
-	CTreeAccessor tree = &ss;
+	CTreeAccessor tree (& ss);
 	//tree.Add( "SizeInfo", &tankPitSizeInfo );
 	tree.Add( "SandBag", &sandBagTankPits );
 	tree.Add( "Dig", &digTankPits );
@@ -55,7 +55,7 @@ int CUnitCreation::STankPitInfo::operator&( IDataTree  &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CUnitCreation::SCommonInfo::operator&( IDataTree  &ss )
 {
-	CTreeAccessor tree = &ss;
+	CTreeAccessor tree (& ss);
 	tree.Add( "AntitankObjects", &antitankObjects );
 	tree.Add( "AntipersonFence", &szAPFence );
 	tree.Add( "AntiPersonMine", &szMineAP );

@@ -53,6 +53,7 @@
 #include <hash_set>
 #include <set>
 #include <queue>
+#include <typeinfo>
 //
 typedef __int64 int64;									// due to lack of 'long long' type support
 typedef unsigned __int64 QWORD;					// quadra word

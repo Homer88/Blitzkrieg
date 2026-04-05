@@ -51,7 +51,7 @@ int SGeneralConsts::TIME_SWARM_DURATION_RANDOM;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SGeneralConsts::Init()
 {
-	CTableAccessor constsTbl = NDB::OpenDataTable( "consts.xml" );
+	CTableAccessor constsTbl ( NDB::OpenDataTable( "consts.xml" ));
 
 	TIME_DONT_SEE_ENEMY_BEFORE_FORGET = constsTbl.GetInt( "AI", "General.TimeDontSeeTheEnemyBeforeForget", 10000 );
 	

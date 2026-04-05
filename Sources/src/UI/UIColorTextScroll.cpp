@@ -94,7 +94,7 @@ int CUIColorTextScroll::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CUIColorTextScroll::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver(&ss);
 	saver.AddTypedSuper( static_cast<CUIScrollTextBox*>(this) );
 	saver.Add( "Colors",  &colors );
 	return 0;

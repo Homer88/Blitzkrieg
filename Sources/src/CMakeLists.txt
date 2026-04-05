@@ -92,13 +92,13 @@ add_subdirectory(UI)             # Зависит от BugSlay, Misc, StreamIO, 
 
 # === БИБЛИОТЕКИ ТРЕТЬЕГО УРОВНЯ ===
 add_subdirectory(Scene)          # Зависит от Image
-add_subdirectory(AILogic)        # Зависит от Image
+# add_subdirectory(AILogic)        # Отключено: несовместимо с MSVC 2022 (устаревший STL)
 add_subdirectory(ELK)            # Зависит от Misc, RandomMapGen, zlib, StreamIO, BugSlay, Image, Formats
-add_subdirectory(GameTT)         # Зависит от BugSlay, Misc, StreamIO, Common, Formats, RandomMapGen
+# add_subdirectory(GameTT)         # Зависит от AILogic (отключен)
 
 # === БИБЛИОТЕКИ ЧЕТВЁРТОГО УРОВНЯ ===
-# add_subdirectory(Main)           # Проблемы с CMake (требует доработки)
-add_subdirectory(Game)           # Зависит от BugSlay, Main, Misc, StreamIO, GameTT, RandomMapGen, Formats, LuaLib, Net
+# add_subdirectory(Main)           # Зависит от AILogic (отключен)
+# add_subdirectory(Game)           # Зависит от GameTT (отключен)
 
 # === ПРИЛОЖЕНИЯ ===
 add_subdirectory(a7exportmodel)
