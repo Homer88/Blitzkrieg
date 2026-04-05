@@ -45,8 +45,9 @@ target_include_directories(BuildVersion PRIVATE
     ${CMAKE_SOURCE_DIR}/Misc
 )
 
-# Системные библиотеки Windows
+# Системные библиотеки Windows и внутренние зависимости
 target_link_libraries(BuildVersion PRIVATE
+    Misc
     kernel32.lib
     user32.lib
     gdi32.lib
