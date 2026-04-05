@@ -1364,7 +1364,7 @@ void CMultipleWindow::CopyInternals( CMultipleWindow * pWnd )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CMultipleWindow::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver(&ss);
 	saver.AddTypedSuper( static_cast<CSimpleWindow*>(this) );
 	saver.Add( "Children", &childList );
 	saver.Add( "ModalFlag", &bModal );

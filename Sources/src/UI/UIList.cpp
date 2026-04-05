@@ -103,9 +103,9 @@ int CUIList::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CUIList::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver(&ss);
 	saver.AddTypedSuper( static_cast<CMultipleWindow*>(this) );
-	
+
 	saver.Add( "LeftSpace", &nLeftSpace );
 	saver.Add( "TopSpace", &nTopSpace );
 	saver.Add( "HSubSpace", &nHSubSpace );
@@ -184,7 +184,7 @@ IUIElement* CUIList::CreateComponent( const char *pszFileName )
 	if ( !pStream )
 		return 0;
 
-	CTreeAccessor saver = CreateDataTreeSaver( pStream, IDataTree::READ );
+	CTreeAccessor saver(CreateDataTreeSaver( pStream, IDataTree::READ ));
 	CPtr<IUIElement> pElement;
 	saver.Add( "Element", &pElement );
 	AddChild( pElement );

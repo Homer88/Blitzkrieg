@@ -57,7 +57,7 @@ int SUIListRaw::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SUIListRaw::operator&( IDataTree &ss )
 {
-	CTreeAccessor saver = &ss;
+	CTreeAccessor saver(&ss);
 	saver.Add( "SubItems", &subItems );
 	return 0;
 }
