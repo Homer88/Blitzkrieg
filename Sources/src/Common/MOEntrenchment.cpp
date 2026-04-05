@@ -17,14 +17,14 @@ bool CMOEntrenchmentSegment::Create( IRefCount *pAIObjLocal, const SGDBObjectDes
 {
 	pDesc = pDescLocal;
 	pRPG = NGDB::GetRPGStats<SHPObjectRPGStats>( pGDB, pDesc );
-	NI_ASSERT_TF( pRPG.GetPtr() != 0, NStr::Format("Can't find RPG stats for object \"%s\"", pDesc->szKey.c_str()), return 0 );
-	if ( pRPG.GetPtr() == 0 )
+	NI_ASSERT_TF( pRPG != 0, NStr::Format("Can't find RPG stats for object \"%s\"", pDesc->szKey.c_str()), return 0 );
+	if ( pRPG == 0 )
 		return false;
 	//
 	const SEntrenchmentRPGStats::SSegmentRPGStats &segment = GetRPGStats()->GetSegmentStats( nFrameIndex );
 	const std::string szTextureName = NStr::Format( "\\1%s", GetSeasonApp2(nSeason) );
 	pVisObj = pVOB->BuildObject( (pDesc->szPath + "\\" + segment.szModel).c_str(), (pDesc->szPath + szTextureName).c_str(), pDesc->eVisType );
-	NI_ASSERT_T( pVisObj.GetPtr() != 0, NStr::Format("Can't create object \"%s\" from path \"%s\"", pDesc->szKey.c_str(), pDesc->szPath.c_str()) );
+	NI_ASSERT_T( pVisObj != 0, NStr::Format("Can't create object \"%s\" from path \"%s\"", pDesc->szKey.c_str(), pDesc->szPath.c_str()) );
 	//
 	pAIObj = pAIObjLocal;
 	UpdateModelWithHP( fNewHP / pRPG->fMaxHP, pVOB );

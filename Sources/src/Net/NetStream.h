@@ -1,4 +1,4 @@
-#ifndef __NETSTREAM_H_
+п»ї#ifndef __NETSTREAM_H_
 #define __NETSTREAM_H_
 #if _MSC_VER > 1000
 #pragma once
@@ -90,13 +90,15 @@ private:
 		char cData[256];
 		PACKET_ID nPkt;
 		
+		SChannelBlock() : nOffset(0), nLength(0), nPkt(0) {}  // в†ђ РґРѕР±Р°РІРёС‚СЊ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+
 		int GetSendSize() const { return sizeof(nOffset) + sizeof(nLength) + nLength; }
 		int GetHeaderSize() { return sizeof(nOffset) + sizeof(nLength); }
 	};
 #pragma pack(pop)
 	
 	// streaming data control structures
-	// текущее смещение отсылаемых и принимаемых данных
+	// С‚РµРєСѓС‰РµРµ СЃРјРµС‰РµРЅРёРµ РѕС‚СЃС‹Р»Р°РµРјС‹С… Рё РїСЂРёРЅРёРјР°РµРјС‹С… РґР°РЅРЅС‹С…
 	CHANNEL_DATA_OFFSET nChannelOutputOffset, nChannelInputOffset;
 	typedef std::list<SChannelBlock> SChannelBlockList;
 	SChannelBlockList channelOutFlyList, channelOutList, channelInList;

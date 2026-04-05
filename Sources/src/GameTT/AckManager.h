@@ -116,7 +116,7 @@ private:
 		//
 		int operator&( IDataTree &ss )
 		{
-			CTreeAccessor tree = &ss;
+			CTreeAccessor tree( &ss );
 			tree.Add( "AckName", &szAckName );
 			tree.Add( "AckType", &eType );
 			tree.Add( "TextKey", &szTextKey );

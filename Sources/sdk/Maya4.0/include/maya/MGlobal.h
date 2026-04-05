@@ -75,6 +75,12 @@ class MCommandResult;
 #pragma warning(disable: 4522)
 #endif // _WIN32
 
+#ifndef kTrue
+#define kTrue 1
+#endif
+#ifndef kFalse
+#define kFalse 0
+#endif
 class OPENMAYA_EXPORT MGlobal  
 {
 public:

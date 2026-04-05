@@ -17,11 +17,14 @@ class CStreamAccessor : public CPtr<IDataStream>
 		void WriteString( const std::basic_string<T1> &str )
 		{
 			int nSize = str.size();
-			int nCheck = (*this)->Write( &nSize, sizeof(nSize) );
+			//int nCheck = (*this)->Write( &nSize, sizeof(nSize) );
+			int nCheck = GetPtr()->Write( &nSize, sizeof(nSize) );
 			NI_ASSERT_SLOW_T( nCheck == sizeof(nSize), NStr::Format("%d bytes written instead of %d", nCheck, sizeof(nSize)) );
 			if ( nSize != 0 )
 			{
-				nCheck = (*this)->Write( &(str[0]), nSize * sizeof(str[0]) );
+				//nCheck = (*this)->Write( &(str[0]), nSize * sizeof(str[0]) );
+				//fix 
+				nCheck = GetPtr()->Write( &(str[0]), nSize * sizeof(str[0]) );
 				NI_ASSERT_SLOW_T( nCheck == nSize*sizeof(str[0]), NStr::Format("%d bytes written instead of %d", nCheck, nSize*sizeof(str[0])) );
 			}
 		}
@@ -29,12 +32,16 @@ class CStreamAccessor : public CPtr<IDataStream>
 		void ReadString( std::basic_string<T1> &str )
 		{
 			int nSize = 0;
-			int nCheck = (*this)->Read( &nSize, sizeof(nSize) );
+			//int nCheck = (*this)->Read( &nSize, sizeof(nSize) );
+			//FIX 
+			int nCheck = GetPtr()->Read( &nSize, sizeof(nSize) );
 			NI_ASSERT_SLOW_T( nCheck == sizeof(nSize), NStr::Format("%d bytes read instead of %d", nCheck, sizeof(nSize)) );
 			str.resize( nSize );
 			if ( nSize != 0 )
 			{
-				nCheck = (*this)->Read( &(str[0]), nSize * sizeof(str[0]) );
+				//nCheck = (*this)->Read( &(str[0]), nSize * sizeof(str[0]) );
+				//FIX 
+				nCheck = GetPtr()->Read( &(str[0]), nSize * sizeof(str[0]) );
 				NI_ASSERT_SLOW_T( nCheck == nSize*sizeof(str[0]), NStr::Format("%d bytes read instead of %d", nCheck, nSize*sizeof(str[0])) );
 			}
 		}

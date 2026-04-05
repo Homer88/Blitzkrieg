@@ -62,7 +62,7 @@
 // *****************************************************************************
 
 // INCLUDED HEADER FILES
-
+#include <maya/MGlobal.h>
 #include <maya/MFnDependencyNode.h>
 #include <maya/MObject.h>
 #include <stdlib.h>
@@ -165,13 +165,21 @@ public:
 								MStatus * ReturnStatus = NULL ) const;
 	///
 	bool			inUnderWorld ( MStatus * ReturnStatus = NULL ) const;
+
     ///
+#ifndef kTrue
+#define kTrue 1
+#endif
+#ifndef kFalse
+#define kFalse 0
+#endif
 	bool			isInstanced( bool indirect = true,
 						           MStatus * ReturnStatus = NULL ) const;
     ///
 	unsigned int	instanceCount( bool total,
 						           MStatus * ReturnStatus = NULL ) const;
 	///
+
 	MObject			duplicate( bool instance = false,
 					           bool instanceLeaf = false,
 					           MStatus * ReturnStatus = NULL ) const;

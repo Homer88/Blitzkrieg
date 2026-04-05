@@ -32,7 +32,7 @@ bool CMOBridgeSpan::Create( IRefCount *_pAIObj, const SGDBObjectDesc *pDesc, int
 	pSlab = CreateObject<SMapObject>( MISSION_MO_OBJECT );
 	if ( pSlab->Create(0, pDesc, nSeason, span.nSlab, fHP, pVOB, pGDB) == false ) 
 		pSlab = 0;
-	if ( pSlab && pSlab->pVisObj ) 
+	if ( pSlab && pSlab->pVisObj.GetPtr() ) 
 		checked_cast<IObjVisObj*>(pSlab->pVisObj.GetPtr())->SetPriority( 90 );
 
 	pBackGirder = CreateObject<SMapObject>( MISSION_MO_OBJECT );
@@ -46,7 +46,7 @@ bool CMOBridgeSpan::Create( IRefCount *_pAIObj, const SGDBObjectDesc *pDesc, int
 	pAIObj = _pAIObj;
 	nIndex = nFrameIndex;
 	//
-	return pSlab.GetPtr() != 0;
+	return pSlab != 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CMOBridgeSpan::operator&( IStructureSaver &ss )
@@ -82,16 +82,16 @@ void CMOBridgeSpan::SetPlacement( const CVec3 &vPos, const WORD &wDir )
 	// slab
 	pSlab->SetPlacement( vPos, wDir );
 	// back girder
-	if (pBackGirder.GetPtr())
+	if (pBackGirder)
 		pBackGirder->SetPlacement( vPos + pRPGStats->GetSegmentStats(span.nBackGirder).vRelPos, wDir );
 	// front girder
-	if (pFrontGirder.GetPtr())
+	if (pFrontGirder)
 		pFrontGirder->SetPlacement( vPos + pRPGStats->GetSegmentStats(span.nFrontGirder).vRelPos, wDir );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMOBridgeSpan::GetPlacement( CVec3 *pvPos, WORD *pwDir )
 {
-	if (pSlab.GetPtr()) 
+	if (pSlab) 
 		pSlab->GetPlacement( pvPos, pwDir );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,30 +119,30 @@ void CMOBridgeSpan::GetActions( CUserActions *pActions, EActionsType eActions ) 
 void CMOBridgeSpan::AIUpdatePlacement( const struct SAINotifyPlacement &placement, const NTimer::STime &currTime, IScene *pScene )
 {
 	pSlab->AIUpdatePlacement( placement, currTime, pScene );
-	if (pBackGirder.GetPtr()) 
+	if (pBackGirder) 
 		pBackGirder->AIUpdatePlacement( placement, currTime, pScene );
-	if (pFrontGirder.GetPtr()) 
+	if (pFrontGirder) 
 		pFrontGirder->AIUpdatePlacement( placement, currTime, pScene );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class TAnim>
 TAnim* GetAnim( IVisObj *pVisObj )
 {
-	return static_cast<TAnim*>( static_cast<IObjVisObj*>(pVisObj)->GetAnimation() );
+	return static_cast<TAnim*>( static_cast<IObjVisObj*>( pVisObj )->GetAnimation() );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void ChangeModel( SMapObject *pMO, const SGDBObjectDesc *pDesc, const SBridgeRPGStats::SSegmentRPGStats &segment, 
 								  const float fNewHP, const NTimer::STime &currTime, IVisObjBuilder *pVOB )
 {
-	if ( pMO.GetPtr() == 0 ) 
+	if ( pMO == 0 ) 
 		return;
 	const std::string szPartName = pDesc->szPath + "\\" + segment.szModel;
 	//
-	pVOB->ChangeObject( pMO->pVisObj, szPartName.c_str(), 0, SGVOT_SPRITE );
-	GetAnim<ISpriteAnimation>(pMO->pVisObj)->SetFrameIndex( segment.nFrameIndex );
+	pVOB->ChangeObject( pMO->pVisObj.GetPtr(), szPartName.c_str(), 0, SGVOT_SPRITE );
+	GetAnim<ISpriteAnimation>(pMO->pVisObj.GetPtr())->SetFrameIndex( segment.nFrameIndex );
 	if ( fNewHP == 1 ) 
-		pMO->pVisObj->SetOpacity( 0xff );
-	pMO->pVisObj->Update( currTime, true );
+		pMO->pVisObj.GetPtr()->SetOpacity( 0xff );
+	pMO->pVisObj.GetPtr()->Update( currTime, true );
 	if ( pMO->pShadow ) 
 	{
 		if ( pVOB->ChangeObject(pMO->pShadow , (szPartName + "s").c_str(), 0, SGVOT_SPRITE) != false )
@@ -194,9 +194,9 @@ void CMOBridgeSpan::AIUpdateHit( const struct SAINotifyHitInfo &hit, const NTime
 void CMOBridgeSpan::Visit( IMapObjVisitor *pVisitor )
 {
 	pSlab->Visit( pVisitor );
-	if (pBackGirder.GetPtr()) 
+	if (pBackGirder) 
 		pBackGirder->Visit( pVisitor );
-	if (pFrontGirder.GetPtr()) 
+	if (pFrontGirder) 
 		pFrontGirder->Visit( pVisitor );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

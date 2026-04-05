@@ -32,9 +32,9 @@ if(EXISTS "${DIRECTX8_INCLUDE_DIR}")
     message(STATUS "DirectX8 SDK found: ${DIRECTX8_INCLUDE_DIR}")
 endif()
 
-# Глобально НЕ подключаем DirectX, чтобы не ломать утилиты (Misc и др.)
-# INCLUDE_DIRECTORIES(${DIRECTX8_INCLUDE_DIR})
-# LINK_DIRECTORIES(${DIRECTX8_LIB_DIR})
+# Глобально подключаем пути DirectX SDK (только библиотеки для линковки)
+# Заголовки подключаем локально только в модулях, где нужен DirectX (BugSlay, scl, GFX и т.д.)
+LINK_DIRECTORIES(${DIRECTX8_LIB_DIR})
 
 # Глобальные пути include
 INCLUDE_DIRECTORIES(
@@ -99,7 +99,7 @@ add_subdirectory(scl)
 # add_subdirectory(Main)           # Нет CMakeLists.txt
 
 # === ПРИЛОЖЕНИЯ ===
-# add_subdirectory(a7exportmodel)  # Maya SDK headers incompatible with VS2022
+add_subdirectory(a7exportmodel)
 add_subdirectory(AutoRun)
 # add_subdirectory(betakeygen)     # Нет CMakeLists.txt
 # add_subdirectory(buildversion)   # Нет CMakeLists.txt

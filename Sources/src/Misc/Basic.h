@@ -566,18 +566,10 @@ class TPtrName: public CPtrBase<TUserObj, TRefFunc>																		\
 	typedef CPtrBase<TUserObj, TRefFunc> TBase;																					\
 public:																																								\
 	TPtrName() {}																																				\
-	explicit TPtrName( TUserObj *_ptr ): TBase( _ptr ) {  }																			\
+	TPtrName( TUserObj *_ptr ): TBase( _ptr ) {  }																			\
 	TPtrName( const TPtrName &a ): TBase( a ) {  }																			\
 	TPtrName& operator=( TUserObj *_ptr ) { Set( _ptr ); return *this; }								\
 	TPtrName& operator=( const TPtrName &a ) { Set( a.GetPtr() ); return *this; }				\
-	bool operator==( const TPtrName &a ) const { return GetPtr() == a.GetPtr(); }				\
-	/*bool operator==( const TUserObj *a ) const { return GetPtr() == a; }								*/\
-	bool operator!=( const TPtrName &a ) const { return GetPtr() != a.GetPtr(); }				\
-	/*bool operator!=( const TUserObj *a ) const { return GetPtr() != a; }								\
-	bool operator< ( const TUserObj *a ) const { return GetPtr() < a; }									\
-	bool operator> ( const TUserObj *a ) const { return GetPtr() > a; }									\
-	bool operator<=( const TUserObj *a ) const { return GetPtr() <= a; }								\
-	bool operator>=( const TUserObj *a ) const { return GetPtr() >= a; }								*/\
 };
 // ptr specialization
 BASIC_PTR_DECLARE( CPtr, NRefCount::SRefPtrFunc );

@@ -55,6 +55,13 @@
 #include <maya/MPxNode.h>
 #include <maya/MPxData.h>
 
+#ifndef kTrue
+#define kTrue 1
+#endif
+#ifndef kFalse
+#define kFalse 0
+#endif
+
 #ifdef NT_PLUGIN
 #include <maya/MTypes.h>
 HINSTANCE MhInstPlugin;
@@ -74,6 +81,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 class MString;
 class MFileObject;
 class MTypeId;
+
 
 // *****************************************************************************
 

@@ -262,15 +262,37 @@ MStatus CA7ExportModel::CollectMeshes()
 	return MS::kSuccess;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <class TYPE>
-TYPE GetValue( const char *pszName, MFnDagNode &node, TYPE defval )
+//
+// Overloads for MPlug::getValue to avoid ambiguity with templates
+//
+double GetValue( const char *pszName, MFnDagNode &node, double defval )
 {
 	MStatus status;
-	TYPE value = defval;
+	double value = defval;
 	MPlug plug = node.findPlug( MString(pszName), &status );
 	if ( status == MStatus::kSuccess )
 		plug.getValue( value );
 	return value;
+}
+
+int GetValue( const char *pszName, MFnDagNode &node, int defval )
+{
+	MStatus status;
+	int value = defval;
+	MPlug plug = node.findPlug( MString(pszName), &status );
+	if ( status == MStatus::kSuccess )
+		plug.getValue( value );
+	return value;
+}
+
+bool GetValue( const char *pszName, MFnDagNode &node, bool defval )
+{
+	MStatus status;
+	int value = defval ? 1 : 0;
+	MPlug plug = node.findPlug( MString(pszName), &status );
+	if ( status == MStatus::kSuccess )
+		plug.getValue( value );
+	return value != 0;
 }
 
 double GetLimit( const char *pszNameEnable, const char *pszNameLimit, MFnDagNode &node, double fDefault )

@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#include <typeinfo>
+
 #include "WorldBase.h"
 
 #include "..\AILogic\AITypes.h"
@@ -82,11 +84,11 @@ void AddSpan( IRefCount *pAIObj, SBridgeSpanObject *pSpan, std::list<SSpanStorag
 	storage.pAIObj = pAIObj;
 	storage.pSpan = pSpan;
 	if ( pSpan->pSlab ) 
-		storage.visobjects.push_back( pSpan->pSlab->pVisObj );
+		storage.visobjects.push_back( pSpan->pSlab->pVisObj.GetPtr() );
 	if ( pSpan->pBackGirder ) 
-		storage.visobjects.push_back( pSpan->pBackGirder->pVisObj );
+		storage.visobjects.push_back( pSpan->pBackGirder->pVisObj.GetPtr() );
 	if ( pSpan->pFrontGirder ) 
-		storage.visobjects.push_back( pSpan->pFrontGirder->pVisObj );
+		storage.visobjects.push_back( pSpan->pFrontGirder->pVisObj.GetPtr() );
 }
 void AddMapObj( IRefCount *pAIObj, SMapObject *pMO, std::list<SMapObjectStorage> &mos )
 {
@@ -94,15 +96,15 @@ void AddMapObj( IRefCount *pAIObj, SMapObject *pMO, std::list<SMapObjectStorage>
 	SMapObjectStorage &storage = mos.back();
 	storage.pMO = pMO;
 	storage.pAIObj = pAIObj;
-	storage.pVisObj = pMO->pVisObj;
+	storage.pVisObj = pMO->pVisObj.GetPtr();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CWorldBase::operator&( IStructureSaver &ss )
 {
 	CSaverAccessor saver = &ss;
 	// serialize all map objects
-	// такой геморройный путь для того, чтобы все указатели правильно восстановились ч/з автоматичекую систему
-	// Vis & AI objects must be stored separatelly, т.к. нельзя использовать внутренние данные из SMapObject в функции сериализации
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ/пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	// Vis & AI objects must be stored separatelly, пїЅ.пїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ SMapObject пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	{
 		std::list<SMapObjectStorage> mos;
 		std::list<SSpanStorage> spans;
@@ -195,8 +197,8 @@ CWorldBase::CWorldBase()
 	//
 	vLastAnchor.Set( -1000000, -1000000, -1000000 );
 	//
-	// сначала нужно проапдейтить новые объекты, потому что они могут умереть в этом же кадре
-	// но на месте мёртвых в этом же кадре не могут создаться новые - это в Updater-е отслеживается
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	// пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅ пїЅ Updater-пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	fnAIUpdates.push_back( &CWorldBase::AIUpdateNewProjectiles );	
 	fnAIUpdates.push_back( &CWorldBase::AIUpdateNewObjects );	
 	fnAIUpdates.push_back( &CWorldBase::AIUpdateNewUnits );
@@ -220,7 +222,7 @@ CWorldBase::CWorldBase()
 	
 	fnAIUpdates.push_back( &CWorldBase::AIUpdateDeadProjectiles );
 	fnAIUpdates.push_back( &CWorldBase::AIUpdateDeadUnits );
-	// AIUpdateRemoveObjects идут после AIUpdateDeadUnits, так как юниты могут исчезнуть после смерти в том же сегменте
+	// AIUpdateRemoveObjects пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ AIUpdateDeadUnits, пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	fnAIUpdates.push_back( &CWorldBase::AIUpdateRemoveObjects );
 	//
 	fnAIUpdates.push_back( &CWorldBase::AIUpdateBridges );
@@ -235,13 +237,13 @@ CWorldBase::CWorldBase()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CWorldBase::~CWorldBase()
 {
-	if (pScene.GetPtr())
+	if (pScene)
 	{
 //		for ( CMapObjectsMap::iterator it = visobjects.begin(); it != visobjects.end(); ++it )
 //		{
 //			SMapObject *pMO = it->second;
-//			if ( pMO->pVisObj )
-//				pScene->RemoveObject( pMO->pVisObj );
+//			if ( pMO->pVisObj.GetPtr() )
+//				pScene->RemoveObject( pMO->pVisObj.GetPtr() );
 //			if ( pMO->pShadow )
 //				pScene->RemoveObject( pMO->pShadow );
 //		}
@@ -288,7 +290,7 @@ void CWorldBase::Clear()
 	//showicons.clear();
 	messages.clear();
 	//
-	if (pScene.GetPtr())
+	if (pScene)
 	{
 		pScene->Clear();
 		pScene->SetTerrain( 0 );
@@ -371,25 +373,25 @@ void CWorldBase::AddToScene( SMapObject *pMO, bool bOutbound, EObjGameType eGame
 	pMO->Visit( &visitor );
 	for ( std::list<SGetVisObjesVisitor::SVisObjDesc>::iterator it = visitor.objects.begin(); it != visitor.objects.end(); ++it )
 	{
-		if (bOutbound.GetPtr())
-			pScene->AddOutboundObject( it->pVisObj, it->eGameType );
+		if (bOutbound)
+			pScene->AddOutboundObject( it->pVisObj.GetPtr(), it->eGameType );
 		else if ( it->bOutbound ) 
-			pScene->AddOutboundObject2( it->pVisObj, it->eGameType );
+			pScene->AddOutboundObject2( it->pVisObj.GetPtr(), it->eGameType );
 		else if ( it->eGameType == SGVOGT_SHADOW ) 
 		{
-			it->pVisObj->SetColor( 0x00000000 );
-			it->pVisObj->SetOpacity( 0x80 );
-			pScene->AddObject( it->pVisObj, SGVOGT_SHADOW, 0 );
+			it->pVisObj.GetPtr()->SetColor( 0x00000000 );
+			it->pVisObj.GetPtr()->SetOpacity( 0x80 );
+			pScene->AddObject( it->pVisObj.GetPtr(), SGVOGT_SHADOW, 0 );
 		}
 		else if ( it->eGameType == SGVOGT_FLAG ) 
-			pScene->AddObject( it->pVisObj, SGVOGT_UNIT, pMO->pDesc );
+			pScene->AddObject( it->pVisObj.GetPtr(), SGVOGT_UNIT, pMO->pDesc );
 		else if ( eGameType == SGVOGT_UNKNOWN )
-			pScene->AddObject( it->pVisObj, it->eGameType, pMO->pDesc );
+			pScene->AddObject( it->pVisObj.GetPtr(), it->eGameType, pMO->pDesc );
 		else
-			pScene->AddObject( it->pVisObj, eGameType, pMO->pDesc );
+			pScene->AddObject( it->pVisObj.GetPtr(), eGameType, pMO->pDesc );
 	}
 	// register main object
-	visobjects[pMO->pVisObj] = pMO;
+	visobjects[pMO->pVisObj.GetPtr()] = pMO;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldBase::RemoveFromWorld( SMapObject *pMO )
@@ -404,13 +406,13 @@ void CWorldBase::RemoveFromScene( SMapObject *pMO )
 	if ( pMO->pShadow )
 		pScene->RemoveObject( pMO->pShadow );
 	// remove main object
-	pScene->RemoveObject( pMO->pVisObj );
+	pScene->RemoveObject( pMO->pVisObj.GetPtr() );
 	// unregister main object
-	visobjects.erase( pMO->pVisObj );
+	visobjects.erase( pMO->pVisObj.GetPtr() );
 }
 void CWorldBase::RemoveAIObj( SMapObject *pMO, bool bDelayed )	
 { 
-	if (bDelayed.GetPtr())
+	if (bDelayed)
 		delayedRemoveAIObjes.push_back( pMO );
 	else
 	{
@@ -455,7 +457,7 @@ SBridgeSpanObject* CWorldBase::CreateSpanObject( int nDBID, int nFrameIndex, flo
 {
 	// extract DB descriptor
 	const SGDBObjectDesc *pDesc = pGDB->GetDesc( nDBID );
-	NI_ASSERT_T( pDesc.GetPtr() != 0, NStr::Format("can't find DB entry for object %d", nDBID) );
+	NI_ASSERT_T( pDesc != 0, NStr::Format("can't find DB entry for object %d", nDBID) );
 	const SBridgeRPGStats *pRPG = static_cast<const SBridgeRPGStats*>( pGDB->GetRPGStats( pDesc ) );
 	// create new empty span object
 	SBridgeSpanObject *pSpan = CreateObject<SBridgeSpanObject>( MISSION_MO_BRIDGE_SPAN );
@@ -491,11 +493,11 @@ SBridgeSpanObject* CWorldBase::AddSpanToWorld( IRefCount *pAIObj, int nDBID, int
 void CWorldBase::AddToScene( SBridgeSpanObject *pSpan )
 {
 	// register main object
-	visspans[pSpan->pSlab->pVisObj] = pSpan;
+	visspans[pSpan->pSlab->pVisObj.GetPtr()] = pSpan;
 	if ( pSpan->pBackGirder )
-		visspans[pSpan->pBackGirder->pVisObj] = pSpan;
+		visspans[pSpan->pBackGirder->pVisObj.GetPtr()] = pSpan;
 	if ( pSpan->pFrontGirder )
-		visspans[pSpan->pFrontGirder->pVisObj] = pSpan;
+		visspans[pSpan->pFrontGirder->pVisObj.GetPtr()] = pSpan;
 	// add main object
 	AddToScene( pSpan->pSlab, false, SGVOGT_BRIDGE );
 	if ( pSpan->pBackGirder )
@@ -525,11 +527,11 @@ void CWorldBase::RemoveFromScene( SBridgeSpanObject *pSpan )
 	if ( pSpan->pFrontGirder )
 		RemoveFromScene( pSpan->pFrontGirder );
 	// unregister main object
-	visspans.erase( pSpan->pSlab->pVisObj );
+	visspans.erase( pSpan->pSlab->pVisObj.GetPtr() );
 	if ( pSpan->pBackGirder )
-		visspans.erase( pSpan->pBackGirder->pVisObj );
+		visspans.erase( pSpan->pBackGirder->pVisObj.GetPtr() );
 	if ( pSpan->pFrontGirder )
-		visspans.erase( pSpan->pFrontGirder->pVisObj );
+		visspans.erase( pSpan->pFrontGirder->pVisObj.GetPtr() );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ************************************************************************************************************************ //
@@ -569,18 +571,18 @@ void CWorldBase::Update( const NTimer::STime &currTime )
 	{
 		if ( SMapObject *pMO = delayedRemoveAIObjes.front() )
 		{
-			if ( pMO->pVisObj ) 
-				pMO->pVisObj->Update( currTime );
+			if ( pMO->pVisObj.GetPtr() ) 
+				pMO->pVisObj.GetPtr()->Update( currTime );
 			RemoveAIObj( delayedRemoveAIObjes.front(), false );
 		}
 		delayedRemoveAIObjes.pop_front();
 	}
-	// CRAP{ для принудительного вращения моделек в процессе отладки
-	if (bForceRotation.GetPtr())
+	// CRAP{ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	if (bForceRotation)
 	{
 		int nRotateDirection = currTime * 2;
 		for ( CMapObjectsMap::iterator it = visobjects.begin(); it != visobjects.end(); ++it )
-			it->second->pVisObj->SetDirection( nRotateDirection );
+			it->second->pVisObj.GetPtr()->SetDirection( nRotateDirection );
 	}
 	// CRAP}
 
@@ -646,9 +648,9 @@ void CWorldBase::AIUpdateWarFog( const NTimer::STime &currTime )
 bool CWorldBase::ToggleAIInfo() 
 { 
 	bEnableAIInfo = !bEnableAIInfo; 
-	if (!bEnableAIInfo.GetPtr())
+	if (!bEnableAIInfo)
 		pScene->GetTerrain()->SetAIMarker( 0, 0 );
-	else if (bEnableAIInfo.GetPtr())
+	else if (bEnableAIInfo)
 		vLastAnchor.Set( -1000000, -1000000, -1000000 );
 	return bEnableAIInfo; 
 }
@@ -656,7 +658,7 @@ bool CWorldBase::ToggleAIInfo()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldBase::AIUpdatePassability( const CVec2 &vLT, const CVec2 &vLB, const CVec2 &vRB, const CVec2 &vRT )
 {
-	if (!bEnableAIInfo.GetPtr())
+	if (!bEnableAIInfo)
 		return;
 	//
 	SAIPassabilityInfo *pObjects = 0;
@@ -674,13 +676,13 @@ void CWorldBase::AIUpdateNewObjects( const NTimer::STime &currTime )
 	for ( int i=0; i<nNumObjects; ++i )
 	{
 		const SNewUnitInfo &info = pObjects[i];
-		NI_ASSERT_TF( info.dbID.GetPtr() != 0xffff, "object with undefined type has come from AI", continue );
+		NI_ASSERT_TF( info.dbID != 0xffff, "object with undefined type has come from AI", continue );
 		const SGDBObjectDesc *pDesc = pGDB->GetDesc( info.dbID );
-		NI_ASSERT_SLOW_TF( pDesc.GetPtr() != 0, NStr::Format("Can't find DB description with index %d", info.dbID), continue );
+		NI_ASSERT_SLOW_TF( pDesc != 0, NStr::Format("Can't find DB description with index %d", info.dbID), continue );
 		// object's position
 		CVec3 vPos;
 		AI2Vis( &vPos, info.center.x, info.center.y, info.z );
-		if ( info.nFrameIndex == -2 )				// special case - "гавно-после-смерти"
+		if ( info.nFrameIndex == -2 )				// special case - "пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅ"
 		{
 			if ( const SMechUnitRPGStats *pRPG = NGDB::GetRPGStats<SMechUnitRPGStats>(pGDB, pDesc) )
 			{
@@ -700,7 +702,7 @@ void CWorldBase::AIUpdateNewObjects( const NTimer::STime &currTime )
 			}
 			// CRAP{ set scale
 			if ( pObjects[i].fResize != 1.0f ) 
-				static_cast_ptr<IObjVisObj*>(pMO->pVisObj)->SetScale( pObjects[i].fResize, pObjects[i].fResize, pObjects[i].fResize );
+				static_cast_ptr<IObjVisObj*>( pMO->pVisObj )->SetScale( pObjects[i].fResize, pObjects[i].fResize, pObjects[i].fResize );
 			// CRAP}
 			// add to scene
 			AddToScene( pMO );
@@ -708,7 +710,7 @@ void CWorldBase::AIUpdateNewObjects( const NTimer::STime &currTime )
 					 SGVOGT_BUILDING == pMO->pDesc->eGameType )
 			{
 				const SObjectBaseRPGStats * pStats = static_cast_gdb<const SObjectBaseRPGStats*>(pMO->pRPG);
-				const CVec3 vPos = pMO->pVisObj->GetPosition();
+				const CVec3 vPos = pMO->pVisObj.GetPtr()->GetPosition();
 				SObjectSounds info;
 				if ( !pStats->szAmbientSound.empty() )
 					info.wSoundID = pScene->AddSoundToMap( pStats->szAmbientSound.c_str(), vPos );
@@ -767,7 +769,7 @@ void CWorldBase::AIUpdateNewUnits( const NTimer::STime &currTime )
 	for ( int i=0; i<nNumObjects; ++i )
 	{
 		const SNewUnitInfo &info = pObjects[i];
-		NI_ASSERT_TF( info.dbID.GetPtr() != 0xffff, "object with undefined type has come from AI", continue );
+		NI_ASSERT_TF( info.dbID != 0xffff, "object with undefined type has come from AI", continue );
 		// create unit and add to world
 		SMapObject *pMO = AddToWorld( info.pObj, info.dbID, info.nFrameIndex, info.fHitPoints );
 		// set placement for unit
@@ -800,7 +802,7 @@ void CWorldBase::AIUpdateNewProjectiles( const NTimer::STime &currTime )
 		for ( int i=0; i<nNumObjects; ++i )
 		{
 			SMapObject *pUnit = FindByAI( pObjects[i].pSource );
-			if ( pUnit.GetPtr() == 0 )
+			if ( pUnit == 0 )
 				continue;
 			if ( SMapObject *pMO = static_cast<SMapObject*>( static_cast<IMOUnit*>(pUnit)->AIUpdateFireWithProjectile(pObjects[i], currTime, pVOB) ) )
 			{
@@ -867,9 +869,9 @@ void CWorldBase::AIUpdateDiplomacy( const NTimer::STime &currTime )
 	for ( int i=0; i<nNumObjects; ++i )
 	{
 		SMapObject *pMO = FindByAI( pObjects[i].pObj );
-		if (pMO.GetPtr())
+		if (pMO)
 		{
-			if ( checked_cast<IMOSelectable*>(pMO)->AIUpdateDiplomacy(pObjects[i]) == false )
+			if ( checked_cast<IMOSelectable*>( pMO )->AIUpdateDiplomacy(pObjects[i]) == false )
 			{
 				RemoveFromSelectionGroup( pMO );
 				ResetSelection( pMO );
@@ -886,7 +888,7 @@ void CWorldBase::AIUpdateActions( const NTimer::STime &currTime )
 	for ( int i=0; i<nNumObjects; ++i )
 	{
 		SMapObject *pMO = FindByAI( pObjects[i].pObj );
-		if ( pMO.GetPtr() == 0 ) 
+		if ( pMO == 0 ) 
 			continue;
 		//process selection messages
 		switch ( pObjects[i].typeID ) 
@@ -894,8 +896,8 @@ void CWorldBase::AIUpdateActions( const NTimer::STime &currTime )
 			case ACTION_NOTIFY_CHANGE_SELECTION:
 				if ( pObjects[i].nParam == 1 )
 					Select( pMO );
-				else if ( pObjects[i].nParam.GetPtr() == 0 )
-					ResetSelectionOverridable( pMO->pVisObj );
+				else if ( pObjects[i].nParam == 0 )
+					ResetSelectionOverridable( pMO->pVisObj.GetPtr() );
 				break;
 			case ACTION_NOTIFY_SELECT_CHECKED:
 				{
@@ -909,7 +911,7 @@ void CWorldBase::AIUpdateActions( const NTimer::STime &currTime )
 					IMOSquad *pMOToCheck = dynamic_cast<IMOSquad*>( FindByAI(reinterpret_cast<IRefCount*>(pAILogic->GetObjByUniqueID(pObjects[i].nParam))) );
 					int nSelGroup = -1;
 					bool isSelected = false;
-					if (pMOToCheck.GetPtr())
+					if (pMOToCheck)
 					{
 						nSelGroup = pMOToCheck->GetSelectionGroupID();							
 						isSelected = pMOToCheck->IsSelected();
@@ -929,14 +931,14 @@ void CWorldBase::AIUpdateActions( const NTimer::STime &currTime )
 					else
 					{
 						IMOSelectable *pMOTemp = dynamic_cast<IMOSelectable*>( FindByAI(reinterpret_cast<IRefCount*>(pAILogic->GetObjByUniqueID(pObjects[i].nParam))) );
-						if (pMOTemp.GetPtr())
+						if (pMOTemp)
 						{
 							nSelGroup = pMOTemp->nSelectionGroupID;
 							isSelected = pMOTemp->IsSelected();
 						}
 					}
 					IMOSquad *pMOUnitToGroup = dynamic_cast<IMOSquad*>(pMO);
-					if (pMOUnitToGroup.GetPtr())
+					if (pMOUnitToGroup)
 					{
 						const int nNumPassangers = pMOUnitToGroup->GetPassangers( 0 );
 						if ( nNumPassangers > 0 )
@@ -947,7 +949,7 @@ void CWorldBase::AIUpdateActions( const NTimer::STime &currTime )
 							for ( std::vector<IMOUnit*>::iterator it = vMOUnit.begin(); it != vMOUnit.end(); ++it )
 							{
 								AddUnitToSelectionGroup( *it, nSelGroup );
-								if (isSelected.GetPtr())
+								if (isSelected)
 									Select( *it );
 							}
 						}
@@ -955,17 +957,17 @@ void CWorldBase::AIUpdateActions( const NTimer::STime &currTime )
 					else
 					{
 						IMOUnit *pMOTemp = dynamic_cast<IMOUnit*>(pMO);
-						if (pMOTemp.GetPtr())
+						if (pMOTemp)
 						{
 							AddUnitToSelectionGroup( pMOTemp, nSelGroup );
-							if (isSelected.GetPtr())
+							if (isSelected)
 								Select( pMOTemp );
 						}
 					}
 				}
 				break;
 			case ACTION_NOTIFY_SELECTABLE_CHANGED:
-				if ( pObjects[i].nParam.GetPtr() == 0 ) 
+				if ( pObjects[i].nParam == 0 ) 
 					ResetSelection( pMO );
 				break;
 		}
@@ -1018,7 +1020,7 @@ void CWorldBase::AIUpdateAiming( const NTimer::STime &currTime )
 		{
 			if ( SMapObject *pMO = FindByAI(pObjects[i].pObj) )
 			{
-				if ( IMeshAnimation *pAnim = static_cast<IMeshAnimation*>(static_cast_ptr<IObjVisObj*>(pMO->pVisObj)->GetAnimation()) )
+				if ( IMeshAnimation *pAnim = static_cast<IMeshAnimation*>(static_cast_ptr<IObjVisObj*>( pMO->pVisObj )->GetAnimation()) )
 				{
 					const float fAngle = float( pObjects[i].wAngle ) / 65536.0f * FP_2PI;
 					const NTimer::STime timeStart = currTime, timeEnd = pObjects[i].endTime;
@@ -1026,7 +1028,7 @@ void CWorldBase::AIUpdateAiming( const NTimer::STime &currTime )
 					for ( int j = 0; j != 4; ++j )
 					{
 						const int nModelPart = ( DWORD( pObjects[i].nModelPart ) >> (j*8) ) & 0x000000ff;
-						if ( nModelPart.GetPtr() != 0xff )
+						if ( nModelPart != 0xff )
 							pAnim->AddProceduralNode( nModelPart, currTime, timeStart, timeEnd, fAngle );
 					}
 				}
@@ -1044,7 +1046,7 @@ void CWorldBase::AIUpdateDeadUnits( const NTimer::STime &currTime )
 	{
 		IMOUnit *pUnit = static_cast<IMOUnit*>( FindByAI(pObjects[i].pObj) );
 
-		if ( pUnit.GetPtr() == 0 )
+		if ( pUnit == 0 )
 			continue;
 		// remove from selection & selection group
 		RemoveFromSelectionGroup( pUnit );
@@ -1053,7 +1055,7 @@ void CWorldBase::AIUpdateDeadUnits( const NTimer::STime &currTime )
 		pUnit->SetSquad( 0 );
 		// remove all effectors
 		if ( pUnit->pDesc->eVisType == SGVOT_MESH )
-			static_cast_ptr<IMeshVisObj*>(pUnit->pVisObj)->RemoveEffector( -1, -1 );
+			static_cast_ptr<IMeshVisObj*>( pUnit->pVisObj )->RemoveEffector( -1, -1 );
 
 		pUnit->RemoveSounds( pScene );
 		
@@ -1074,9 +1076,9 @@ void CWorldBase::AIUpdateDeadUnits( const NTimer::STime &currTime )
 			}
 			else
 			{
-				pUnit->pVisObj->Update( currTime, true );
-				static_cast_ptr<IObjVisObj*>(pUnit->pVisObj)->SetPriority( 110 );	// the same as for craters
-				pScene->TransferToGraveyard( pUnit->pVisObj );
+				pUnit->pVisObj.GetPtr()->Update( currTime, true );
+				static_cast_ptr<IObjVisObj*>( pUnit->pVisObj )->SetPriority( 110 );	// the same as for craters
+				pScene->TransferToGraveyard( pUnit->pVisObj.GetPtr() );
 			}
 		}
 		if ( pObjects[i].bRot == false )
@@ -1105,7 +1107,7 @@ void CWorldBase::AIUpdateHits( const NTimer::STime &currTime )
 	{
 		for ( int i = 0; i != nNumObjects; ++i )
 		{
-			if ( pObjects[i].pWeapon.GetPtr() == 0 )
+			if ( pObjects[i].pWeapon == 0 )
 				continue;
 			const SWeaponRPGStats::SShell &shell = pObjects[i].pWeapon->shells[pObjects[i].wShell];
 			// coords
@@ -1150,7 +1152,7 @@ void CWorldBase::AIUpdateHits( const NTimer::STime &currTime )
 						break;
 				}
 				// effects
-				if (pEffectName.GetPtr()) 
+				if (pEffectName) 
 					PlayEffect( *pEffectName, vPos, currTime, false, pScene, pVOB, 0, SFX_MIX_IF_TIME_EQUALS, SAM_ADD_N_FORGET, ESCT_COMBAT );
 				// crater picture
 				if ( bNeedCrater && shell.HasCraters() )
@@ -1175,7 +1177,7 @@ void CWorldBase::AIUpdateAcknowledgemets( const NTimer::STime &currTime )
 		for ( int i = 0; i < nNumObjs; ++i )
 		{
 			SMapObject *pMO = FindByAI( pAcks[i].pObj );
-			if (pMO.GetPtr())
+			if (pMO)
 			{
 				IMOUnit * pUnit = static_cast<IMOUnit*>(pMO);
 				pUnit->AIUpdateAcknowledgement( pAcks[i].eAck, pAckManager, pAcks[i].nSet );
@@ -1190,7 +1192,7 @@ void CWorldBase::AIUpdateAcknowledgemets( const NTimer::STime &currTime )
 		for ( int i = 0; i < nNumObjs; ++i )
 		{
 			SMapObject *pMO = FindByAI( pBoredAcks[i].pObj );
-			if (pMO.GetPtr())
+			if (pMO)
 			{
 				IMOUnit * pUnit = static_cast<IMOUnit*>(pMO);
 				pUnit->AIUpdateBoredAcknowledgement( pBoredAcks[i], pAckManager );
@@ -1290,7 +1292,7 @@ void CWorldBase::AIUpdateFeedbacks( const NTimer::STime &currTime )
 				break;
 
 			case EFB_AAGUN_FIRED:
-				if (bAADetectedFlag.GetPtr())
+				if (bAADetectedFlag)
 					pInput->AddMessage( SGameMessage(MC_VISUALIZE_FEEDBACK_AA_NEWDETECTED, pObjects[i].nParam) );					
 				else
 				{
@@ -1316,7 +1318,7 @@ void CWorldBase::AIUpdateFeedbacks( const NTimer::STime &currTime )
 				{
 					const bool bStart = pObjects[i].nParam;
 					GetSingleton<IScene>()->SwitchWeather( bStart );
-					if (bStart.GetPtr())
+					if (bStart)
 						pInput->AddMessage( SGameMessage(MC_VISUALIZE_FEEDBACK_BAD_WEATHER) );
 
 				}
@@ -1341,15 +1343,15 @@ void CWorldBase::AIUpdateEntrances( const NTimer::STime &currTime )
 	for ( int i=0; i<nNumObjects; ++i )
 	{
 		SMapObject *pInf = FindByAI( pObjects[i].pInfantry );
-		if ( pInf.GetPtr() == 0 ) 
+		if ( pInf == 0 ) 
 			continue;
 		SMapObject *pMO = FindByAI( pObjects[i].pTarget );
-		// pMO.GetPtr() == 0 in the case of entrenchment!!!
-//		NI_ASSERT_SLOW_TF( pInf.GetPtr() != 0, "Can't find unit to enter/leave", return );
+		// pMO == 0 in the case of entrenchment!!!
+//		NI_ASSERT_SLOW_TF( pInf != 0, "Can't find unit to enter/leave", return );
 		if ( pObjects[i].bEnter )
 		{
 			// add to container
-			if (pMO.GetPtr())
+			if (pMO)
 				static_cast<IMOContainer*>(pMO)->Load( static_cast<IMOUnit*>(pInf), true );
 			// reset selection from this object
 			ResetSelection( pInf );
@@ -1359,7 +1361,7 @@ void CWorldBase::AIUpdateEntrances( const NTimer::STime &currTime )
 		else
 		{
 			// remove from container
-			if (pMO.GetPtr())
+			if (pMO)
 				static_cast<IMOContainer*>(pMO)->Load( static_cast<IMOUnit*>(pInf), false );
 			else
 			{
@@ -1426,7 +1428,7 @@ void CWorldBase::AIUpdateBridges( const NTimer::STime &currTime )
 		for ( int i = 0; i != nNumObjects; ++i )
 		{
 			const SNewUnitInfo &info = pObjects[i];
-			NI_ASSERT_TF( info.dbID.GetPtr() != 0xffff, "object with undefined type has come from AI", continue );
+			NI_ASSERT_TF( info.dbID != 0xffff, "object with undefined type has come from AI", continue );
 			// create unit and add to world
 			SBridgeSpanObject *pSpan = AddSpanToWorld( info.pObj, info.dbID, info.nFrameIndex, info.fHitPoints );
 			// set placement for span
@@ -1445,7 +1447,7 @@ void CWorldBase::AIUpdateBridges( const NTimer::STime &currTime )
 			IRefCount **ppObjects = 0;
 			int nNumObjects = 0;
 			pAILogic->GetNewBridge( &ppObjects, &nNumObjects );
-			if ( nNumObjects.GetPtr() == 0 ) 
+			if ( nNumObjects == 0 ) 
 				break;
 			for ( int i = 0; i != nNumObjects; ++i )
 			{
@@ -1504,8 +1506,8 @@ void CWorldBase::MoveObject( IVisObj *pObj, const CVec3 &vPos )
 		pMO->Visit( &visitor );
 		for ( std::list<SGetVisObjesVisitor::SVisObjDesc>::iterator it = visitor.objects.begin(); it != visitor.objects.end(); ++it )
 		{
-			pScene->MoveObject( it->pVisObj, vPos );
-			it->pVisObj->Update( currTime, true );
+			pScene->MoveObject( it->pVisObj.GetPtr(), vPos );
+			it->pVisObj.GetPtr()->Update( currTime, true );
 		}
 	}
 }
@@ -1520,7 +1522,7 @@ void CWorldBase::ShowIcons( int nID, bool bShow )
 			if ( it->second && it->second->pDesc && it->second->pDesc->IsObj() )
 			{
 				ISceneIcon *pIcon = static_cast<IObjVisObj*>( it->second->pVisObj.GetPtr() )->GetIcon( nID );
-				if (pIcon.GetPtr())
+				if (pIcon)
 					pIcon->Enable( bShow );
 			}
 		}
@@ -1551,7 +1553,7 @@ void CWorldBase::ShowIcons( int nID, bool bShow )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SBridgeSpanObject* CWorldBase::PickSpan( const CVec2 &vPos )
 {
-	if ( pScene.GetPtr() == 0 )
+	if ( pScene == 0 )
 		return 0;
 	//
 	std::pair<IVisObj*, CVec2> *pObjects = 0;
@@ -1560,7 +1562,7 @@ SBridgeSpanObject* CWorldBase::PickSpan( const CVec2 &vPos )
 	for ( int i = 0; i != nNumObjects; ++i )
 	{
 		SBridgeSpanObject *pSpan = FindSpanByVis( pObjects[i].first );
-		if (pSpan.GetPtr())
+		if (pSpan)
 			return pSpan;
 	}
 	//
@@ -1595,8 +1597,8 @@ void CWorldBase::ReportReinforcementArrived()
 	const DWORD dwColor = GetGlobalVar( (std::string("Scene.Colors.") + GetSeasonName() + ".Text.Information.Color").c_str(), int(0xffffffff) );
 	if ( IText *pText = GetSingleton<ITextManager>()->GetString("reinforcement_arrived") ) 
 	{
-		GetSingleton<IConsoleBuffer>()->Write( CONSOLE_STREAM_CHAT, pText->GetString(), dwColor );
-		if (pScene.GetPtr()) 
+		GetSingleton<IConsoleBuffer>()->Write( CONSOLE_STREAM_CHAT, (const wchar_t*)pText->GetString(), dwColor );
+		if (pScene) 
 			pScene->AddSound( "sounds\\reports\\information", VNULL3, SFX_INTERFACE, SAM_ADD_N_FORGET );
 	}
 }

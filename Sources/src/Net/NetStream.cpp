@@ -47,7 +47,7 @@ void CStreamTracker::WriteMsg( PACKET_ID nPkt, CBitStream *pBits, int nSizeLimit
 		}
 		else
 		{
-			channelOutFlyList.push_back();
+			channelOutFlyList.push_back(SChannelBlock());
 			SChannelBlock *pMSVCSuck = 0;
 			int nMaxSize = nSizeLimit - pMSVCSuck->GetHeaderSize();
 			nMaxSize = Min( nMaxSize, 255 );
@@ -152,15 +152,15 @@ void CStreamTracker::Rollback( const std::vector<PACKET_ID> &pkts )
 	for ( int i = 0; i < pkts.size(); ++i )
 	{
 		PACKET_ID nPkt = pkts[i];
-		SChannelBlockList::iterator i;
-		for ( i = channelOutFlyList.begin(); i != channelOutFlyList.end(); )
+		SChannelBlockList::iterator it;
+		for ( it = channelOutFlyList.begin(); i != channelOutFlyList.end(); )
 		{
-			if ( i->nPkt == nPkt )
+			if ( it->nPkt == nPkt )
 			{
 #ifdef LOG
 				cout << "ROLLBACK pkt" << nPkt << endl;
 #endif
-				channelOutList.splice( channelOutList.end(), channelOutFlyList, i );
+				channelOutList.splice( channelOutList.end(), channelOutFlyList, i);
 				break;
 			}
 			else

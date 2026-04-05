@@ -15,7 +15,7 @@ CMOProjectile::CMOProjectile()
 CMOProjectile::~CMOProjectile()
 {
 	// удалить звук движения
-	if ( wMoveSoundID.GetPtr() != 0 )
+	if ( wMoveSoundID != 0 )
 	{
 		GetSingleton<IScene>()->RemoveSound( wMoveSoundID );
 		wMoveSoundID = 0;
@@ -32,7 +32,7 @@ bool CMOProjectile::Create( IRefCount *pAIObjLocal, const char *pszName, interfa
 {
 	pVisObj = pVOB->BuildObject( pszName, 0, SGVOT_EFFECT );
 	pAIObj = pAIObjLocal;
-	return pVisObj.GetPtr() != 0;
+	return pVisObj != 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // visiting
@@ -55,7 +55,7 @@ void CMOProjectile::Init( const NTimer::STime &_timeStart, const NTimer::STime &
 void CMOProjectile::SetPlacement( const CVec3 &vPos, const WORD &wDir )
 {
 	pVisObj->SetPlacement( vPos, wDir );
-	if ( pVisObj && (wMoveSoundID.GetPtr() == 0) ) 
+	if ( pVisObj && (wMoveSoundID == 0) ) 
 	{
 		const std::string &szSoundName = static_cast_ptr<IEffectVisObj*>(pVisObj)->GetSoundEffect();
 		// add movement sound
@@ -98,7 +98,7 @@ void CMOProjectile::AIUpdatePlacement( const SAINotifyPlacement &placement, cons
 	pVisObj->SetDirection( placement.dir );
 	pScene->MoveObject( pVisObj, vPos );
 	pVisObj->Update( currTime, true );
-	if ( wMoveSoundID.GetPtr() != 0 )
+	if ( wMoveSoundID != 0 )
 		pScene->SetSoundPos( wMoveSoundID, vPos );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -182,7 +182,7 @@ class CTreeAccessor
 			int nSize = pSS->GetChunkSize();
 			pData->resize(nSize);
 		}
-		// Выбираем перегрузку StringData в зависимости от размера символа
+		// Р’С‹Р±РёСЂР°РµРј РїРµСЂРµРіСЂСѓР·РєСѓ StringData РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ СЂР°Р·РјРµСЂР° СЃРёРјРІРѕР»Р°
 		if (sizeof(T2) == 1)
 			pSS->StringData(const_cast<char*>(pData->c_str()));
 		else
@@ -192,7 +192,7 @@ class CTreeAccessor
 			pSS->FinishChunk();
 	}
 
-	// Специализация для char
+	// РЎРїРµС†РёР°Р»РёР·Р°С†РёСЏ РґР»СЏ char
 	template <class T1>
 	void __cdecl AddInternal(const DTChunkID idChunk, T1* p, std::string* pData)
 	{
@@ -207,7 +207,7 @@ class CTreeAccessor
 		if (nVal != -1) pSS->FinishChunk();
 	}
 
-	// Специализация для wchar_t
+	// РЎРїРµС†РёР°Р»РёР·Р°С†РёСЏ РґР»СЏ wchar_t
 	template <class T1>
 	void __cdecl AddInternal(const DTChunkID idChunk, T1* p, std::wstring* pData)
 	{
@@ -481,7 +481,7 @@ class CTreeAccessor
 			{
 				int nTypeID = -1;
 				Add( "ClassTypeID", &nTypeID );
-				// CRAP{ для совместимости со старыми проектами
+				// CRAP{ РґР»СЏ СЃРѕРІРјРµСЃС‚РёРјРѕСЃС‚Рё СЃРѕ СЃС‚Р°СЂС‹РјРё РїСЂРѕРµРєС‚Р°РјРё
 				if ( nTypeID == -1 )
 					Add( "type", &nTypeID );
 				// CRAP}
@@ -693,7 +693,7 @@ public:
 	const CTreeAccessor& operator=(IDataTree* _pSS) { pSS = _pSS; return *this; }
 	const CTreeAccessor& operator=(const CTreeAccessor& accessor) { pSS = accessor.pSS; return *this; }
 
-	operator void* () const { return pSS; }          // позволяет if (acc) / if (!acc)
+	operator void* () const { return pSS; }          // РїРѕР·РІРѕР»СЏРµС‚ if (acc) / if (!acc)
 	IDataTree* operator->() const { return pSS.GetPtr(); }
 	IDataTree* get() const { return pSS.GetPtr(); }
 
@@ -707,7 +707,7 @@ public:
 	{
 		int nVal = pSS->StartChunk(idChunk);
 		if (nVal == 0) return;
-		(*this)->RawData(pData, nSize);
+		get()->RawData(pData, nSize);  ////fix 
 		if (nVal != -1) (*this)->FinishChunk();
 	}
 	template <class T>

@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 
+#include <typeinfo>
+
 #include "MOUnit.h"
 
 #include "..\Common\Actions.h"
@@ -32,9 +34,9 @@ CMOUnit::CMOUnit()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CMOUnit::OnCreate()
 {
-	if ( dwFlashFireColor.GetPtr() == 0xffffffff ) 
+	if ( dwFlashFireColor == 0xffffffff ) 
 		dwFlashFireColor = GetGlobalVar( (std::string("Scene.Colors.") + GetSeasonName(nSeason) + ".FlashFire.Color").c_str(), int(0xffffffff) );
-	if ( dwFlashExpColor.GetPtr() == 0xffffffff ) 
+	if ( dwFlashExpColor == 0xffffffff ) 
 		dwFlashExpColor = GetGlobalVar( (std::string("Scene.Colors.") + GetSeasonName(nSeason) + ".FlashExplode.Color").c_str(), int(0xffffffff) );
 	// add icon with level for scenario units
 	if ( nScenarioIndex >= 0 ) 
@@ -47,14 +49,14 @@ void CMOUnit::GetActionsLocal( EActionsType eActions, CUserActions *pActions ) c
 {
 	if ( (eActions == IMapObj::ACTIONS_BY) || (eActions == IMapObj::ACTIONS_ALL) )
 	{
-		if ( pRPG.GetPtr() != 0 ) 
+		if ( pRPG != 0 ) 
 			*pActions = static_cast_gdb<const SUnitBaseRPGStats*>(pRPG)->availUserActions;
 		else
 			pActions->Clear();
 	}
 	else if ( eActions == IMapObj::ACTIONS_WITH ) 
 	{
-		if ( (pRPG.GetPtr() != 0) && IsAlive() ) 
+		if ( (pRPG != 0) && IsAlive() ) 
 		{
 			*pActions = static_cast_gdb<const SUnitBaseRPGStats*>(pRPG)->availUserExposures;
 			// damaged unit can be repaired
@@ -115,7 +117,7 @@ void CMOUnit::SetIcon( int nType, IVisObjBuilder *pVOB )
 		static_cast_ptr<IObjVisObj*>(pVisObj)->AddIcon( pIcon, nTypeID, GetIconAddValue(), VNULL3, nTypeID, 
 			                                              ICON_ALIGNMENT_LEFT | ICON_ALIGNMENT_TOP | ICON_PLACEMENT_HORIZONTAL,
 																										CanShowIcons() );
-		if (pObserver.GetPtr()) 
+		if (pObserver) 
 			pObserver->AddIcon( nType, pIcon );
 	}
 }
@@ -144,7 +146,7 @@ void CMOUnit::RemoveIcon( int nType )
 	
 	static_cast_ptr<IObjVisObj*>(pVisObj)->RemoveIcon( nType, CanShowIcons() );
 	//
-	if (pObserver.GetPtr()) 
+	if (pObserver) 
 		pObserver->RemoveIcon( nType );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,12 +184,12 @@ void CMOUnit::GetStatus( struct SMissionStatusObject *pStatus ) const
 		const std::wstring wszStateName = pState ? NStr::ToUnicode( szStateName ) : L"";
 		const std::wstring wszName = NStr::ToUnicode( NStr::Format( "id %d", GetSingleton<IAILogic>()->GetUniqueIDOfObject( pAIObj ) ) ) +
 																 NStr::ToUnicode( szFrozenInfo ) +
-																 L"," + wszStateName + L"," + pName->GetString();
+																 L"," + wszStateName + L"," + (const wchar_t*)pName->GetString();
 		memcpy( pStatus->pszName, wszName.c_str(), (wszName.size() + 1) * 2 );
 	}
 #else
 	if ( IText *pName = GetLocalNameLocal() ) 
-		memcpy( pStatus->pszName, pName->GetString(), (pName->GetLength() + 1) * 2 );
+		memcpy( pStatus->pszName, (const wchar_t*)pName->GetString(), (pName->GetLength() + 1) * 2 );
 #endif // #if !defined(_FINALRELEASE) && !defined(_BETARELEASE)
 	else
 	{
@@ -213,7 +215,7 @@ bool CMOUnit::CommonUpdateHP( const float fNewHP, bool bUpdateHPBar )
 		fHP = fNewHP;
 		/*
 		// remove dead unit from container
-		if (pContainer.GetPtr()) 
+		if (pContainer) 
 		{
 			pContainer->Load( this, false );
 			pContainer = 0;
@@ -234,7 +236,7 @@ bool CMOUnit::CommonUpdateHP( const float fNewHP, bool bUpdateHPBar )
 			pBar->SetColor( MakeHPBarColor(fNewHP) );
 		}
 		//
-		if (pObserver.GetPtr()) 
+		if (pObserver) 
 			pObserver->UpdateHP( fNewHP );
 	}
 	//
@@ -354,7 +356,7 @@ void CMOUnit::AIUpdateAcknowledgement( const EUnitAckType eAck, IClientAckManage
 	const SUnitBaseRPGStats *pStats = static_cast_gdb<const SUnitBaseRPGStats*>( pRPG );
 	const float r = 1.0f * rand() / RAND_MAX;
 	std::string szSound;
-	// если звука негативного аска нет, то попытаться сыграть Generic
+	// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Generic
 	if ( !pStats->ChooseAcknowledgement( r, eAck, &szSound, nSet ) &&	
 			 pAckManager->IsNegative( eAck ) && 
 			 !pStats->ChooseAcknowledgement( 0.0f, eAck, 0, nSet ) )
@@ -383,7 +385,7 @@ void CMOUnit::SendAcknowledgement( interface IClientAckManager *pAckManager, con
 void CMOUnit::SetObserver( IUnitStateObserver *_pObserver ) 
 { 
 	pObserver = _pObserver; 
-	if (pObserver.GetPtr()) 
+	if (pObserver) 
 	{
 		IObjVisObj *pVO = static_cast_ptr<IObjVisObj*>( pVisObj );
 		for ( int i = 1; i < ICON_NUM_ICONS; ++i )
@@ -433,7 +435,7 @@ int CMOUnit::AIUpdateActions( const struct SAINotifyAction &action, const NTimer
 			RemoveIcon( ICON_AMBUSH );
 			break;
 		case ACTION_NOTIFY_STORAGE_CONNECTED:
-			if ( action.nParam.GetPtr() == 0 ) 
+			if ( action.nParam == 0 ) 
 				SetIcon( ICON_UNIT_NO_SUPPLY, pVOB );
 			else
 				RemoveIcon( ICON_UNIT_NO_SUPPLY );
@@ -476,9 +478,9 @@ int CMOUnit::operator&( IStructureSaver &ss )
 	saver.Add( 12, &nPlayerIndex );
 	if ( saver.IsReading() ) 
 	{
-		if ( dwFlashFireColor.GetPtr() == 0xffffffff ) 
+		if ( dwFlashFireColor == 0xffffffff ) 
 			dwFlashFireColor = GetGlobalVar( (std::string("Scene.Colors.") + GetSeasonName(nSeason) + ".FlashFire.Color").c_str(), int(0xffffffff) );
-		if ( dwFlashExpColor.GetPtr() == 0xffffffff ) 
+		if ( dwFlashExpColor == 0xffffffff ) 
 			dwFlashExpColor = GetGlobalVar( (std::string("Scene.Colors.") + GetSeasonName(nSeason) + ".FlashExplode.Color").c_str(), int(0xffffffff) );
 	}
 	//

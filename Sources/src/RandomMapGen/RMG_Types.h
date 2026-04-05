@@ -714,14 +714,14 @@ public:
 		//
 		int operator&( IDataTree &ss )
 		{
-			CTreeAccessor saver = &ss;
+			CTreeAccessor saver (& ss);
 			saver.Add( "RPGStats", &szRPGStats );
 			saver.Add( "Weight", &nWeight );
 			return 0;
 		}
 		int operator&( IStructureSaver &ss )
 		{
-			CSaverAccessor saver = &ss;
+			CSaverAccessor saver (& ss);
 			saver.Add( 1, &szRPGStats );
 			saver.Add( 2, &nWeight );
 			return 0;

@@ -21,3 +21,5 @@ Sources/src/build_output.txt
 /Sources/src/StreamIO/build
 /Sources/src/Input/Debug
 /Sources/src/BugSlay/build
+/Sources/sdk/fmod
+/Sources/src/Net/build

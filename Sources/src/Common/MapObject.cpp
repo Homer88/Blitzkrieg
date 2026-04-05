@@ -47,10 +47,10 @@ int SBridgeSpanObject::operator&( IStructureSaver &ss )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 IText* GetLocalName( const SGDBObjectDesc *pDesc )
 {
-	if ( pDesc.GetPtr() == 0 ) 
+	if ( pDesc == 0 ) 
 		return 0;
 	IText *pLocalName = GetSingleton<ITextManager>()->GetDialog( (pDesc->szPath + "\\name").c_str() );
-	if ( pLocalName.GetPtr() == 0 ) 
+	if ( pLocalName == 0 ) 
 		pLocalName = GetSingleton<ITextManager>()->GetDialog( "textes\\strings\\widget-object-name"  );
 	return pLocalName;
 }

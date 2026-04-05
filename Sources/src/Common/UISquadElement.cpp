@@ -44,7 +44,7 @@ void CUIUnitObserver::UpdateHP( const float fValue )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CUIUnitObserver::RemoveUnit()
 {
-	if (pSquad.GetPtr()) 
+	if (pSquad) 
 		pSquad->RemovePassanger( this );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,7 +122,7 @@ CIconsVisitor visitor;
 
 void CUISquadElement::Visit( interface ISceneVisitor *pVisitor )
 {
-	if ( pSquadIcon.GetPtr() == 0 )
+	if ( pSquadIcon == 0 )
 	{
 		pSquadIcon = GetSingleton<ITextureManager>()->GetTexture( "UI\\container" );
 	}
@@ -168,7 +168,7 @@ void CUISquadElement::Visit( interface ISceneVisitor *pVisitor )
 			visitor.Clear();
 			icon->pIcon->Visit( &visitor, 0x80000000 );
 			int xOffset = 1 + iconHeight * ( i / ICONS_IN_COLUMN );
-			if ( visitor.pInfo.GetPtr() != 0 )
+			if ( visitor.pInfo != 0 )
 			{
 				const SSpriteInfo *pInfo = visitor.pInfo;
 				rect.rect.Set( fX + xOffset, fY - 4 - iconHeight * (ICONS_IN_COLUMN - i), fX + xOffset + iconHeight - 1, fY - 5 - iconHeight * (ICONS_IN_COLUMN - 1 - i) );
@@ -198,9 +198,9 @@ void CUISquadElement::SetWindowMap( const CTRect<float> &maps )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CUISquadElement::SetWindowPlacement( const CVec2 *pvPos, const CVec2 *pvSize )
 {
-	if (pvPos.GetPtr()) 
+	if (pvPos) 
 		vPos = *pvPos;
-	if (pvSize.GetPtr()) 
+	if (pvSize) 
 		vSize = *pvSize;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -300,11 +300,11 @@ int CUISquadElement:: GetWindowID()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int CUISquadElement::GetWindowPlacement( CVec2 *pPos, CVec2 *pSize, CTRect<float> *pScreenRect )
 {
-	if (pPos.GetPtr()) 
+	if (pPos) 
 		*pPos = vPos;
-	if (pSize.GetPtr()) 
+	if (pSize) 
 		*pSize = vSize;
-	if (pScreenRect.GetPtr()) 
+	if (pScreenRect) 
 		*pScreenRect = rcWindow;
 	return nPositionFlag;
 }
@@ -373,7 +373,7 @@ bool CUISquadElement::OnLButtonDown( const CVec2 &vPos, EMouseState mouseState )
 	{
 		SGameMessage msg = SGameMessage( 0 );
 		msg.nEventID = bSelected ? WCC_UI_SQUAD_SEL : WCC_UI_SQUAD_DESEL;
-		if (bSelected.GetPtr())
+		if (bSelected)
 		{
 			CUIUnitObserver *observer = *(passangers.begin());
 			if ( observer->GetMOUnit()->CanSelect() )

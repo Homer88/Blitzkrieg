@@ -44,6 +44,12 @@
 #include <maya/MStatus.h>
 #include <maya/MObject.h>
 
+#ifndef kTrue
+#define kTrue 1
+#endif
+#ifndef kFalse
+#define kFalse 0
+#endif
 // *****************************************************************************
 
 // DECLARATIONS
