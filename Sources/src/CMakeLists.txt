@@ -92,7 +92,7 @@ add_subdirectory(UI)             # Зависит от BugSlay, Misc, StreamIO, 
 
 # === БИБЛИОТЕКИ ТРЕТЬЕГО УРОВНЯ ===
 add_subdirectory(Scene)          # Зависит от Image
-add_subdirectory(AILogic)        # Зависит от BugSlay, StreamIO, Misc, Image, LuaLib, Formats, zlib, RandomMapGen
+# add_subdirectory(AILogic)        # Отключено: слишком много ошибок совместимости с MSVC 2022 (hash_map, шаблоны, undefined types)
 add_subdirectory(ELK)            # Зависит от Misc, RandomMapGen, zlib, StreamIO, BugSlay, Image, Formats
 # add_subdirectory(GameTT)         # Зависит от AILogic (отключен)
 
