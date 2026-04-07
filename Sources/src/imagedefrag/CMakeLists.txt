@@ -29,22 +29,11 @@ set(SOURCES
     main.cpp
     GlobalsLoader.cpp
     StdAfx.cpp
-    BetaSpline.cpp
-    ImageEdge.cpp
-    ImagePack.cpp
-    PNoise.cpp
-    TerrainGenerator.cpp
 )
 
 set(HEADERS
-    2DVarArray.h
-    BetaSpline.h
-    ImageEdge.h
-    ImagePack.h
-    PNoise.h
     Specific.h
     StdAfx.h
-    TerrainGenerator.h
 )
 
 # Консольное приложение
@@ -69,9 +58,6 @@ target_include_directories(ImageDefrag PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../StreamIO
     ${CMAKE_CURRENT_SOURCE_DIR}/../BugSlay
     ${CMAKE_CURRENT_SOURCE_DIR}/../Image
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Formats
-    ${CMAKE_CURRENT_SOURCE_DIR}/../RandomMapGen
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Main
     ${CMAKE_CURRENT_SOURCE_DIR}/../zlib
     ${CMAKE_CURRENT_SOURCE_DIR}/../libpng
 )
@@ -81,13 +67,10 @@ target_link_libraries(ImageDefrag PRIVATE
     # Внутренние зависимости
     Image
     StreamIO_STATIC
-    RandomMapGen
-    Formats
     Misc
     BugSlay
     LibPng
     zlib
-    tinyxml2
     # Windows системные
     kernel32
     user32

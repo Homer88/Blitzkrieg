@@ -18,8 +18,12 @@
 #ifndef __AFX__
 #define WIN32_LEAN_AND_MEAN							// Exclude rarely-used stuff from Windows headers
 
+// MSVC compatibility header
+#include "msvc_compat.h"
+
 #include <comutil.h>
 #include <assert.h>
+#include <functional>									// для bind2nd (в MSVC 6)
 // undef some Windows API defines, like GetObject and CreateObject
 #ifdef GetObject
 #undef GetObject
@@ -49,8 +53,8 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <hash_map>
-#include <hash_set>
+// hash_map/hash_set - совместимость через msvc_compat.h
+// (в MSVC 2015+ это unordered_map/unordered_set)
 #include <set>
 #include <queue>
 //

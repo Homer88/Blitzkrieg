@@ -92,7 +92,7 @@ add_subdirectory(UI)             # Зависит от BugSlay, Misc, StreamIO, 
 
 # === БИБЛИОТЕКИ ТРЕТЬЕГО УРОВНЯ ===
 add_subdirectory(Scene)          # Зависит от Image
-# add_subdirectory(AILogic)        # Отключено: слишком много ошибок совместимости с MSVC 2022 (hash_map, шаблоны, undefined types)
+# add_subdirectory(AILogic)        # ОТКЛЮЧЕНО: слишком много ошибок совместимости с MSVC 2022 (hash_map, CUnitsIter undefined, SVector operator<, Formation.h missing return type, bind2nd removed, push_back() no args)
 # add_subdirectory(ELK)            # ОТКЛЮЧЕНО: Зависит от Stingray Objective Toolkit (коммерческая библиотека)
                                    # ПЛАН: Полный Qt-порт GUI-слоя (бизнес-логика BLitzkriegELKDatabase переиспользуется)
                                    # Объём: ~25 файлов, ~9000 строк. Оценка: 7-11 недель
