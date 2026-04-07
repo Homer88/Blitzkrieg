@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "MountedGun.h"
 #include "Turret.h"
@@ -43,3 +43,5 @@ CBasicGun* CMountedGunsFactory::CreateGun( const EGunTypes eType, const int nShe
 	return new CMountedGun<CBaseGun>( pBuilding, pMountedTurret, nCommonGun, nShell, pCommonGunInfo, eType );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

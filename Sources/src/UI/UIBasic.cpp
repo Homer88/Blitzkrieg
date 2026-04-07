@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "..\Main\TextSystem.h"
 #include "UIBasic.h"
 #include "UIBasicM.h"
@@ -386,7 +386,7 @@ IText* CSimpleWindow::GetHelpContext( const CVec2 &vPos, CTRect<float> *pRect )
 	if ( !IsVisible() || !states[nCurrentState].pToolText )
 		return 0;
 
-	const std::wstring szTT = states[nCurrentState].pToolText->GetString();
+	const std::wstring szTT = reinterpret_cast<const wchar_t*>(states[nCurrentState].pToolText->GetString());
 	if ( szTT.empty() )
 		return 0;
 
@@ -2637,3 +2637,4 @@ bool CMultipleWindow::IsInsideChild( const CVec2 &_vPos )
 	return false;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+

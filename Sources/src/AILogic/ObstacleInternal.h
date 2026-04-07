@@ -1,4 +1,4 @@
-#ifndef __OBSTACLEINTERNAL_H__
+﻿#ifndef __OBSTACLEINTERNAL_H__
 #define __OBSTACLEINTERNAL_H__
 
 #include "Obstacle.h"
@@ -38,3 +38,5 @@ public:
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __OBSTACLEINTERNAL_H__
+
+

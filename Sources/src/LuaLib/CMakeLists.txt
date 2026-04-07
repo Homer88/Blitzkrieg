@@ -4,9 +4,13 @@
 FILE(GLOB LUALIB_SOURCES "*.cpp")
 FILE(GLOB LUALIB_HEADERS "*.h")
 
+# Добавляем исходники Lua
+file(GLOB LUA_SOURCES "LuaSrc/*.c")
+
 add_library(LuaLib STATIC
     ${LUALIB_SOURCES}
     ${LUALIB_HEADERS}
+    ${LUA_SOURCES}
 )
 
 target_compile_definitions(LuaLib PRIVATE

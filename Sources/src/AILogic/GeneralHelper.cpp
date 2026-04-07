@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "GeneralHelper.h"
 #include "GeneralInternalInterfaces.h"
@@ -91,3 +91,5 @@ bool SGeneralHelper::RemoveDead( CommonUnits *pUnits )
 	pUnits->erase( firstDead, pUnits->end() );
 	return bDeleted;
 }
+
+

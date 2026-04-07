@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "SoldierStates.h"
 #include "InBuildingStates.h"
@@ -309,3 +309,5 @@ int CSoldierUseState::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

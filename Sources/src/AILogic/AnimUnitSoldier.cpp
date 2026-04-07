@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "AnimUnitSoldier.h"
 #include "Soldier.h"
@@ -146,3 +146,5 @@ void CAnimUnitSoldier::StopCurAnimation()
 		updater.Update( pOwner->GetMovingAction(), pOwner );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

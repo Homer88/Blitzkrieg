@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 
 #include "..\Main\iMainCommands.h"
 #include "..\GameTT\iMission.h"
@@ -703,7 +703,7 @@ void CUIEditBox::NotifyTextChanged()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CUIEditBox::SetWindowText( int nState, const WORD *pszText )
 {
-	wszFullText = pszText;
+	wszFullText = reinterpret_cast<const wchar_t*>(pszText);
 	nBeginText = 0;
 	nCursorPos = 0;
 	m_nBeginDragSel = m_nBeginSel = m_nEndSel = -1;
@@ -714,7 +714,7 @@ void CUIEditBox::EnsureCursorVisible()
 {
 	IGFXText *pGFXText = states[nCurrentState].pGfxText;
 	IText *pText = pGFXText->GetText();
-	pText->SetText( wszFullText.c_str() + nBeginText );
+	pText->SetText( reinterpret_cast<const WORD*>(wszFullText.c_str() + nBeginText) );
 	pGFXText->SetText( pText );
 
 	if ( nCursorPos <= 0 && nBeginText > 0 )
@@ -735,7 +735,7 @@ void CUIEditBox::EnsureCursorVisible()
 			nBeginText--;
 			nCursorPos++;
 		}
-		pText->SetText( wszFullText.c_str() + nBeginText );
+		pText->SetText( reinterpret_cast<const WORD*>(wszFullText.c_str() + nBeginText) );
 		pGFXText->SetText( pText );
 	}
 	else if ( pGFXText->GetWidth( nCursorPos ) > wndRect.Width() - vTextPos.x - 2 )
@@ -752,7 +752,7 @@ void CUIEditBox::EnsureCursorVisible()
 			{
 				wszFullText.erase( wszFullText.size() - 1 );
 			}
-			pText->SetText( wszFullText.c_str() + nBeginText );
+			pText->SetText( reinterpret_cast<const WORD*>(wszFullText.c_str() + nBeginText) );
 			pGFXText->SetText( pText );
 		}
 	}
@@ -769,8 +769,10 @@ bool CUIEditBox::IsTextInsideEditBox()
 //	NI_ASSERT_T( bTextScroll == false, "Error calling IsTextInsideEditBox()" );
 	IGFXText *pGFXText = states[nCurrentState].pGfxText;
 	IText *pText = pGFXText->GetText();
-	pText->SetText( wszFullText.c_str() + nBeginText );
+	pText->SetText( reinterpret_cast<const WORD*>(wszFullText.c_str() + nBeginText) );
 	pGFXText->SetText( pText );
 	return pGFXText->GetWidth( -1 ) <= wndRect.Width() - vTextPos.x - 2;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

@@ -1,4 +1,4 @@
-#ifndef __UNITS_ITERATORS_H__
+п»ї#ifndef __UNITS_ITERATORS_H__
 #define __UNITS_ITERATORS_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -75,7 +75,7 @@ public:
 			if ( nCurParty < nParties - 1 )
 			{
 				++nCurParty;
-				// 3 - это количество сторон
+				// 3 - пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 				nCellId = units.nCell[geomIter.GetY()][geomIter.GetX()] * 2 * 3 + parties[nCurParty] + 1;
 
 				iter = units.unitsInCells[1].begin( nCellId );
@@ -103,7 +103,7 @@ class CGlobalIter
 	int nCurParty;
 	int nParties;
 	std::vector<BYTE> parties;
-	std::hash_set<int> visitedUnits;
+	stdext::hash_set<int> visitedUnits;
 public:
 	CGlobalIter() : parties( 3/*SAIConsts::MAX_NUM_OF_PARTIES*/ ) { }
 	CGlobalIter( const BYTE cStartDipl, const BYTE cFilter ) : parties( 3/*SAIConsts::MAX_NUM_OF_PARTIES*/ ) { Init( cStartDipl, cFilter ); }
@@ -129,3 +129,5 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __UNITS_ITERATORS_H__
+
+

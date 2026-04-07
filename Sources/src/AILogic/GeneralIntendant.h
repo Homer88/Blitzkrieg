@@ -1,4 +1,4 @@
-#ifndef __GENERALINTENDANT_H__
+﻿#ifndef __GENERALINTENDANT_H__
 #define __GENERALINTENDANT_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -11,7 +11,7 @@ class CResupplyCellInfo : public IRefCount
 	DECLARE_SERIALIZE;
 	OBJECT_COMPLETE_METHODS(CResupplyCellInfo);
 
-	typedef std::hash_map< int/*Unique ID*/, BYTE > CResupplyInfo;
+	typedef stdext::hash_map< int/*Unique ID*/, BYTE > CResupplyInfo;
 	CResupplyInfo resupplyInfo;
 	std::vector<float> resupplyCount; 
 	float fCount;													// whole weight
@@ -192,17 +192,19 @@ class CGeneralIntendant : public CCommander
 public:
 	struct SVectorHash
 	{
-		int operator()( const SVector & v ) const { return (v.x<<16) && v.y; }
+		enum { bucket_size = 4 };
+		size_t operator()( const SVector & v ) const { return (size_t)((v.x<<16) ^ v.y); }
+		bool operator()( const SVector & a, const SVector & b ) const { return a < b; }
 	};
 private:
 	
 	CArray2D< CPtr<CResupplyCellInfo> > cells;
 
-	typedef std::hash_map< SVector, CPtr<CResupplyCellInfo>, SVectorHash > ResupplyCells;
+	typedef stdext::hash_map< SVector, CPtr<CResupplyCellInfo>, SVectorHash > ResupplyCells;
 	ResupplyCells cellsWithRequests;
 
 	// artillery without crew.
-	typedef std::hash_map< /*Unique ID*/ int, CPtr<CEnemyRememberer> > CFreeArtillery;
+	typedef stdext::hash_map< /*Unique ID*/ int, CPtr<CEnemyRememberer> > CFreeArtillery;
 	CFreeArtillery freeArtillery;
 
 	// storages (tasks to defend storages)
@@ -243,3 +245,5 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __GENERALINTENDANT_H__
+
+

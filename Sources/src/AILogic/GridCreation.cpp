@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "GridCreation.h"
 #include "CommonUnit.h"
@@ -247,3 +247,5 @@ bool CGrid::SColumnCompare::operator()( const int a, const int b ) const
 
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "FormationStates.h"
 #include "SerializeOwner.h"
@@ -482,3 +482,5 @@ int CFormationEnterEntrenchmentNowState::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

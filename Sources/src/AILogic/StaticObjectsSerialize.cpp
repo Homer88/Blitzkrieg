@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "StaticObjects.h"
 #include "StaticObject.h"
@@ -523,3 +523,5 @@ int CFlag::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

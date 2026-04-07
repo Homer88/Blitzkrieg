@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "General.h"
 #include "GeneralInternal.h"
@@ -110,7 +110,7 @@ void CSupremeBeing::Segment()
 	{
 		if ( !theDipl.IsNetGame() )
 		{
-			// запуск отложенных заждач
+			// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 			for ( DelayedTasks::iterator it = delayedTasks.begin(); it != delayedTasks.end(); )
 			{
 				IGeneralDelayedTask * pTask = *it;
@@ -123,7 +123,7 @@ void CSupremeBeing::Segment()
 					++it;
 			}
 
-			// вызывать не каждый сегмент и разнести по сегментам.
+			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 			for ( Generals::iterator it = generals.begin(); it != generals.end(); ++it )
 				it->second->Segment();
 		}
@@ -216,3 +216,5 @@ bool CSupremeBeing::IsInResistanceCircle( const CVec2 &vPoint, const int nGenera
 	return generals[nGeneralParty]->IsInResistanceCircle( vPoint );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

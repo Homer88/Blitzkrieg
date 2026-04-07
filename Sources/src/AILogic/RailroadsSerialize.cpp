@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "RailroadGraph.h"
 #include "SerializeOwner.h"
@@ -104,3 +104,5 @@ int CRailroadGraph::operator&( IStructureSaver &ss )
 	return 0;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

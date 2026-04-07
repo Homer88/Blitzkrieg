@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "StaticMembers.h"
 #include "Commands.h"
@@ -48,3 +48,5 @@ int CStaticMembers::operator&( IStructureSaver &ss )
 	return 0;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

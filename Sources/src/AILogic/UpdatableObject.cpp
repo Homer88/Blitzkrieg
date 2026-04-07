@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "UpdatableObject.h"
 #include "AIStaticMap.h"
@@ -21,3 +21,5 @@ const bool IUpdatableObj::IsVisibleByPlayer()
 	return theCheats.IsHistoryPlaying() || IsVisible( theDipl.GetMyParty() );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

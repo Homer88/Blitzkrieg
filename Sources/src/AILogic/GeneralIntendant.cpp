@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 
 #include "GeneralIntendant.h"
 
@@ -802,3 +802,5 @@ void CGeneralIntendant::MarkCellsDangerous( const SVector &vCell )
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

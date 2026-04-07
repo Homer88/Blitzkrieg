@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "CollisionInternal.h"
 #include "SerializeOwner.h"
@@ -92,3 +92,5 @@ int CPlaneCollision::operator&( IStructureSaver &ss )
 	return 0;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

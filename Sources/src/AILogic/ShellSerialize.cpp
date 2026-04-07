@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Shell.h"
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,3 +149,5 @@ int CShellsStore::operator&( IStructureSaver &ss )
 	saver.Add( 3, &visShells );
 	return 0;
 }
+
+

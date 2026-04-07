@@ -1,4 +1,4 @@
-#ifndef __IN_TRANSPORT_STATES_H__
+﻿#ifndef __IN_TRANSPORT_STATES_H__
 #define __IN_TRANSPORT_STATES_H__
 
 #pragma ONCE
@@ -46,3 +46,5 @@ public:
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __IN_TRANSPORT_STATES_H__
+
+

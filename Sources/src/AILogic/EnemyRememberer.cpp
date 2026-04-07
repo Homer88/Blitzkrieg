@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "EnemyRememberer.h"
 #include "CommonUnit.h"
@@ -41,3 +41,4 @@ const bool CEnemyRememberer::IsTimeToForget() const
 {
 	return timeLastSeen && curTime - timeLastSeen > timeBeforeForget;
 }
+

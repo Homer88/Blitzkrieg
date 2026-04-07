@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "PointChecking.h"
 #include "StaticObject.h"
@@ -58,3 +58,5 @@ bool CAttackStObjectChecking::IsGoodTile( const SVector &curTile ) const
 		fDist >= sqr( long( fRangeMin / SConsts::TILE_SIZE ) );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "GroupLogic.h"
 #include "GroupUnit.h"
@@ -44,3 +44,5 @@ int CGroupUnit::operator&( IStructureSaver &ss )
 	return 0;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

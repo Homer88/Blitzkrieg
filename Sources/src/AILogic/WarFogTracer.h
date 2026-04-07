@@ -1,4 +1,4 @@
-#ifndef __WAR_FOG_TRACER_H__
+п»ї#ifndef __WAR_FOG_TRACER_H__
 #define __WAR_FOG_TRACER_H__
 
 #pragma ONCE
@@ -35,7 +35,7 @@ public:
 	CWarFogTracer( T &warFog, const SVector &center, const int r, const WORD wUnitDir, const WORD wVisionAngle, bool bAngleLimited, const WORD wMinAngle, const WORD wMaxAngle, bool bPlane, const float fSightPower );
 	CWarFogTracer( T &warFog, const SFogInfo &fogInfo );
 
-	// для trace луча из центра юнита в tileToTrace
+	// пїЅпїЅпїЅ trace пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ tileToTrace
 	CWarFogTracer( const SVector &tileToTrace, T &warFog, const SFogInfo &fogInfo );
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -185,3 +185,5 @@ int CWarFogTracer<T>::TraceToPoint( const SVector &center, const SVector &finish
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __WAR_FOG_TRACER_H__
+
+

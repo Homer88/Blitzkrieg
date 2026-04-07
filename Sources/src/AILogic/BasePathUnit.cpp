@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "BasePathUnit.h"
 #include "Building.h"
@@ -22,9 +22,9 @@ IStaticPath* IBasePathUnit::GetPathToBuilding( CBuilding *pBuilding, int *pnEntr
 
 		if ( !theStaticMap.IsLocked( AICellsTiles::GetTile( vEntr ), AI_CLASS_HUMAN ) )
 		{
-			// здесь - не CPtr!!! Нужно, чтобы при выходе из функции он не удалялся
+			// пїЅпїЅпїЅпїЅпїЅ - пїЅпїЅ CPtr!!! пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			IStaticPath *pPath = CreateStaticPathToPoint( vEntr, VNULL2, this );
-			// чтобы удалять путь
+			// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 			CPtr<IStaticPath> pGarbage;
 
 			if ( pPath && pBuilding->IsGoodPointForRunIn( pPath->GetFinishPoint(), i ) )
@@ -59,7 +59,7 @@ IStaticPath* IBasePathUnit::GetPathToEntrenchment( CEntrenchment *pEntrenchment 
 
 	CVec2 toRectCenter( rect.center - finishPoint );
 	Normalize( &toRectCenter );
-	// немного сдвинуть к центру окопа
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	finishPoint += toRectCenter * SConsts::TILE_SIZE;
 
 	return CreateStaticPathToPoint( finishPoint, VNULL2, this );
@@ -110,3 +110,5 @@ int IBasePathUnit::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

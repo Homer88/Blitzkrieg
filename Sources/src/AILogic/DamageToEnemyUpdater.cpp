@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "float.h"
 #include "AIUnit.h"
@@ -60,3 +60,5 @@ void CDamageToEnemyUpdater::UnsetDamageFromEnemy( CAIUnit *pEnemy )
 	}
 	pCurEnemy = 0;
 }
+
+

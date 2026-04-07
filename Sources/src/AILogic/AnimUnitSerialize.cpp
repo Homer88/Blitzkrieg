@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "AnimUnitSoldier.h"
 #include "AnimUnitMech.h"
@@ -50,3 +50,5 @@ int CAnimUnitSoldier::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

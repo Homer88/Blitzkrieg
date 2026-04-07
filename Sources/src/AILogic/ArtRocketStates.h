@@ -1,4 +1,4 @@
-#ifndef __ART_ROCKET_STATES_H__
+﻿#ifndef __ART_ROCKET_STATES_H__
 #define __ART_ROCKET_STATES_H__
 
 #pragma ONCE
@@ -54,3 +54,5 @@ public:
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __ART_ROCKET_STATES_H__
+
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "MultiplayerInfo.h"
 #include "Diplomacy.h"
@@ -116,14 +116,14 @@ void CMultiplayerInfo::CheckSabotageWinConditions()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMultiplayerInfo::CheckFlagControlWinConditions()
 {
-	// по timeLimit
+	// пїЅпїЅ timeLimit
 	if ( winConditions.nTimeLimit != 0 && curTime >= winConditions.nTimeLimit )
 	{
 		CheckFlagPoints();
 		CheckTroopPoints();
 		GameFinished( EFB_DRAW );
 	}
-	// по flagLimit
+	// пїЅпїЅ flagLimit
 	else if ( winConditions.nFlagScoreLimit != 0 &&
 				    ( flagPoints[0] >= winConditions.nFlagScoreLimit || flagPoints[1] >= winConditions.nFlagScoreLimit ) )
 	{
@@ -141,7 +141,7 @@ void CMultiplayerInfo::CheckFlagControlWinConditions()
 		else
 			GameFinished( EFB_LOOSE );
 	}
-	// по fraglimit
+	// пїЅпїЅ fraglimit
 	else if ( winConditions.nKillScoreLimit != 0 &&
 						( troopsPoints[0] >= winConditions.nKillScoreLimit || troopsPoints[1] >= winConditions.nKillScoreLimit ) )
 	{
@@ -314,3 +314,5 @@ void CMultiplayerInfo::NoWin()
 	bNoWin = true;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

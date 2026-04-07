@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "DifficultyLevel.h"
 #include "Diplomacy.h"
@@ -67,3 +67,5 @@ int CDifficultyLevel::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

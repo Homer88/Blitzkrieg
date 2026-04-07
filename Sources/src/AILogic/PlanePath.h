@@ -1,4 +1,4 @@
-#ifndef __PLANE_PATH_H__
+п»ї#ifndef __PLANE_PATH_H__
 #define __PLANE_PATH_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -190,9 +190,9 @@ private:
 	float fAngleSpeed;
 	CVec2 vAngleSpeed;
 	CVec2 vCurAngleSpeed;
-	bool bGainHeight;											// период изменения высоты
-	bool bToHorisontal;										// выходи из пикирования/кабрирования
-	float fDistanceToChangeHeight;					// дистанция для начала изменения высоты
+	bool bGainHeight;											// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+	bool bToHorisontal;										// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	float fDistanceToChangeHeight;					// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 	CCircle flyCircle;
 	CVec2 circePoint;
@@ -203,14 +203,14 @@ private:
 	bool bFinished;
 	bool bByCircle;
 	
-	bool bSmoothTurn; // if true значит самолет не в боевом режиме
+	bool bSmoothTurn; // if true пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	float fVerTurnRatio;
 	
 	//
 	void CompareWithBest( const CVec2 &p, CVec2 *bestPoint, WORD *wBestAngle, const CCircle &circle, const short int sign );
-	// новый радиус поворота
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	void SetTurnRadius( float fTurnRadius );
-	float Calc2DDistanceToGo() const;			// дистанция, которая осталась до конечной точки (по проекции на горизонтальную плоскость)
+	float Calc2DDistanceToGo() const;			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 	static bool IsHeightOK( const IBasePathUnit *pUnit, const IAviationUnit *pPlane, const float fZ, const float fAngleSpeed );
 	void FinishPath();
 public:
@@ -305,3 +305,4 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __PLANE_PATH_H__
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "PresizePath.h"
 #include "BasePathUnit.h"
@@ -176,3 +176,5 @@ void CPresizePath::SetOwner( IBasePathUnit *_pUnit )
 		pPathCheat->SetOwner( pUnit );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

@@ -1,4 +1,4 @@
-#ifndef __SEGMENTED_OBJECTS_H__
+﻿#ifndef __SEGMENTED_OBJECTS_H__
 #define __SEGMENTED_OBJECTS_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -23,7 +23,7 @@ class CContainer
 	DECLARE_SERIALIZE;
 
 	CListsSet<TPObj> container;
-	std::hash_set<int> registerdObjects;
+	stdext::hash_set<int> registerdObjects;
 
 	typedef TPObj TObjType;
 public:
@@ -131,3 +131,5 @@ inline void SegmentWOMove<TContainer, TSegments>( const NTimer::STime lastSegmTi
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __SEGMENTED_OBJECTS_H__
+
+

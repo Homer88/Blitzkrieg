@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 
 #include "AAFeedBacks.h"
 CAAFeedBacks theAAFeedBacks;
@@ -53,3 +53,5 @@ void CAAFeedBacks::PlaneDeleted( CAIUnit *pTarget )
 	for ( CAAFeedBacksList::iterator it = feedbacks.begin(); it != feedbacks.end(); ++it )
 		it->second.remove( nTargetID );
 }
+
+

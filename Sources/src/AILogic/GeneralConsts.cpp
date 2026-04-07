@@ -1,11 +1,11 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "GeneralConsts.h"
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SGeneralConsts::TIME_DONT_SEE_ENEMY_BEFORE_FORGET = 5000;
-int SGeneralConsts::SCOUT_FREE_POINT = 300;						// скаут шлется в точку, если в этом радиусе от нее нет наших
+int SGeneralConsts::SCOUT_FREE_POINT = 300;						// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 int SGeneralConsts::SCOUT_POINTS = 4;
-NTimer::STime SGeneralConsts::TIME_SONT_SEE_AA_BEFORE_FORGET = 180000;			// связать с временем регенерации самолетов
+NTimer::STime SGeneralConsts::TIME_SONT_SEE_AA_BEFORE_FORGET = 180000;			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 int SGeneralConsts::AVIATION_PERIOD_MAX = 60000;
 int SGeneralConsts::AVIATION_PERIOD_MIN = 10000;
@@ -36,9 +36,9 @@ float SGeneralConsts::INTENDANT_DANGEROUS_CELL_RADIUS = 1000;
 int SGeneralConsts::SWARM_ADDITIONAL_ITERATIONS = 3;
 float SGeneralConsts::MIN_WEIGHT_TO_SEND_SWARM = 30.0f;
 
-// минимальный вес ячейки, чтобы начать обстрел артиллерией
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 float SGeneralConsts::MIN_WEIGHT_TO_ARTILLERY_FIRE = 50.0f;
-// минимальный вес ячейки, чтобы послать бомберы
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 float SGeneralConsts::MIN_WEIGHT_TO_SEND_BOMBERS = 100.0f;
 float SGeneralConsts::SWARM_WEIGHT_COEFFICIENT = 1.0f;
 
@@ -103,3 +103,5 @@ void SGeneralConsts::Init()
 	TIME_SWARM_DURATION_RANDOM = constsTbl.GetInt( "AI", "General.Swarm.IterationDurationRandom", 20 );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

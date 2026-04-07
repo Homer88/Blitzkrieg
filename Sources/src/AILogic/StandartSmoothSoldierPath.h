@@ -1,4 +1,4 @@
-#ifndef __STANDART_SMOOTH_SOLDIER_PATH_H__
+п»ї#ifndef __STANDART_SMOOTH_SOLDIER_PATH_H__
 #define __STANDART_SMOOTH_SOLDIER_PATH_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -16,7 +16,7 @@ class CStandartSmoothSoldierPath : public ISmoothPath
 	
 	CPtr<IPath> pPath;
 	CPtr<CFormation> pFormation;
-	// владелец пути
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	interface IBasePathUnit *pUnit;
 
 	CBSpline spline;
@@ -34,7 +34,7 @@ class CStandartSmoothSoldierPath : public ISmoothPath
 	//
 	void AddSmoothTurn();
 	int InitSpline();
-	// проверить на наличие впереди залоканных тайлов. Если есть, то пересчитать путь
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	// true - if Ok, false - if path had to be recalculated
 	bool ValidateCurPath( const CVec2 &center, const CVec2 &newPoint );
 
@@ -84,3 +84,5 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __STANDART_SMOOTH_SOLDIER_PATH_H__
+
+

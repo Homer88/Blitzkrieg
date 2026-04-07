@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Commands.h"
 #include "CommonUnit.h"
@@ -65,3 +65,5 @@ IStaticPath* CAICommand::CreateStaticPath( CCommonUnit *pUnit )
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

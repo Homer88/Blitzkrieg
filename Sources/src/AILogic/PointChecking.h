@@ -1,4 +1,4 @@
-#ifndef __POINT_CHECKING_H__
+п»ї#ifndef __POINT_CHECKING_H__
 #define __POINT_CHECKING_H__
 
 #pragma ONCE
@@ -43,7 +43,7 @@ class CGoToDistance : public IPointChecking
 
 public:
 	CGoToDistance() { }
-	// дистанция задаётся в тайлах
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	CGoToDistance( const float tileDistance, const SVector &_targetTile )
 		: tileDistance2( sqr( tileDistance ) ), targetTile( _targetTile ) { }
 
@@ -64,3 +64,5 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __POINT_CHECKING_H__
+
+

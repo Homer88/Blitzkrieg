@@ -21,8 +21,8 @@ list(REMOVE_ITEM BUGSLAY_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/STLDebugTerminate.cpp
 )
 
-# BugSlay - это DLL согласно .dsp файлу
-add_library(BugSlay SHARED
+# BugSlay - это статическая библиотека (изменено с DLL для упрощения линковки)
+add_library(BugSlay 
     ${BUGSLAY_SOURCES}
     ${BUGSLAY_HEADERS}
 )

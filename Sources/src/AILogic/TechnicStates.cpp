@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "TechnicsStates.h"
@@ -149,7 +149,7 @@ void CSoldierEntrenchSelfState::Segment()
 			
 			GetTilesNextToRect( rect, &tiles, 65535/2 + pUnit->GetFrontDir() );
 			
-			// проверить, не залоканы ли тайлы под TankPit
+			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ TankPit
 			bool bCanAdd = true;
 			for ( CTilesSet::iterator i = tiles.begin(); i != tiles.end(); ++i )
 			{
@@ -160,7 +160,7 @@ void CSoldierEntrenchSelfState::Segment()
 				}
 			}
 			
-			if ( bCanAdd ) // проверить, нет ли под TankPit окопов
+			if ( bCanAdd ) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ TankPit пїЅпїЅпїЅпїЅпїЅпїЅ
 				bCanAdd = CheckTrenches( pUnit, rectToCheck );
 			if ( bCanAdd )
 				bCanAdd = CheckInfantry( pUnit, rectToCheck ); 
@@ -218,3 +218,5 @@ ETryStateInterruptResult CSoldierEntrenchSelfState::TryInterruptState( class CAI
 	return	TSIR_YES_WAIT;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "CommonUnit.h"
 #include "AIUnit.h"
@@ -115,7 +115,7 @@ bool CCommonUnit::IsLocked( const CBasicGun *pGun ) const
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CCommonUnit::CanShootToUnitWoMove( class CAIUnit *_pTarget )
 {
-		// можно ли пробить армор и вообще попасть
+		// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	bool bCan = false;
 	int nGun = GetNGuns();
 	for ( int i=0; i<nGun; ++i )
@@ -306,3 +306,5 @@ bool CCommonUnit::IsFrozenByState() const
 	return bCanBeFrozenByState;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

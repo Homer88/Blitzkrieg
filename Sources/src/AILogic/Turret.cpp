@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Turret.h"
 #include "UpdatableObject.h"
@@ -346,3 +346,5 @@ const int CMountedTurret::GetOwnerParty() const
 	return theDipl.GetNParty( pBuilding->GetPlayer() );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

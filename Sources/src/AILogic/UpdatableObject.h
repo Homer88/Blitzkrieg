@@ -1,4 +1,4 @@
-#ifndef __UPDATABLE_OBJECT_H__
+п»ї#ifndef __UPDATABLE_OBJECT_H__
 #define __UPDATABLE_OBJECT_H__
 
 #pragma ONCE
@@ -32,7 +32,7 @@ public:
 	
 	virtual void GetRevealCircle( CCircle *pCircle ) const { NI_ASSERT_T( false, "Wrong call of GetCircle" ); }
 	virtual void GetShootAreas( struct SShootAreas *pShootAreas, int *pnAreas ) const { *pnAreas = 0; }
-	virtual void GetRangeArea( struct SShootAreas *pRangeArea ) const { std::construct( pRangeArea ); }
+	virtual void GetRangeArea( struct SShootAreas *pRangeArea ) const { ::new (pRangeArea) SShootAreas(); }
 
 	virtual const EActionNotify GetDieAction() const { NI_ASSERT_T( false, "Wrong call of GetDieAction" ); return ACTION_NOTIFY_NONE; }
 
@@ -43,9 +43,9 @@ public:
 
 	virtual const int GetUnitState() const { return 0; }
 
-	// обязательно должна быть константной, чтобы не было расхождений в multiplayerb
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ multiplayerb
 	virtual const bool IsVisible( const BYTE cParty ) const = 0;
-	// виден ли игроком
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	virtual const bool IsVisibleByPlayer();
 	virtual void GetTilesForVisibility( CTilesSet *pTiles ) const = 0;
 	virtual const bool IsVisibleForDiplomacyUpdate() { return true; }
@@ -65,3 +65,5 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __UPDATABLE_OBJECT_H__
+
+

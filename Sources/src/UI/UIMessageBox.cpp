@@ -97,17 +97,17 @@ void CUIMessageBox::SetMessageBoxType( int nType )
 	switch ( nType )
 	{
 		case E_MESSAGE_BOX_TYPE_OK:
-			pOK->SetWindowText( 0, L"OK" );
+			pOK->SetWindowText( 0, reinterpret_cast<const WORD*>(L"OK") );
 			break;
 
 		case E_MESSAGE_BOX_TYPE_OKCANCEL:
-			pOK->SetWindowText( 0, L"OK" );
-			pOK->SetWindowText( 0, L"Cancel" );
+			pOK->SetWindowText( 0, reinterpret_cast<const WORD*>(L"OK") );
+			pCancel->SetWindowText( 0, reinterpret_cast<const WORD*>(L"Cancel") );
 			break;
 
 		case E_MESSAGE_BOX_TYPE_YESNO:
-			pOK->SetWindowText( 0, L"Yes" );
-			pOK->SetWindowText( 0, L"No" );
+			pOK->SetWindowText( 0, reinterpret_cast<const WORD*>(L"Yes") );
+			pCancel->SetWindowText( 0, reinterpret_cast<const WORD*>(L"No") );
 			break;
 
 		default:

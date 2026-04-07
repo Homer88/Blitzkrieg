@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "RndRunUpToEnemy.h"
 #include "Soldier.h"
@@ -49,7 +49,7 @@ void CRndRunUpToEnemy::SendOwnerToRandomRun()
 		wResultDir = wDirToEnemy + wRandomAngle;
 
 	float fRandomDist;
-	// ползти
+	// пїЅпїЅпїЅпїЅпїЅпїЅ
 	if ( Random( 0.0f, 1.0f ) < 0.7f )
 	{
 		fRandomDist = Random( float( 0.4f * SConsts::TILE_SIZE ), float( 2.0f * SConsts::TILE_SIZE ) );
@@ -65,7 +65,7 @@ void CRndRunUpToEnemy::SendOwnerToRandomRun()
 
 	if ( IStaticPath *pStaticPath = CreateStaticPathToPoint( vPointToRunUp, VNULL2, pOwner, true ) )
 	{
-		// путь не слишком длинный и конечная точка не слишком далека от нужной нам
+		// пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 		if ( ( bForceStaying && pStaticPath->GetLength() <= 5 ||
  				   !bForceStaying && pStaticPath->GetLength() <= 3 ) &&
 				 fabs2( pStaticPath->GetFinishPoint() - vPointToRunUp ) < sqr( 3.0f * SConsts::TILE_SIZE / 4.0f ) )
@@ -150,3 +150,5 @@ int CRndRunUpToEnemy::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

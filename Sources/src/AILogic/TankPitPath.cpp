@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "TankPitPath.h"
 #include "BasePathUnit.h"
@@ -24,7 +24,7 @@ bool CTankPitPath::IsFinished() const
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const CVec3 CTankPitPath::GetPoint( NTimer::STime timeDiff )
 {
-	if ( vEndPoint == vCurPoint ) // уже дошли
+	if ( vEndPoint == vCurPoint ) // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 		fSpeedLen = 0;
 	else if ( pUnit )
 	{
@@ -32,7 +32,7 @@ const CVec3 CTankPitPath::GetPoint( NTimer::STime timeDiff )
 		float fPassedLenght = fSpeedLen*timeDiff;
 		CVec2 vDir = vEndPoint - vCurPoint;
 		float fDistToGo = fabs( vDir );
-		if ( fDistToGo >= fPassedLenght )// еще нужно идти
+		if ( fDistToGo >= fPassedLenght )// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 		{
 			Normalize( &vDir );	
 			vDir *= fPassedLenght ;
@@ -45,4 +45,6 @@ const CVec3 CTankPitPath::GetPoint( NTimer::STime timeDiff )
 	return CVec3( vCurPoint.x, vCurPoint.y, theStaticMap.GetZ( AICellsTiles::GetTile(vCurPoint) ) );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "Units.h"
 #include "AIUnit.h"
@@ -127,11 +127,11 @@ const int CUnits::GetVisIndex( CAIUnit *pUnit )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CUnits::AddUnitToConcreteCell( CAIUnit *pUnit, const SVector &cell, bool bWithLeveledCelles )
 {
-	// если юнит единственный в свой ячейке, записать ячейку в список
+	// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	if ( ++nUnitsCell[cell.y][cell.x] == 1 )
 		nCell[cell.y][cell.x] = cellsIds.GetFreeId();
 	
-	// добавить юнит в список стоящих на этой ячейке
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	const int newId = nCell[cell.y][cell.x] * 2 * 3 + ( 2 * pUnit->GetParty() + BYTE( pUnit->GetStats()->IsInfantry() ) ) + 1;
 
 	if ( newId >= unitsInCells[0].GetListsNum() || newId >= unitsInCells[1].GetListsNum() )
@@ -212,7 +212,7 @@ void CUnits::AddUnitToMap( CAIUnit *pUnit )
 	if ( nUnitID >= posUnitInCell.size() )
 		posUnitInCell.resize( nUnitID * 1.5 );
 
-	// нужно добавить в ячейку
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	if ( !pUnit->IsInSolidPlace() )
 		AddUnitToCell( pUnit, true );
 
@@ -236,7 +236,7 @@ void CUnits::DeleteUnitFromMap( CAIUnit *pUnit )
 	}
 
 	const int nUnitID = pUnit->GetID();
-	// ещё не удалён из ячеек
+	// пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	if ( units.GetEl( nUnitID ) != 0 )
 	{
 		DelUnitFromCell( pUnit, true );
@@ -313,7 +313,7 @@ void CUnits::ChangePlayer( CAIUnit *pUnit, const BYTE cNewPlayer )
 {
 	if ( pUnit->GetPlayer() != cNewPlayer )
 	{
-		// чтобы не удалился		
+		// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ		
 		CObj<CAIUnit> pSaveUnit = pUnit;
 		DeleteUnitFromMap( pUnit );
 		FullUnitDelete( pUnit );
@@ -459,3 +459,5 @@ void CUnits::UpdateUnitVis4Enemy( CAIUnit *pUnit )
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

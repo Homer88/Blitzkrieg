@@ -1,4 +1,4 @@
-#ifndef __TechnicsStates_h__
+п»ї#ifndef __TechnicsStates_h__
 #define __TechnicsStates_h__
 
 #pragma ONCE
@@ -6,7 +6,7 @@
 #include "UnitStates.h"
 #include "CLockWithUnlockPossibilities.h"
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// выход из танк-пита. 
+// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅ. 
 class CTankPitLeaveState : public IUnitState
 {
 	OBJECT_COMPLETE_METHODS( CTankPitLeaveState );
@@ -33,7 +33,7 @@ public:
 	virtual const CVec2 GetPurposePoint() const { return CVec2( -1.0f, -1.0f ); }
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// зарыться в землю ( самостоятельно окопаться )
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ ( пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ )
 class CSoldierEntrenchSelfState : public IUnitState
 {
 	DECLARE_SERIALIZE;
@@ -76,3 +76,5 @@ public:
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __TechnicsStates_h__
+
+

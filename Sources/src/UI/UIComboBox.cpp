@@ -33,7 +33,7 @@ void CUIComboBox::AddItem( IUIElement *pElement )
 	if ( items.size() == 0 )
 	{
 		nSelItem = 0;
-		SetWindowText( 0, pElement->GetWindowText( 0 ) );
+		SetWindowText( 0, reinterpret_cast<const WORD*>(pElement->GetWindowText( 0 )) );
 	}
 
 	items.push_back( pElement );
@@ -161,7 +161,7 @@ bool CUIComboBox::OnLButtonDown( const CVec2 &vPos, EMouseState mouseState )
 		{
 			//����� ����� ���������
 			IUIElement *pElement = *it;
-			SetWindowText( 0, pElement->GetWindowText( 0 ) );
+			SetWindowText( 0, reinterpret_cast<const WORD*>(pElement->GetWindowText( 0 )) );
 			nSelItem = nTempItem;
 
 			//�������� ������ ��������� �� ��������� selection state
@@ -195,7 +195,7 @@ void CUIComboBox::Clear()
 {
 	RemoveAllChildren();
 	nSelItem = -1;
-	SetWindowText( 0, L"" );
+	SetWindowText( 0, reinterpret_cast<const WORD*>(L"") );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CUIComboBox::SetSelectionItem( int nItem )
@@ -207,8 +207,9 @@ void CUIComboBox::SetSelectionItem( int nItem )
 	for ( CWindowList::iterator it=items.begin(); it!=items.end(); ++it )
 	{
 		if ( i == nItem )
-			SetWindowText( 0, (*it)->GetWindowText( 0 ) );
+			SetWindowText( 0, reinterpret_cast<const WORD*>((*it)->GetWindowText( 0 )) );
 		i++;
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+

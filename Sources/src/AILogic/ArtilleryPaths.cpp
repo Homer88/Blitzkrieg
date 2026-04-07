@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "ArtilleryPaths.h"
 #include "BasePathUnit.h"
@@ -67,7 +67,7 @@ bool CArtilleryCrewPath::Init( IMemento *pMemento, IBasePathUnit *_pUnit )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const CVec3 CArtilleryCrewPath::GetPoint( NTimer::STime timeDiff )
 {
-	if ( vEndPoint == vCurPoint || bNotInitialized ) // уже дошли
+	if ( vEndPoint == vCurPoint || bNotInitialized ) // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 		fSpeedLen = 0.0f;
 	else
 	{
@@ -77,7 +77,7 @@ const CVec3 CArtilleryCrewPath::GetPoint( NTimer::STime timeDiff )
 		float fPassedLenght = fSpeedLen * timeDiff;
 		CVec2 vDir = vEndPoint - vCurPoint;
 		float fDistToGo = fabs( vDir );
-		if ( fDistToGo >= fPassedLenght )// еще нужно идти
+		if ( fDistToGo >= fPassedLenght )// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 		{
 			Normalize( &vDir );	
 			vDir *= fPassedLenght ;
@@ -110,3 +110,5 @@ bool CArtilleryBeingTowedPath::Init( float _fSpeedLen, const class CVec2 &_vCurP
 	return true;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

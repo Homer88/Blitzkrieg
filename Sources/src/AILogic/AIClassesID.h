@@ -1,4 +1,4 @@
-#ifndef __AI_CLASSES_ID_H__
+п»ї#ifndef __AI_CLASSES_ID_H__
 #define __AI_CLASSES_ID_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 enum
@@ -12,7 +12,7 @@ enum
 	AI_TRANSPORT_UNIT		= AILOGIC_BASE_VALUE + 6,
 	AI_SIMPLE_PATH_UNIT	= AILOGIC_BASE_VALUE + 8,
 
-	// траектории, взрывы, снаряды, пушки
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ
 	AI_VIS_SHELL														= AILOGIC_BASE_VALUE + 11,
 	AI_BURST_EXPLOSION											= AILOGIC_BASE_VALUE + 12,
 	AI_MOMENT_CUMULATIVE_EXPL								= AILOGIC_BASE_VALUE + 13,
@@ -21,7 +21,7 @@ enum
 	AI_TURRET_GUN														= AILOGIC_BASE_VALUE + 16,
 	AI_INVIS_SHELL													= AILOGIC_BASE_VALUE + 21,
 																					
-	// поведение														
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ														
 	AI_BEHAVIOUR_ANALYZER										= AILOGIC_BASE_VALUE + 22,
 																					
 	AI_COMMAND															= AILOGIC_BASE_VALUE + 23,
@@ -329,3 +329,5 @@ enum
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __AI_CLASSES_ID_H__
+
+

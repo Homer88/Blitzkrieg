@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 1999 
  * Boris Fomitchev
  *
@@ -211,3 +211,5 @@
 // Local Variables:
 // mode:C++
 // End:
+
+

@@ -1,4 +1,4 @@
-#ifndef __UNITS_ITERATORS_2__
+﻿#ifndef __UNITS_ITERATORS_2__
 #define __UNITS_ITERATORS_2__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -10,7 +10,7 @@
 extern CUnits units;
 extern CStaticMap theStaticMap;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<BYTE cOnlyOneTypeVisibility, int NSize>
+template<BYTE false, int NSize>
 class CUnitsIter
 {
 	CVec2 vDownLeft;
@@ -32,10 +32,10 @@ class CUnitsIter
 	//
 	void Init( BYTE _cStartDipl, BYTE cDiplomacies, BYTE cStartMech, BYTE cMechs )
 	{
-		nDownX = vDownLeft.x / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 << NSize ) );
-		nDownY = vDownLeft.y / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 << NSize ) );
-		nUpX = vUpRight.x / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 << NSize ) );
-		nUpY = vUpRight.y / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 << NSize ) );
+		nDownX = vDownLeft.x / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 ) );
+		nDownY = vDownLeft.y / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 ) );
+		nUpX = vUpRight.x / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 ) );
+		nUpY = vUpRight.y / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 ) );
 
 		cStartDipl = _cStartDipl;
 		cCurDipl = cStartDipl;
@@ -57,11 +57,11 @@ class CUnitsIter
 
 			if ( nYCell > nUpY )
 			{
-				if ( !cOnlyOneTypeVisibility && cCurVis < 1 )
+				if ( false && cCurVis < 1 )
 					cCurVis = 1;
 				else
 				{
-					if ( !cOnlyOneTypeVisibility )
+					if ( false )
 						cCurVis = 0;
 
 					++cCurDipl;
@@ -81,8 +81,8 @@ class CUnitsIter
 
 	void InitLowIterator()
 	{
-		const CVec2 vCellDownLeft( nXCell * ( 1 << NSize ) * SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF, nYCell * ( 1 << NSize ) * SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF );
-		const CVec2 vCellUpRight( (nXCell + 1 ) * ( 1 << NSize ) * SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF - 1, (nYCell + 1) * ( 1 << NSize ) * SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF - 1 );
+		const CVec2 vCellDownLeft( nXCell * ( 1 ) * SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF, nYCell * ( 1 ) * SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF );
+		const CVec2 vCellUpRight( (nXCell + 1 ) * ( 1 ) * SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF - 1, (nYCell + 1) * ( 1 ) * SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF - 1 );
 
 		const CVec2 vLowIterDownLeft( Max( vCellDownLeft.x, vDownLeft.x ), Max( vCellDownLeft.y, vDownLeft.y ) );
 		const CVec2 vLowIterUpRight( Min( vCellUpRight.x, vUpRight.x ), Min( vCellUpRight.y, vUpRight.y ) );
@@ -126,7 +126,7 @@ public:
 		else if ( cDiplFilter == EDI_FRIEND ) { cStartDipl = _cStartDipl; cDiplomacies = 1; }
 		else if ( cDiplFilter == EDI_ENEMY ) { cStartDipl = 1 - _cStartDipl; cDiplomacies = 1; }
 
-		cCurVis = cOnlyOneTypeVisibility;
+		cCurVis = false;
 
 		InitAll( vCenter, CVec2( fR, fR ), cStartDipl, cDiplomacies, cStartMech, cMechs );
 	}
@@ -191,11 +191,11 @@ class CUnitsIter<1, 0>
 
 			if ( nYCell > nUpY )
 			{
-				if ( !cOnlyOneTypeVisibility && cCurVis < 1)
+				if ( !false && cCurVis < 1)
 				 cCurVis = 1;
 				else
 				{
-					if ( !cOnlyOneTypeVisibility )
+					if ( false )
 						cCurVis = 0;
 
 					++cCurDipl;
@@ -221,10 +221,10 @@ class CUnitsIter<1, 0>
 	
 	void Init( BYTE _cStartDipl, BYTE cDiplomacies, BYTE cStartMech, BYTE cMechs )
 	{
-		nDownX = vDownLeft.x / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 << NSize ) );
-		nDownY = vDownLeft.y / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 << NSize ) );
-		nUpX = vUpRight.x / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 << NSize ) );
-		nUpY = vUpRight.y / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 << NSize ) );
+		nDownX = vDownLeft.x / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 ) );
+		nDownY = vDownLeft.y / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 ) );
+		nUpX = vUpRight.x / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 ) );
+		nUpY = vUpRight.y / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 ) );
 
 		cStartDipl = _cStartDipl;
 		cCurDipl = cStartDipl;
@@ -277,7 +277,7 @@ public:
 		else if ( cDiplFilter == EDI_FRIEND ) { cStartDipl = _cStartDipl; cDiplomacies = 1; }
 		else if ( cDiplFilter == EDI_ENEMY ) { cStartDipl = 1 - _cStartDipl; cDiplomacies = 1; }
 
-		cCurVis = cOnlyOneTypeVisibility;
+		cCurVis = false;
 
 		InitAll( vCenter, CVec2( fR, fR ), cStartDipl, cDiplomacies, cStartMech, cMechs );
 	}
@@ -339,11 +339,11 @@ class CUnitsIter<0, 0>
 
 			if ( nYCell > nUpY )
 			{
-				if ( !cOnlyOneTypeVisibility && cCurVis < 1)
+				if ( !false && cCurVis < 1)
 				 cCurVis = 1;
 				else
 				{
-					if ( !cOnlyOneTypeVisibility )
+					if ( false )
 						cCurVis = 0;
 
 					++cCurDipl;
@@ -369,10 +369,10 @@ class CUnitsIter<0, 0>
 	
 	void Init( BYTE _cStartDipl, BYTE cDiplomacies, BYTE cStartMech, BYTE cMechs )
 	{
-		nDownX = vDownLeft.x / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 << NSize ) );
-		nDownY = vDownLeft.y / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 << NSize ) );
-		nUpX = vUpRight.x / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 << NSize ) );
-		nUpY = vUpRight.y / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 << NSize ) );
+		nDownX = vDownLeft.x / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 ) );
+		nDownY = vDownLeft.y / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 ) );
+		nUpX = vUpRight.x / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 ) );
+		nUpY = vUpRight.y / ( SConsts::TILE_SIZE * SConsts::BIG_CELL_COEFF * ( 1 ) );
 
 		cStartDipl = _cStartDipl;
 		cCurDipl = cStartDipl;
@@ -425,7 +425,7 @@ public:
 		else if ( cDiplFilter == EDI_FRIEND ) { cStartDipl = _cStartDipl; cDiplomacies = 1; }
 		else if ( cDiplFilter == EDI_ENEMY ) { cStartDipl = 1 - _cStartDipl; cDiplomacies = 1; }
 
-		cCurVis = cOnlyOneTypeVisibility;
+		cCurVis = false;
 
 		InitAll( vCenter, CVec2( fR, fR ), cStartDipl, cDiplomacies, cStartMech, cMechs );
 	}
@@ -460,3 +460,6 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __UNITS_ITERATORS_2__
+
+
+

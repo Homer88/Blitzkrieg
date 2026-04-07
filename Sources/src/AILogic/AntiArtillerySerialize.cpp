@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "AntiArtillery.h"
 #include "AntiArtilleryManager.h"
@@ -41,3 +41,5 @@ int CAntiArtilleryManager::operator&( IStructureSaver &ss )
 	return 0;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

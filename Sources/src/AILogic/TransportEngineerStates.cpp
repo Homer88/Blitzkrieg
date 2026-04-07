@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include <float.h>
 
@@ -210,7 +210,7 @@ bool CTransportResupplyHumanResourcesState::ServeSquad( CFormation *pSquad )
 	
 	if ( rFormation.order.size() != pSquad->Size() + pSquad->VirtualUnitsSize() )
 	{
-		// определить какого солдата создавать и создать его.
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.
 		std::vector<bool> present( rFormation.order.size(), false );
 		for ( int nSold = 0; nSold < pSquad->Size(); ++nSold )
 		{
@@ -222,12 +222,12 @@ bool CTransportResupplyHumanResourcesState::ServeSquad( CFormation *pSquad )
 			const BYTE cSlotInStats = pSquad->GetVirtualUnitSlotInStats( nSold );
 			present[cSlotInStats] = true;
 		}
-		// найдем первого солдата, которого не хватает.
+		// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 		int nSlot = 0;
 		while ( nSlot < present.size() && present[nSlot] )
 			++nSlot;
 
-		// создать солдата и послать его к Squad
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ Squad
 		CVec3 vEntrancePoint( pTransport->GetEntrancePoint(), pTransport->GetZ() );	
 
 		const int id = theUnitCreation.AddNewUnit( rFormation.order[nSlot].pSoldier,
@@ -263,7 +263,7 @@ bool CTransportResupplyHumanResourcesState::ServeArtillery( CArtillery *pArtille
 				pArtillery->IsBeingCaptured() )
 		return true;
 
-	// создать squad состоящий из одного солдата и послать работать с артиллерией.
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ squad пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 	const CVec3 vEntrancePoint( pTransport->GetEntrancePoint(), pTransport->GetZ() );
 
 	if ( pTransport->GetPlayer() == theDipl.GetNeutralPlayer() )
@@ -388,7 +388,7 @@ CTransportLoadRuState::CTransportLoadRuState ( CAITransportUnit *_pTransport, co
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CBuildingStorage* CTransportLoadRuState::FindNearestSource()
 {
-	// для поиска ближайшего хранилища
+	// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	class CFindNearestConnected : public CStaticObjects::IEnumStoragesPredicate 
 	{
 		CPtr<CBuildingStorage> pNearest;
@@ -396,7 +396,7 @@ CBuildingStorage* CTransportLoadRuState::FindNearestSource()
 	public:
 		CFindNearestConnected() : fPathLength( 0 ) {  }
 		virtual bool OnlyConnected() const { return true; }
-		// true - закончить, то, что нужно уже нашлось
+		// true - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		virtual bool AddStorage( class CBuildingStorage * pStorage, const float _fPathLength )
 		{
 			if ( pStorage->IsAlive() && ( !pNearest || fPathLength > _fPathLength ) )
@@ -455,7 +455,7 @@ void CTransportLoadRuState::Segment()
 
 			if ( ETLRS_APPROACHING_STORAGE != eState )
 			{
-				// почистить очередь команд у транспорта
+				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				theGroupLogic.UnitCommand( SAIUnitCmd(ACTION_COMMAND_GUARD), pTransport, false );
 				Interrupt();
 			}
@@ -555,7 +555,7 @@ void CTransportLoadRuState::CreateSquad()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ETryStateInterruptResult CTransportLoadRuState::TryInterruptState( class CAICommand *pCommand )
 {
-	// если грузчики еще не в транспорте, то послать их догонять.
+	// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 	if ( pCommand && pTransport->IsAlive() )
 	{
 		if ( IsValidObj( pLoaderSquad ) && !pLoaderSquad->IsInTransport() )
@@ -715,7 +715,7 @@ void CTransportServeState::Segment()
 
 		break;
 	case ETRS_WAIT_FOR_UNIT_TO_SERVE:
-		// стоим и ждем не понадобятся ли услуги еще.
+		// пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.
 		if ( curTime - timeLastUpdate > pTransport->GetBehUpdateDuration() )
 			eState = ETRS_FINDING_UNIT_TO_SERVE;
 
@@ -775,7 +775,7 @@ void CTransportServeState::CreateSquad()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ETryStateInterruptResult CTransportServeState::TryInterruptState( class CAICommand *pCommand )
 {
-	// если грузчики еще не в транспорте, то послать их догонять.
+	// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 	if ( pCommand && pTransport->IsValid() && pTransport->IsAlive() )
 	{
 		if ( IsValidObj( pLoaderSquad ) && !pLoaderSquad->IsInTransport() )
@@ -984,14 +984,14 @@ void CTransportBuildLongObjectState::SendTransportToBuildPoint()
 
 	if ( fDist > fMaxRadius )
 	{
-		// подъезжать нужно
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 		CPtr<IStaticPath> pPath = CreateStaticPathToPoint( vStartPoint, VNULL2, pUnit, true );
 		if ( pPath )
 			pUnit->SendAlongPath( pPath, VNULL2 );
 	}
 	else if ( fDist <= fRadius )
 	{
-		//нужно отъезжать
+		//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		CLine2 line( vStartPoint, vEndPoint );
 		CVec2 vAway( line.a, line.b );
 		Normalize( &vAway );
@@ -1006,7 +1006,7 @@ void CTransportBuildLongObjectState::SendTransportToBuildPoint()
 	}
 	else
 	{
-		// уже на месте.
+		// пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1082,7 +1082,7 @@ IUnitState* CTransportBuildEntrenchmentState::Instance( class CAITransportUnit *
 CTransportClearMineState::CTransportClearMineState( class CAITransportUnit *pTransport, const class CVec2 & vDestPoint )
 	: CTransportBuildState( pTransport, vDestPoint ), timeLastCheck( curTime ), bWorkDone( false )
 {  
-	// посчитать время, которое нужно для того, чтобы проехать 1 длину грузовичка
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 1 пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	const SMechUnitRPGStats * pStats = static_cast<const SMechUnitRPGStats *>(pTransport->GetStats());
 	timeCheckPeriod = SConsts::MINE_VIS_RADIUS / pStats->fSpeed;
 }
@@ -1096,14 +1096,14 @@ void CTransportClearMineState::SendTransportToBuildPoint()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CTransportClearMineState::HaveToSendEngeneersNow() 
 {
-	// по дороге поискать мины на которых можно взорваться
-	if ( pUnit->IsIdle() ) // а когда останжовились, то найти хоть какую-нибудь мину
+	// пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	if ( pUnit->IsIdle() ) // пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	{
 		const CVec2 vClearCenter( pUnit->GetCenter() );
 		for ( CStObjCircleIter<false> iter( vClearCenter, SConsts::MINE_CLEAR_RADIUS );
 					!iter.IsFinished(); iter.Iterate() )
 		{
-			// мину никто не собирается удалять и она в радиусе осмотра
+			// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			if ( (*iter)->GetObjectType() == ESOT_MINE &&
 					!static_cast<CMineStaticObject*>(*iter)->IsBeingDisarmed() && 
 					fabs2( (*iter)->GetCenter() - vClearCenter ) <= sqr( float(SConsts::MINE_CLEAR_RADIUS) ) )
@@ -1442,3 +1442,5 @@ bool CTransportRepairBuildingState::IsEndPointNeeded() const
 	return false;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

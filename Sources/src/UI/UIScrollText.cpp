@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "UIMessages.h"
 #include "UIScrollText.h"
 
@@ -66,10 +66,10 @@ void CUIScrollTextBox::AppendText( const WORD *pszText )
 	bool bNeedScrollToEnd = pScrollBar->GetPosition() == pScrollBar->GetMaxValue();
 
 	IText *pText = states[nCurrentState].pGfxText->GetText();
-	std::wstring wszTemp = pText->GetString();
-	wszTemp += pszText;
+	std::wstring wszTemp = reinterpret_cast<const wchar_t*>(pText->GetString());
+	wszTemp += reinterpret_cast<const wchar_t*>(pszText);
 	
-	SetWindowText( nCurrentState, wszTemp.c_str() );
+	SetWindowText( nCurrentState, reinterpret_cast<const WORD*>(wszTemp.c_str()) );
 	
 	//������� ������� ScrollBar, ���� ��� ����������
 	if ( bNeedScrollToEnd )
@@ -207,8 +207,8 @@ void CUIScrollTextBox::RepositionText()
 {
 	//������� �����
 	IText *pText = states[0].pGfxText->GetText();
-	std::wstring szTempString = pText->GetString();
-	SetWindowText( 0, szTempString.c_str() );
+	std::wstring szTempString = reinterpret_cast<const wchar_t*>(pText->GetString());
+	SetWindowText( 0, reinterpret_cast<const WORD*>(szTempString.c_str()) );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CUIScrollTextBox::Reposition( const CTRect<float> &rcParent )
@@ -245,3 +245,6 @@ bool CUIScrollTextBox::OnMouseWheel( const CVec2 &vPos, EMouseState mouseState, 
 	return true;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+

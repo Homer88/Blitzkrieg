@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "ObstacleInternal.h"
 #include "CommonUnit.h"
@@ -52,3 +52,4 @@ interface IUpdatableObj * CObstacleStaticObject::GetObject() const
 { 
 	return pObj.GetPtr(); 
 }
+

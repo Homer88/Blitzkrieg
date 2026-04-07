@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "Flag.h"
 #include "StaticObjects.h"
@@ -68,7 +68,7 @@ void CFlag::Segment()
 					nEnemyParty = nUnitParty;
 					nEnemyPlayer = pUnit->GetPlayer();
 				}
-				// два различных врага - никто не может захватить
+				// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				else if ( nEnemyParty != nUnitParty )
 				{
 					bOnlyEnemyUnitsOfOneTypeInZone = false;
@@ -99,7 +99,7 @@ void CFlag::Segment()
 		}
 	}
 
-	// только враги в зоне и кто-то новый хочет взять флаг
+	// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	if ( bOnlyEnemyUnitsOfOneTypeInZone && bGoingToCapture && nPartyToCapture != nEnemyParty )
 		bGoingToCapture = false;
 
@@ -148,3 +148,5 @@ const BYTE CFlag::GetPlayer() const
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

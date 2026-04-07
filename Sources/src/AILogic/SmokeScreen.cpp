@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "SmokeScreen.h"
 #include "StaticObjectsIters.h"
@@ -134,3 +134,5 @@ void CSmokeScreen::GetCoveredTiles( CTilesSet *pTiles ) const
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "CombatEstimator.h"
 #include "AIUnit.h"
@@ -77,3 +77,5 @@ void CCombatEstimator::DelUnit( CAIUnit *pUnit )
 		registeredMechUnits.erase( pUnit->GetUniqueId() );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

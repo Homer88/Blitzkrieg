@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 
 #include "AILogicObjectFactory.h"
 #include "AILogicInternal.h"
@@ -376,3 +376,5 @@ const SModuleDescriptor* STDCALL GetModuleDescriptor()
 	return &theModuleDescriptor;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

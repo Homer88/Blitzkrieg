@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "ArtRocketStates.h"
 #include "TechnicsStates.h"
@@ -92,7 +92,7 @@ IUnitState* CArtRocketStatesFactory::ProduceState( class CQueueUnit *pObj, CAICo
 		case ACTION_COMMAND_MOVE_TO:
 			{
 				pArtillery->UnsetFollowState();				
-				if ( pArtillery->IsInTankPit() )// сначала выйти из TankPit, потом поехать куда послали
+				if ( pArtillery->IsInTankPit() )// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ TankPit, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				{
 					theGroupLogic.InsertUnitCommand( pCommand->ToUnitCmd(), pArtillery );
 					pResult = CTankPitLeaveState::Instance( pArtillery );
@@ -158,7 +158,7 @@ IUnitState* CArtRocketStatesFactory::ProduceState( class CQueueUnit *pObj, CAICo
 
 			break;
 		case ACTION_COMMAND_SWARM_TO:
-			// сначала выйти из TankPit, потом поехать куда послали			
+			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ TankPit, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ			
 			if ( pArtillery->IsInTankPit() && !pCommand->IsFromAI() )
 			{
 				theGroupLogic.InsertUnitCommand( pCommand->ToUnitCmd(), pArtillery );
@@ -292,3 +292,5 @@ ETryStateInterruptResult CArtRocketAttackGroundState::TryInterruptState(class CA
 	return TSIR_YES_WAIT;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

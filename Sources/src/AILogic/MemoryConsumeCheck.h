@@ -1,14 +1,14 @@
-#ifndef __MEMORYCONSUMECHECK_H__
+﻿#ifndef __MEMORYCONSUMECHECK_H__
 #define __MEMORYCONSUMECHECK_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CMemoryConsumeCheck
 {
-	typedef std::hash_map<int /*nConsumeID*/, MEMORYSTATUS > CRememberedStatus;
+	typedef stdext::hash_map<int /*nConsumeID*/, MEMORYSTATUS > CRememberedStatus;
 	CRememberedStatus rememberedStatus;
 	
-	typedef std::hash_map<int /*nConsumeID*/, double /*memory used*/> CMemoryUsed;
+	typedef stdext::hash_map<int /*nConsumeID*/, double /*memory used*/> CMemoryUsed;
 	CMemoryUsed memoryUsed;
 	CMemoryUsed memoryUsedSummed;
 
@@ -71,3 +71,5 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __MEMORYCONSUMECHECK_H__
+
+

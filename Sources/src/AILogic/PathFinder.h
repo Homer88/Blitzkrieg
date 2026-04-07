@@ -1,4 +1,4 @@
-#ifndef __PATH_FINDER_H__
+п»ї#ifndef __PATH_FINDER_H__
 #define __PATH_FINDER_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -12,9 +12,9 @@ interface IStaticPathFinder : public IRefCount
 {
 	virtual void SetPathParameters( const int nBoundTileRadius, const BYTE aiClass, interface IPointChecking *pChecking, const CVec2 &startPoint, const CVec2 &finishPoint, const int upperLimit, const bool longPath, const SVector &lastKnownGoodTile ) = 0;
 
-	// поиск пути без каких-либо улучшений
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	virtual bool CalculatePath() = 0;	
-	// поиск пути в точку без циклов
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	virtual void CalculatePathWOCycles() = 0;
 	virtual void SmoothPath() = 0;
 	
@@ -44,3 +44,5 @@ bool IsUnitNearPoint( const class CAIUnit * pUnit1, const class CVec2 & point, c
 bool IsPointNearPoint( const class CVec2 & point1, const class CVec2 & point2 );
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __PATH_FINDER_H__
+
+

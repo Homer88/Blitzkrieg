@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Cheats.h"
 #include "Diplomacy.h"
@@ -112,3 +112,5 @@ void SCheats::CheckPassword( const std::string &szPassword )
 	bPasswordOK = ( uCheckSum == ulPass );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

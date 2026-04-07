@@ -1,4 +1,4 @@
-#ifndef _AI_TYPES_H__
+п»ї#ifndef _AI_TYPES_H__
 #define _AI_TYPES_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -21,8 +21,8 @@ enum EDiplomacyInfo
 #pragma pack( 1 )
 struct SSegment2Trench
 {
-	IRefCount *pSegment;									// маленький кусочек 
-	IRefCount *pEntrenchment;							// весь окоп
+	IRefCount *pSegment;									// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
+	IRefCount *pEntrenchment;							// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 
 	SSegment2Trench() : pSegment( 0 ), pEntrenchment( 0 ) { }
 	SSegment2Trench( IRefCount *_pSegment, IRefCount *_pEntrenchment ) : pSegment( _pSegment ), pEntrenchment( _pEntrenchment ) { }
@@ -74,7 +74,7 @@ struct SShootArea
 	CVec3 vCenter3D;
 	float fMinR, fMaxR;
 
-	// углы задают конус стрельбы - против часовой стрелки
+	// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	WORD wStartAngle;
 	WORD wFinishAngle;
 	
@@ -107,7 +107,7 @@ struct SShootArea
 
 struct SShootAreas
 {
-	// выводить - последовательно, накладывая друг на друга, сначала areas[0], потом areas[1] и т.д.
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ areas[0], пїЅпїЅпїЅпїЅпїЅ areas[1] пїЅ пїЅ.пїЅ.
 	std::list<SShootArea> areas;
 
 	virtual int STDCALL operator&( interface IStructureSaver &ss )
@@ -120,3 +120,5 @@ struct SShootAreas
 #pragma pack()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // _AI_TYPES_H__
+
+

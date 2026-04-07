@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "LinkObject.h"
 
@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::vector< CPtr<CLinkObject> > CLinkObject::link2object;
 std::list<int> CLinkObject::deletedObjects;
-std::hash_map< int, CPtr<CLinkObject> > CLinkObject::unitsID2object;
+stdext::hash_map< int, CPtr<CLinkObject> > CLinkObject::unitsID2object;
 std::list<int> CLinkObject::deletedUniqueObjects;
 int CLinkObject::nCurUniqueID = 0;
 
@@ -38,7 +38,7 @@ void CLinkObject::SetUniqueId()
 void CLinkObject::SetLink( const int _nLink )
 {
 	nLink = _nLink;
-	// CRAP{ чтобы грузились старые карты
+	// CRAP{ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	if ( _nLink > 0 )
 	// }CRAP
 	{
@@ -132,3 +132,5 @@ void CLinkObject::GetFreeLinks( std::list<int> *pLinks, const int nSize )
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

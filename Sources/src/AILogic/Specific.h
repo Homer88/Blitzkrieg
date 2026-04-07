@@ -1,4 +1,4 @@
-#include "aiconsts.h"
+﻿#include "aiconsts.h"
 #include "AIInternalConsts.h"
 #include "ListsSet.h"
 #include "AIGeometry.h"
@@ -6,3 +6,5 @@
 #include "AITypes.h"
 #include "AICellsTiles.h"
 #include "ValidObjectCheck.h"
+
+

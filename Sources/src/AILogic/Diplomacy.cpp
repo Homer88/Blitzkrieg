@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Diplomacy.h"
 #include "Units.h"
@@ -77,3 +77,5 @@ void CDiplomacy::SetNetGame( bool _bNetGame )
 		theDifficultyLevel.SetLevel( 1 );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

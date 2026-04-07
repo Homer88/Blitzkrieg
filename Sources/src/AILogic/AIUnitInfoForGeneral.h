@@ -1,4 +1,4 @@
-#ifndef __AI_UNIT_INFO_FOR_GENERAL_H__
+п»ї#ifndef __AI_UNIT_INFO_FOR_GENERAL_H__
 #define __AI_UNIT_INFO_FOR_GENERAL_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -17,7 +17,7 @@ class CAIUnitInfoForGeneral : public IRefCount
 	CVec2 vLastVisibleAntiArtCenter;
 	float fDistToLastVisibleAntiArt;
 
-	// когда в следующий раз говорить об изменении в состоянии генералу
+	// пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	NTimer::STime nextTimeToReportGeneral;
 
 	float fWeight;
@@ -47,3 +47,5 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __AI_UNIT_INFO_FOR_GENERAL_H__
+
+

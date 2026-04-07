@@ -1,4 +1,4 @@
-//{{NO_DEPENDENCIES}}
+﻿//{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
 // Used by AILogic.rc
 //
@@ -13,3 +13,5 @@
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
+
+

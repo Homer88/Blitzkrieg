@@ -1,4 +1,4 @@
-#ifndef __IN_BULDING_STATES_H__
+п»ї#ifndef __IN_BULDING_STATES_H__
 #define __IN_BULDING_STATES_H__
 
 #pragma ONCE
@@ -60,9 +60,9 @@ class CSoldierAttackInBuildingState : public IUnitAttackingState
 	CPtr<CAIUnit> pEnemy;
 
 	CPtr<CBasicGun> pGun;
-	// стрельба окончена
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	bool bFinish;
-	// обязательно нужно прицелиться
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	bool bAim;
 	int nEnemyParty;
 
@@ -86,3 +86,5 @@ public:
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __IN_BULDING_STATES_H__
+
+

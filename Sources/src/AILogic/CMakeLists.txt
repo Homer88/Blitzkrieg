@@ -1,12 +1,12 @@
-# AILogic - ИИ логика игры
-# Согласно AILogic.dsp - это DLL (Dynamic-Link Library)
+# AILogic - ИИ логика игры (DLL)
+# Совместимость: MSVC 2002-2022, C++98 стандарт
 # Зависимости: BugSlay, StreamIO, Misc, Image, LuaLib, Formats, zlib, RandomMapGen
 
 cmake_minimum_required(VERSION 3.0)
 
 project(AILogic LANGUAGES CXX)
 
-# Установка стандарта C++
+# Установка стандарта C++98
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -15,8 +15,8 @@ FILE(GLOB AILOGIC_SOURCE "*.cpp")
 FILE(GLOB AILOGIC_HEADERS "*.h")
 
 # Создаем DLL (согласно .dsp файлу)
-add_library(AILogic SHARED 
-    ${AILOGIC_SOURCE} 
+add_library(AILogic SHARED
+    ${AILOGIC_SOURCE}
     ${AILOGIC_HEADERS}
     AILogic.rc
 )
@@ -30,7 +30,7 @@ endif()
 
 # Прекомпилированные заголовки
 set_target_properties(AILogic PROPERTIES
-    COMPILE_FLAGS "/YuStdAfx.h"
+    COMPILE_FLAGS "/YuStdAfx.h /Zm200"
 )
 
 set_source_files_properties(StdAfx.cpp PROPERTIES

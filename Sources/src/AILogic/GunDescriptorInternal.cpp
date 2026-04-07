@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "GunDescriptorInternal.h"
 #include "CommonUnit.h"
@@ -16,3 +16,5 @@ IGun* CUnitGunDescriptor::GetGun() const
 	return pUnit->GetGun( nUnitGun ); 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

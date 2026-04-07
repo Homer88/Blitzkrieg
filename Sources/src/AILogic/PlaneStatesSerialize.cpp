@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "PlaneStates.h"
 #include "SerializeOwner.h"
@@ -159,3 +159,5 @@ int CPlaneFlyDeadState::operator&( IStructureSaver &ss )
 	return 0;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

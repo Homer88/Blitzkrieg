@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "FreeFireManager.h"
 #include "CommonUnit.h"
@@ -33,7 +33,7 @@ void CFreeFireManager::Analyze( CCommonUnit *pUnit, CBasicGun *pActiveGun )
 		{
 			CBasicGun *pGun = pUnit->GetGun( i );
 
-			// нельзя анализировать
+			// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			if ( pGun->IsCommonEqual( pActiveGun ) || pGun->IsCommonGunFiring() || pGun->GetGun().nPriority == 0 && !pUnit->IsIdle() || pGun->GetNAmmo() == 0 )
 			{
 				dwForbidden |= ( 1 << i );
@@ -88,3 +88,5 @@ void CFreeFireManager::SShotInfo::SetInfo( CAIUnit *pNewTarget, CBasicGun *pGun 
 	gunDir = pGun->GetGlobalDir();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

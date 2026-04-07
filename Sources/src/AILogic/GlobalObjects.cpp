@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "GlobalObjects.h"
 
@@ -144,3 +144,5 @@ void NGlobalObjects::Serialize( SSChunkID idChunk, IStructureSaver &ss )
 	saver.Add( idChunk, &globalSerializer );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

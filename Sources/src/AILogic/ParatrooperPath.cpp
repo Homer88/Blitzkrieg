@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "ParatrooperPath.h"
 #include "AIStaticMap.h"
@@ -64,7 +64,7 @@ void CParatrooperPath::Init()
 	const int height = vStartPoint.z - theStaticMap.GetZ( AICellsTiles::GetTile( CVec2(finishP.x,finishP.y) ) );
 	const float fallTime = height/SConsts::PARATROOPER_FALL_SPEED;
 	vHorSpeed = (finishP-curP)/fallTime;
-	fSpeedLen = SConsts::TILE_SIZE / 3600.0f; // скорость парашютиста всегда такая, для анимации
+	fSpeedLen = SConsts::TILE_SIZE / 3600.0f; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 	vFinishPoint2D.x = vFinishPoint.x;
 	vFinishPoint2D.y = vFinishPoint.y;
@@ -102,3 +102,5 @@ const CVec3 CParatrooperPath::GetPoint( NTimer::STime timeDiff )
 	return vCurPoint;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

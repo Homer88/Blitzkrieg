@@ -1,4 +1,4 @@
-#ifndef __SHOOT_ESTIMATOR_H__
+﻿#ifndef __SHOOT_ESTIMATOR_H__
 #define __SHOOT_ESTIMATOR_H__
 
 #pragma ONCE
@@ -13,3 +13,5 @@ interface IShootEstimator : public IRefCount
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif __SHOOT_ESTIMATOR_H__
+
+

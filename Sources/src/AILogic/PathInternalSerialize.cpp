@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "PathFinder.h"
 #include "PlanePath.h"
@@ -332,7 +332,7 @@ int CTrainSmoothPath::operator&( IStructureSaver &ss )
 
 	if ( !saver.IsReading() )
 	{
-		// записать сдвиги итераторов
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		if ( pTrainPath == 0 || IsFinished() )
 			iteratorShift = -1;
 		else if ( !bJustLoaded )
@@ -371,3 +371,5 @@ int CTrainSmoothPathMemento::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

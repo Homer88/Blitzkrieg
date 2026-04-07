@@ -1,4 +1,4 @@
-#ifndef __ARTILLERY_STATES_H__
+п»ї#ifndef __ARTILLERY_STATES_H__
 #define __ARTILLERY_STATES_H__
 
 #pragma ONCE
@@ -212,7 +212,7 @@ public:
 	virtual const CVec2 GetPurposePoint() const;
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// пушка болтается за грузовиком
+// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 class CArtilleryBeingTowedPath;
 class CArtilleryBeingTowedState: public IUnitState
 {
@@ -222,7 +222,7 @@ class CArtilleryBeingTowedState: public IUnitState
 	class CArtillery *pArtillery;
 
 	CPtr<CAITransportUnit> pTransport;
-	// буксировка
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	WORD wLastTagDir;
 	CVec2 vLastTagCenter;
 
@@ -351,3 +351,5 @@ public:
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __ARTILLERY_STATES_H__
+
+

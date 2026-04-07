@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "Statistics.h"
 #include "..\Main\ScenarioTracker.h"
@@ -165,3 +165,5 @@ int CStatistics::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

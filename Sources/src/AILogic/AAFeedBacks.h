@@ -1,4 +1,4 @@
-#ifndef __AAFEEDBACKS_H__
+﻿#ifndef __AAFEEDBACKS_H__
 #define __AAFEEDBACKS_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -7,7 +7,7 @@ class CAAFeedBacks
 {
 	DECLARE_SERIALIZE;
 	typedef std::list<int/*Planes unique id*/> CTargetList;
-	typedef std::hash_map<int/*AA Unique ID*/,CTargetList>  CAAFeedBacksList;
+	typedef stdext::hash_map<int/*AA Unique ID*/,CTargetList>  CAAFeedBacksList;
 
 
 	CAAFeedBacksList feedbacks;
@@ -20,3 +20,5 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __AAFEEDBACKS_H__
+
+

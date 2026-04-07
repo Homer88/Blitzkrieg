@@ -1,10 +1,10 @@
-#ifndef __RESISTANCE_H__
+п»ї#ifndef __RESISTANCE_H__
 #define __RESISTANCE_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// очаги сопротивления
+// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 struct SResistance
 {
 private:
@@ -60,7 +60,7 @@ class CResistancesContainer
 		SSellInfo( const float _fCellWeight, const bool _bInUse, const bool _bAllowShoot ) : fCellWeight( _fCellWeight ), bInUse( _bInUse ), bAllowShoot( _bAllowShoot ) { }
 	};
 
-	typedef std::hash_map<int, SSellInfo> CCellsWeights;
+	typedef stdext::hash_map<int, SSellInfo> CCellsWeights;
 	CCellsWeights cellsWeights;
 	std::list<CCircle> excluded;				// general will not shoot to these circles
 
@@ -112,3 +112,5 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __RESISTANCE_H__
+
+

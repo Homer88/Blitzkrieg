@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "fence.h"
 #include "Updater.h"
@@ -48,7 +48,7 @@ void CFence::InitDirectionInfo()
 
 	rightTile = leftTile = tiles.front();
 
-	// вертикальный
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	if ( nDir == 0 || nDir == 2 )
 	{
 		for ( CTilesSet::const_iterator iter = tiles.begin(); iter != tiles.end(); ++iter )
@@ -73,7 +73,7 @@ void CFence::InitDirectionInfo()
 			) 
 		);
 	}
-	// горизонтальный
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	else
 	{
 		for ( CTilesSet::const_iterator iter = tiles.begin(); iter != tiles.end(); ++iter )
@@ -123,7 +123,7 @@ void CFence::AnalyzeConnection( CFence *pFence )
 		}
 		else if ( leftTile == pFence->rightTile || leftTile == pFence->leftTile )
 		{
-			// вертикальна
+			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			if ( nDir == 0 || nDir == 3 )
 				pFence->dirToBreak.push_back( ETOL_LEFT );
 			else
@@ -163,7 +163,7 @@ void CFence::Init()
 		if ( pObj->GetObjectType() == ESOT_FENCE && pObj != this )
 		{
 			NI_ASSERT_T( dynamic_cast<CFence*>( pObj ) != 0, "Wrong fence" );
-			// такого нет
+			// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 			if ( std::find( neighFences.begin(), neighFences.end(), pObj ) == neighFences.end() )
 				AnalyzeConnection( static_cast<CFence*>( pObj ) );
 		}
@@ -311,3 +311,5 @@ bool CFence::CanUnitGoThrough( const EAIClass &eClass ) const
 	return ( pStats->dwAIClasses & eClass ) == 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

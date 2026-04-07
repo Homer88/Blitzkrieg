@@ -1,4 +1,4 @@
-#ifndef __GRAVEYARD_H__
+п»ї#ifndef __GRAVEYARD_H__
 #define __GRAVEYARD_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -17,16 +17,16 @@ public:
 	NTimer::STime endFogTime; 
 	NTimer::STime endSceneTime;
 	NTimer::STime timeToEndDieAnimation;
-	// отослан Юре, как мёртвый
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	bool bSentDead;
-	// кончилсась анимация смерти и проинициализировались endSceneTime и endFogTime
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ endSceneTime пїЅ endFogTime
 	bool bAnimFinished;
 	//
 	bool bDisappearUpdateSent;
 	
-	bool bFatality;						// играть ли фаталити
-	NTimer::STime actionTime;	// action time для фаталити
-	CTilesSet lockedTiles;		// залоканные тайлы для фаталити
+	bool bFatality;						// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	NTimer::STime actionTime;	// action time пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	CTilesSet lockedTiles;		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 	bool bFogDeleted;
 
@@ -66,11 +66,11 @@ class CGraveyard
 	DECLARE_SERIALIZE;
 
 	std::list<SKilledUnit> killed;
-	typedef std::hash_map< CObj<CAIUnit>, float, SUnitObjHash > UpdateObjSet;
+	typedef stdext::hash_map< CObj<CAIUnit>, float, SUnitObjHash > UpdateObjSet;
 	UpdateObjSet soonBeDead;
 
-	typedef std::hash_map<int, std::list< CPtr<CDeadUnit> > > CBridgeDeadSoldiers;
-	std::hash_set<IUpdatableObj*, SDefaultPtrHash> bridgeSoldiersSet;
+	typedef stdext::hash_map<int, std::list< CPtr<CDeadUnit> > > CBridgeDeadSoldiers;
+	stdext::hash_set<IUpdatableObj*, SDefaultPtrHash> bridgeSoldiersSet;
 	CBridgeDeadSoldiers bridgeDeadSoldiers;
 
 	//
@@ -95,3 +95,5 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __GRAVEYARD_H__
+
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "InTransportStates.h"
 #include "Commands.h"
@@ -67,7 +67,7 @@ IUnitState* CSoldierRestOnBoardState::Instance( CSoldier *pSoldier, CMilitaryCar
 CSoldierRestOnBoardState::CSoldierRestOnBoardState( CSoldier *_pSoldier, CMilitaryCar* pTransport )
 : pSoldier( _pSoldier )
 {
-	// если ещё не внутри транспорта
+	// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	if ( pTransport != 0 )
 	{
 		if ( pTransport->IsValid() && pTransport->IsAlive() )
@@ -100,3 +100,5 @@ const CVec2 CSoldierRestOnBoardState::GetPurposePoint() const
 		return CVec2( -1.0f, -1.0f );
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

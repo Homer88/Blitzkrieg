@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "Mine.h"
 #include "StaticObjects.h"
@@ -82,7 +82,7 @@ bool CMineStaticObject::CheckToDetonate( CAIUnit *pUnit )
 		const bool bGoodUnitToExplode = WillExplodeUnder( pUnit );
 		if ( bGoodUnitToExplode && ( bMatchTiles || rect.IsPointInside( GetCenter() ) ) )
 		{
-			// наступили 
+			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
 			Detonate();
 			return true;
 		}
@@ -128,7 +128,7 @@ void CMineStaticObject::TakeDamage( const float fDamage, const bool bFromExplosi
 void CMineStaticObject::ClearVisibleStatus()
 {
 	mVisibleStatus = 0;
-	bIfRegisteredInCWorld = false; // изначально у Юрика нет мины. 
+	bIfRegisteredInCWorld = false; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ. 
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMineStaticObject::SetVisible( int nParty, bool bVis ) 
@@ -147,3 +147,5 @@ const bool CMineStaticObject::IsVisible( const BYTE nParty ) const
 	return mVisibleStatus & ( 1 << nParty ); 
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

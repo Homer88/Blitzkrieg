@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "AIWarFog.h"
 #include "StaticObject.h"
@@ -169,3 +169,5 @@ int CGlobalWarFog::SUnitInfo::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

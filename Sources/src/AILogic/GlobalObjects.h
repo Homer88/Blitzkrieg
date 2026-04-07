@@ -1,4 +1,4 @@
-#ifndef __GLOBAL_OBJECTS_H__
+﻿#ifndef __GLOBAL_OBJECTS_H__
 #define __GLOBAL_OBJECTS_H__
 
 #pragma ONCE
@@ -10,3 +10,4 @@ namespace NGlobalObjects
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __GLOBAL_OBJECTS_H__
+

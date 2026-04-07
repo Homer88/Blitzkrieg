@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "ShootEstimatorInternal.h"
 #include "SerializeOwner.h"
@@ -85,3 +85,5 @@ int CPlaneShturmovikShootEstimator::STargetInfo::operator&( IStructureSaver &ss 
 	return 0;		
 }
 	
+
+

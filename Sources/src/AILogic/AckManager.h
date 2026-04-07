@@ -1,4 +1,4 @@
-#ifndef __ACKMANAGER_H__
+п»ї#ifndef __ACKMANAGER_H__
 #define __ACKMANAGER_H__
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -13,23 +13,23 @@ class CAckManager
 	DECLARE_SERIALIZE;
 
 	typedef std::pair<CPtr<CAIUnit>, bool> CUnitBoredPresence;
-	typedef std::hash_map< int/*unit unique ID */, CUnitBoredPresence> CBoredPresence;
-	typedef std::hash_map<int, CBoredPresence> CAckTypeBoredPrecence;
+	typedef stdext::hash_map< int/*unit unique ID */, CUnitBoredPresence> CBoredPresence;
+	typedef stdext::hash_map<int, CBoredPresence> CAckTypeBoredPrecence;
 	CAckTypeBoredPrecence bored;
 
 	typedef std::vector<SAIAcknowledgment> CAcknowledgments;
-	CAcknowledgments acknowledgements;		// накапливает Acknolegments идущие от AI
+	CAcknowledgments acknowledgements;		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Acknolegments пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ AI
 
 	void AddAcknowledgment( const SAIAcknowledgment &ack );
 public:
 	CAckManager();
 	virtual ~CAckManager();
-	//выдача клиенту Acknowledgements
+	//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Acknowledgements
 	void UpdateAcknowledgments( SAIAcknowledgment **pAckBuffer, int *pnLen );
-	//выдача клиенту Bored Acknowledgements
+	//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Bored Acknowledgements
 	void UpdateAcknowledgments( SAIBoredAcknowledgement **pAckBuffer, int *pnLen );
 
-	// для BORED acknowledgements
+	// пїЅпїЅпїЅ BORED acknowledgements
 	void RegisterAsBored(	EUnitAckType eAck, class CAIUnit *pObject );
 	void UnRegisterAsBored(	EUnitAckType eAck, class CAIUnit *pObject );
 
@@ -40,4 +40,6 @@ public:
 	void UnitDead( class CAIUnit *pObject );
 };
 #endif // __ACKMANAGER_H__
+
+
 

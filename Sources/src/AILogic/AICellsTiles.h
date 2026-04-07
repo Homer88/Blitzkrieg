@@ -1,4 +1,4 @@
-#ifndef _AI_CELLS_TILES_H__
+﻿#ifndef _AI_CELLS_TILES_H__
 #define _AI_CELLS_TILES_H__
 
 #pragma ONCE
@@ -117,3 +117,5 @@ namespace AICellsTiles
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #endif // _AI_CELLS_TILES_H__
+
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "InBuildingStates.h"
 #include "Commands.h"
@@ -162,10 +162,10 @@ CSoldierAttackInBuildingState::CSoldierAttackInBuildingState( class CSoldier *_p
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CSoldierAttackInBuildingState::AnalyzeCurrentState()
 {
-	// можно выстрелить
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	if ( pGun->CanShootToUnitWOMove( pEnemy ) )
 	{
-		// выстрелить
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		pSoldier->RegisterAsBored( ACK_BORED_ATTACK );
 		pGun->StartEnemyBurst( pEnemy, bAim );
 		bAim = false;
@@ -204,12 +204,12 @@ void CSoldierAttackInBuildingState::Segment()
 				pSoldier->SetCommandFinished();
 			}
 		}
-		// не момент стрельбы
+		// пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		else if ( !pGun->IsFiring() )
 		{
 			damageToEnemyUpdater.SetDamageToEnemy( pSoldier, pEnemy, pGun );
 			
-			// если враг мёртв или его не видно или стреляем сами по себе или пора заканчивать стрельбу
+			// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			if ( !IsValidObj( pEnemy ) || pEnemy.GetPtr() == pSoldier ||
 					 !pEnemy->IsNoticableByUnit( pSoldier, pGun->GetFireRange( 0 ) ) || bFinish ||
 					 nEnemyParty != pEnemy->GetParty() )
@@ -266,3 +266,5 @@ CAIUnit* CSoldierAttackInBuildingState::GetTargetUnit() const
 	return pEnemy;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

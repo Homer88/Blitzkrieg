@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "AIEditorInternal.h"
 #include "AILogicInternal.h"
@@ -43,7 +43,7 @@ bool CAIEditor::AddNewObject( const SMapObjectInfo &object, IRefCount **pObject 
 	curTime = GetAIGetSegmTime( pGameSegment );
 	*pObject = pAILogic->AddObject( object, pIDB, 0, false, true, 0 );
 
-	// CRAP{ Мише надо, чтобы кусок окопа был сразу же добавлен к Юре
+	// CRAP{ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ
 	if ( pIDB->GetDesc( object.szName.c_str() )->eGameType == SGVOGT_ENTRENCHMENT )
 		updater.Update( ACTION_NOTIFY_NEW_ST_OBJ, static_cast<IUpdatableObj*>(*pObject) );
 	// CRAP}
@@ -438,7 +438,7 @@ void CAIEditor::UpdateTerrain( const CTRect<int> &rect, const STerrainInfo &terr
 	const CVec2 vCenter( AICellsTiles::GetPointByTile( 0.5f * ( nMinX + nMaxX ), 0.5f * ( nMinY + nMaxY ) ) );
 	const CVec2 vAABBHalfSize( 0.5f * ( nMaxX - nMinX + 1 ) * SConsts::TILE_SIZE, 0.5f * ( nMaxY - nMinY + 1 ) * SConsts::TILE_SIZE );
 	
-	// разлокать юниты
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
  	for ( CUnitsIter<0,2> iter( 0, ANY_PARTY, vCenter, Max( vAABBHalfSize.x, vAABBHalfSize.y ) ); !iter.IsFinished(); iter.Iterate() )
 	{
 		CAIUnit *pUnit = *iter;
@@ -451,7 +451,7 @@ void CAIEditor::UpdateTerrain( const CTRect<int> &rect, const STerrainInfo &terr
 		nMaxY = Max( nMaxY, (int)Min( tile.y + SConsts::MAX_UNIT_RADIUS + 1, theStaticMap.GetSizeY() - 1 ) );
 	}
 
-	// разлокать статич. объекты
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	for ( CStObjCircleIter<false> iter( vCenter, Max( vAABBHalfSize.x, vAABBHalfSize.y ) ); !iter.IsFinished(); iter.Iterate() )
 	{
 		CExistingObject *pObj = *iter;
@@ -475,7 +475,7 @@ void CAIEditor::UpdateTerrain( const CTRect<int> &rect, const STerrainInfo &terr
 	for ( TVSOList::const_iterator iter = terrainInfo.rivers.begin(); iter != terrainInfo.rivers.end(); ++iter )
 		theStaticMap.UpdateRiverPassability( *iter, false, false );
 
-	// удалить старый terrain
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ terrain
 	for ( int x = nMinX; x <= nMaxX; ++x )
 	{
 		for ( int y = nMinY; y <= nMaxY; ++y )
@@ -496,7 +496,7 @@ void CAIEditor::UpdateTerrain( const CTRect<int> &rect, const STerrainInfo &terr
 	for ( TVSOList::const_iterator iter = terrainInfo.rivers.begin(); iter != terrainInfo.rivers.end(); ++iter )
 		theStaticMap.UpdateRiverPassability( *iter, true, false );
 
-	// вернуть статич. объекты
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	for ( CStObjCircleIter<false> iter( vCenter, Max( vAABBHalfSize.x, vAABBHalfSize.y ) ); !iter.IsFinished(); iter.Iterate() )
 	{
 		CExistingObject *pObj = *iter;		
@@ -504,7 +504,7 @@ void CAIEditor::UpdateTerrain( const CTRect<int> &rect, const STerrainInfo &terr
 			pObj->LockTiles( true );
 	}
 
-	// вернуть юниты
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	for ( CUnitsIter<0,2> iter( 0, ANY_PARTY, vCenter, Max( vAABBHalfSize.x, vAABBHalfSize.y ) ); !iter.IsFinished(); iter.Iterate() )
 	{
 		CAIUnit *pUnit = *iter;
@@ -527,3 +527,5 @@ void CAIEditor::AddRiver( const SVectorStripeObject &river )
 	theStaticMap.UpdateRiverPassability( river, true, true );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

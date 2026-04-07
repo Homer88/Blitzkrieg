@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "GeneralTasks.h"
 
@@ -91,12 +91,12 @@ void CGeneralTaskToDefendPatch::AskForWorker( ICommander *pManager, const float 
 		if ( _fMaxSeverity > fSeverity && fSeverity <= 0 )
 			pManager->EnumWorkers( FT_MOBILE_TANKS, this );
 
-		if ( fEnemyForce > 0 ) // можно позвать штурмовиков, если они еще не вызваны.
+		if ( fEnemyForce > 0 ) // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 		{
 			if ( -1 == nRequestForGunPlaneID )
 				nRequestForGunPlaneID = pManager->RequestForSupport( patchInfo.vCenter, FT_AIR_GUNPLANE );
 		}
-		else if( -1 != nRequestForGunPlaneID ) // отменить вызов штурмовиков
+		else if( -1 != nRequestForGunPlaneID ) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		{
 			pManager->CancelRequest( nRequestForGunPlaneID, FT_AIR_GUNPLANE );
 			nRequestForGunPlaneID = -1;
@@ -108,8 +108,8 @@ void CGeneralTaskToDefendPatch::ReleaseWorker( ICommander *pManager, const float
 {
 	if ( fEnemyForce != 0 && !bFinished )
 	{
-		// отдать часть подкрепления
-		// возможно стоит выбрать самых ненужных юнитов
+		// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		while ( !tanksMobile.empty() && fSeverity > _fMinSeverity && fEnemyForce == 0 )
 		{
 			CCommonUnit *pTank = *tanksMobile.begin();
@@ -120,7 +120,7 @@ void CGeneralTaskToDefendPatch::ReleaseWorker( ICommander *pManager, const float
 				const float fFormerMobileForce = fFriendlyMobileForce;
 
 				CalcSeverity( false, true );
-				if ( fSeverity >= _fMinSeverity ) // юнит можно отдать без ущерба для ситуации
+				if ( fSeverity >= _fMinSeverity ) // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 					pManager->Give( pTank );
 				else
 				{
@@ -132,7 +132,7 @@ void CGeneralTaskToDefendPatch::ReleaseWorker( ICommander *pManager, const float
 			}
 		}
 	}
-	else // отдать все резервы
+	else // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	{
 		while ( !tanksMobile.empty() )
 		{
@@ -309,15 +309,15 @@ bool CGeneralTaskToDefendPatch::EvaluateWorker( CCommonUnit *pUnit, const enum E
 		return SGeneralHelper::IsUnitInParcel( pUnit, patchInfo );
 
 	case FT_MOBILE_TANKS:
-		// гаубичные орудия не посылаем
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		if ( pUnit->GetFirstArtilleryGun() != 0 )
 			return false;
-		// проверить, пробивает ли предложенный юнит кого-то из врагов
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		else for ( CommonUnits::const_iterator it = enemyForces.begin(); it != enemyForces.end(); ++it )
 		{
 			NI_ASSERT_T( dynamic_cast_ptr<CAIUnit*>(*it) != 0, "wrong tank" );
 			CAIUnit * pEnemy = static_cast_ptr<CAIUnit*>( *it );
-			if ( 0 != pUnit->GetKillSpeed( pEnemy ) ) // можем пробить
+			if ( 0 != pUnit->GetKillSpeed( pEnemy ) ) // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				return true;
 		}
 		return false; 
@@ -357,14 +357,14 @@ void CGeneralTaskToHoldReinforcement::AskForWorker( ICommander *pManager, const 
 	if ( !bInit && fMaxSeverity >= 0.0f )
 	{
 		// in non-combat situation
-		// забрать под свое комманлование все свободные танки.
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
 		pManager->EnumWorkers( FT_MOBILE_TANKS, this );
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CGeneralTaskToHoldReinforcement::ReleaseWorker( ICommander *pManager, const float fMinSeverity )
 {
-	// отдать все танки генералу, пусть выберет лучший для своей цели
+	// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	while ( fMinSeverity < 0 && !tanksFree.empty() )
 	{
 		CCommonUnit *pTank = *tanksFree.begin();
@@ -402,7 +402,7 @@ void CGeneralTaskToHoldReinforcement::Segment()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CGeneralTaskToHoldReinforcement::EnumWorker( class CCommonUnit *pUnit, const enum EForceType eType )
 {
-	// послать танк на место сбора подкрепления
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	NI_ASSERT_T( FT_MOBILE_TANKS == eType, "not tank reinforcement" );
 	
 	tanksFree.push_back( static_cast<CAIUnit*>(pUnit) );
@@ -818,3 +818,5 @@ bool CGeneralTaskToSwarmToPoint::EvaluateWorker( CCommonUnit *pUnit, const enum 
 	return true;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

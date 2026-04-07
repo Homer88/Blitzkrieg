@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "StaticObjects.h"
 #include "StaticObjectsIters.h"
@@ -525,7 +525,7 @@ CStaticObject* CStaticObjects::AddNewMine( const SMineRPGStats *pStats, const fl
 
 	AddToAreaMap( pObj );
 	
-	// ставим только наши мины
+	// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	if ( theDipl.GetDiplStatus( theDipl.GetMyNumber(), player ) == EDI_FRIEND || theCheats.IsHistoryPlaying() )
 		pObj->RegisterInWorld();
 
@@ -547,7 +547,7 @@ void CStaticObjects::AddToAreaMap( CExistingObject *pObj )
 	CTilesSet tiles;
 	pObj->GetCoveredTiles( &tiles );
 	
-	// чтобы не удалился после update
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ update
 	if ( tiles.empty() )
 		AddObjectToAreaMapTile( pObj, AICellsTiles::GetTile( pObj->GetCenter() ) );
 	else
@@ -625,8 +625,8 @@ void CStaticObjects::Segment()
 		CExistingObject *pObj = *iter;
 		UnregisterSegment( pObj );
 
-		// пересчитать туман для ближайших юнитов
-		// CRAP{ не пересчитывать, если удаляемый стат. объект полностью прозрачен
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+		// CRAP{ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		theWarFog.ReclaculateFogAfterRemoveObject( pObj );
 		// CRAP}
 
@@ -648,9 +648,9 @@ void CStaticObjects::Segment()
 
 	deletedObjects.clear();
 
-	// горящие объекты
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	std::list<int> burningList;
-	for ( std::hash_set<int>::const_iterator iter = burningObjects.begin(); iter != burningObjects.end(); ++iter )
+	for ( stdext::hash_set<int>::const_iterator iter = burningObjects.begin(); iter != burningObjects.end(); ++iter )
 		burningList.push_back( *iter );
 
 	for ( std::list<int>::iterator iter = burningList.begin(); iter != burningList.end(); ++iter )
@@ -691,3 +691,5 @@ void CStaticObjects::UpdateAllObjectsPos()
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

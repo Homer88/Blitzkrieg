@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "CommonStates.h"
 #include "SerializeOwner.h"
@@ -159,3 +159,5 @@ int CCommonMoveToGridState::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

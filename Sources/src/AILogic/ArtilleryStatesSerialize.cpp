@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "ArtilleryStates.h"
 #include "SerializeOwner.h"
@@ -147,3 +147,5 @@ int CArtilleryAttackAviationState::operator&( IStructureSaver &ss )
 	return 0;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

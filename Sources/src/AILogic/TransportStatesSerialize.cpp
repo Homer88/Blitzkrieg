@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "TransportStates.h"
 #include "SerializeOwner.h"
@@ -209,3 +209,4 @@ int CMoveToPointNotPresize::operator&( IStructureSaver &ss )
 
 	return 0;
 }
+

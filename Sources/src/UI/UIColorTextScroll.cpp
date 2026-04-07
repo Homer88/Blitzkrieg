@@ -1,9 +1,9 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 
 #include "UIColorTextScroll.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CUIColorTextScroll::CColorTextEntry::operator&( IStructureSaver &ss )
+int CUIColorTextScroll::CColorTextEntry::operator&( IStructureSaver &ss )
 {
 	CSaverAccessor saver = &ss;
 	saver.Add( 1, &nHeight );
@@ -20,7 +20,7 @@ CVisibleString CUIColorTextScroll::CColorTextEntry::CreateString( const std::wst
 {
 	CVisibleString result;
 	result.first = CreateObject<ITextDialog>( TEXT_STRING );
-	result.first->SetText( szSource.c_str() );
+	result.first->SetText( reinterpret_cast<const WORD*>(szSource.c_str()) );
 	
 	result.second = CreateObject<IGFXText>( GFX_TEXT );
 	result.second->SetText( result.first );
@@ -110,9 +110,9 @@ void CUIColorTextScroll::Reposition( const CTRect<float> &rcParent )
 	// reposition entrys
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CUIColorTextScroll::SetWindowText( int nState, const WORD *pszText ) 
-{ 
-	textEntrys.clear(); 
+void CUIColorTextScroll::SetWindowText( int nState, const WORD *pszText )
+{
+	textEntrys.clear();
 	AppendMessage( pszText, 0, IUIColorTextScroll::E_COLOR_DEFAULT );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,16 +130,16 @@ void CUIColorTextScroll::AppendMessage( const WORD *pszCaption, const WORD *pszM
 	CTRect<float> rect;
 	GetBorderRect( &rect );
 
-	CColorTextEntry * pNewEntry = new CColorTextEntry( pszCaption, colors[nColorIndex].first,
-																						 pszMessage, colors[nColorIndex].second,
+	CColorTextEntry * pNewEntry = new CColorTextEntry( reinterpret_cast<const wchar_t*>(pszCaption), colors[nColorIndex].first,
+																						 reinterpret_cast<const wchar_t*>(pszMessage), colors[nColorIndex].second,
 																						 nCurrentYSize, rect.Width() );
 	nCurrentYSize += pNewEntry->GetSizeY();
 	textEntrys.push_back( pNewEntry );
-																						 
+
 	const int nSize = Max( nCurrentYSize - rect.Height(), 0.0f );
 
 	//const int nLineHeigth = states[nState].pGfxText->GetLineSpace();
-	
+
 	UpdateScrollBar( nSize, nSize );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -159,3 +159,4 @@ void CUIColorTextScroll::Visit( interface ISceneVisitor *pVisitor )
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+

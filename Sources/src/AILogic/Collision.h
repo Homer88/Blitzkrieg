@@ -1,4 +1,4 @@
-#ifndef __COLLISION_H__
+﻿#ifndef __COLLISION_H__
 #define __COLLISION_H__
 
 #pragma ONCE
@@ -20,3 +20,5 @@ interface ICollision : public IRefCount
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __COLLISION_H__
+
+

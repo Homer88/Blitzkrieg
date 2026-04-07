@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "MountedGun.h"
 #include "SerializeOwner.h"
@@ -15,3 +15,5 @@ int CCommonMountedGun::operator&( IStructureSaver &ss )
 	return 0;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

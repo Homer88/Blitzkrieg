@@ -1,4 +1,4 @@
-#ifndef __TRAIN_PATH_FINDER_H__
+п»ї#ifndef __TRAIN_PATH_FINDER_H__
 #define __TRAIN_PATH_FINDER_H__
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -29,9 +29,9 @@ public:
 
 	virtual void SetPathParameters( const int nBoundTileRadius, const BYTE aiClass, interface IPointChecking *pChecking, const CVec2 &startPoint, const CVec2 &finishPoint, const int upperLimit, const bool longPath, const SVector &lastKnownGoodTile ) { }
 
-	// поиск пути без каких-либо улучшений
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	virtual bool CalculatePath();
-	// поиск пути в точку без циклов
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	virtual void CalculatePathWOCycles() { }
 	virtual void SmoothPath() { }
 	
@@ -45,7 +45,7 @@ public:
 	CEdgePoint* GetStartEdgePoint() const;
 	CEdgePoint* GetFinishEdgePoint() const;
 
-	// не сэйвится
+	// пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	void StartPathIterating();
 	const int GetCurPathNode() const;
 	void Iterate();
@@ -54,3 +54,5 @@ public:
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif //__TRAIN_PATH_FINDER_H__
+
+

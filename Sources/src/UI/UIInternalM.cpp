@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include <comdef.h>
 #include "..\Main\TextSystem.h"
 #include "UIInternal.h"
@@ -153,7 +153,7 @@ void CWindowStateManipulator::SetText( const variant_t &value )
 {
 	bstr_t bstrVal = value.bstrVal;
 	IText *pText = pState->pGfxText->GetText();
-	pText->SetText( bstrVal );
+	pText->SetText( reinterpret_cast<const WORD*>(static_cast<const wchar_t*>(bstrVal)) );
 }
 
 void CWindowStateManipulator::GetTexture( variant_t *pValue, int nIndex )
@@ -190,3 +190,4 @@ void CWindowStateManipulator::GetClickSound( variant_t *pValue, int nIndex )
 	pValue->vt = VT_BSTR;
 	pValue->bstrVal = bstr_t( pState->szClickSound.c_str() );
 }
+

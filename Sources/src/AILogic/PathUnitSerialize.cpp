@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "PathUnit.h"
 #include "SerializeOwner.h"
@@ -12,7 +12,7 @@ struct SAILegacyPlacement : public SSuspendedUpdate
 	CVec2 center;													// (x, y)
 	float z;															// height (mostly for planes)
 	WORD dir;															// direction [0..65535) => [0..2pi), only for units
-	DWORD dwNormal;												// нормаль
+	DWORD dwNormal;												// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	float fSpeed;
 
 	SAILegacyPlacement() : center( VNULL2 ), z( -1.0f ), dir( 0 ), dwNormal( 0 ), fSpeed( -100.0f ) { }
@@ -122,3 +122,5 @@ int CCarriagePathUnit::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "TrainPathFinder.h"
 #include "PointChecking.h"
@@ -12,7 +12,7 @@ void CTrainPathFinder::AnalyzePath( const int v1, const int v2, const float fDis
 	const int pointV1 = pPoint->GetEdge()->GetFirstNode();
 	const int pointV2 = pPoint->GetEdge()->GetLastNode();
 
-	// лежат на одном ребре
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	if ( ( v1 == pointV1 || v1 == pointV2 ) && ( v2 == pointV1 || v2 == pointV2 ) )
 	{
 		const float fPathLen = fabs( pStartEdgePoint, pPoint );
@@ -26,7 +26,7 @@ void CTrainPathFinder::AnalyzePath( const int v1, const int v2, const float fDis
 	else
 	{
 		theRailRoadGraph.ComputePath( v1, pointV1 );
-		// путь найден
+		// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		if ( theRailRoadGraph.GetPathLength() != -1.0f )
 		{
 			if ( fBestPathLen == -1.0f || fDistToV1 + theRailRoadGraph.GetPathLength() < fBestPathLen )
@@ -95,7 +95,7 @@ bool CTrainPathFinder::CalculatePath()
 			AnalyzePath( v2, v1, fDistToV2, *iter );
 	}
 
-	// путь найден
+	// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	if ( fBestPathLen >= 0.0f )
 	{
 		if ( GetPathLength() == 0 )
@@ -118,12 +118,12 @@ bool CTrainPathFinder::CalculatePath()
 		else
 		{
 			CPtr<IEdge> pStartEdge = pStartEdgePoint->GetEdge();
-			// первая точка перевёрнута
+			// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			if ( pStartEdge->GetLastNode() != bestPath.front() )
 				pStartEdgePoint->Reverse( theRailRoadGraph.GetEdge( pStartEdge->GetLastNode(), bestPath.front() ) );
 
 			CPtr<IEdge> pFinishEdge = pFinishEdgePoint->GetEdge();
-			// последняя точка перевёрнута
+			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			if ( pFinishEdge->GetFirstNode() != bestPath.back() )
 				pFinishEdgePoint->Reverse( theRailRoadGraph.GetEdge( bestPath.back(), pFinishEdge->GetFirstNode() ) );
 		}
@@ -181,3 +181,5 @@ const int CTrainPathFinder::GetPathLength()	const
 		return bestPath.size(); 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

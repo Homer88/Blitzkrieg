@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "UnitsIterators2.h"
 #include "CollisionInternal.h"
@@ -675,3 +675,5 @@ bool operator < ( const SUnitsPair &pair1, const SUnitsPair &pair2 )
 	return pair1.pUnit1->GetCollision()->GetPriority() < pair2.pUnit1->GetCollision()->GetPriority();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

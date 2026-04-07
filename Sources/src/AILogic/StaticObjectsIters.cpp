@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "StaticObjectsIters.h"
 #include "StaticObject.h"
@@ -16,7 +16,7 @@ CMinesIter::CMinesIter( const CVec2 &vCenter, float fR, const int _nParty, const
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMinesIter::Iterate()
 {
-	// сместиться от предыдущего значения.
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 	CStObjCircleIter<false>::Iterate();
 	// 
 	IterateToNextMine();
@@ -59,3 +59,5 @@ void CMinesIter::Reset()
 	IterateToNextMine();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "AIUnit.h"
 #include "Soldier.h"
@@ -53,7 +53,7 @@ int CAIUnit::operator&( IStructureSaver &ss )
 	saver.Add( 38, &nLevel );
 	saver.Add( 39, &pExpLevels );
 	
-	// для загрузки старых saves
+	// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ saves
 	if ( saver.IsReading() )
 	{
 		if ( pExpLevels == 0 )
@@ -338,3 +338,5 @@ int CQueueUnit::operator&( IStructureSaver &ss )
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "GeneralInternal.h"
 #include "SerializeOwner.h"
@@ -327,3 +327,4 @@ int CGeneralSwarmWaitForReady::operator&( IStructureSaver &ss )
 	saver.Add( 1, &pGeneralTask );
 	return 0;
 }
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "PathFinderInternal.h"
 #include "TrainPathFinder.h"
@@ -18,3 +18,5 @@ int CTrainPathFinder::operator&( IStructureSaver &ss )
 	return 0;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

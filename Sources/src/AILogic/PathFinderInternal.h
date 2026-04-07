@@ -1,4 +1,4 @@
-#ifndef __PATH_FINDER_INTERNAL_H__
+п»ї#ifndef __PATH_FINDER_INTERNAL_H__
 #define __PATH_FINDER_INTERNAL_H__
 
 #pragma ONCE
@@ -6,7 +6,7 @@
 #include "PathFinder.h"
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //*******************************************************************
-//*							Путь для юнитов и обычной наземной техники					*
+//*							пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ					*
 //*******************************************************************
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CStandartPathFinder : public IStaticPathFinder
@@ -26,7 +26,7 @@ class CStandartPathFinder : public IStaticPathFinder
 	int nLength, nStart;
 
 	int minDistance, minPointNum;
-	// нашли точку
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	bool bFinished;
 
 	enum { COEFFICIENT = 7 };
@@ -64,7 +64,7 @@ class CStandartPathFinder : public IStaticPathFinder
 	
 	void EraseCycles();
 	void AnalyzePoint( const SVector &point, const int num );
-	// если юнит сейчас на непроходимом тайле, то можно длина пути от pointFrom то lastKnownGoodTile, а потом искать путь
+	// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ pointFrom пїЅпїЅ lastKnownGoodTile, пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	const int GetAdditionalPathLength( const SVector &pointFrom );
 public:
 	CStandartPathFinder() : nBoundTileRadius(0), upperLimit( 0 ), nLength( -1 ), pChecking( 0 ), aiClass( AI_CLASS_HUMAN )
@@ -74,9 +74,9 @@ public:
 	}
 	virtual void SetPathParameters( const int nBoundTileRadius, const BYTE aiClass, interface IPointChecking *pChecking, const CVec2 &startPoint, const CVec2 &finishPoint, const int upperLimit, const bool longPath, const SVector &lastKnownGoodTile );
 
-	// поиск пути без каких-либо улучшений
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	virtual bool CalculatePath();
-	// поиск пути в тайл без циклов
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	virtual void CalculatePathWOCycles();
 
 	virtual void SmoothPath()
@@ -100,7 +100,7 @@ public:
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //*******************************************************************
-//*												Путь для самолётов												*
+//*												пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ												*
 //*******************************************************************
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CPlanePathFinder : public IStaticPathFinder
@@ -114,9 +114,9 @@ class CPlanePathFinder : public IStaticPathFinder
 public:
 	virtual void SetPathParameters( const int nBoundTileRadius, const BYTE aiClass, interface IPointChecking *pChecking, const CVec2 &startPoint, const CVec2 &finishPoint, const int upperLimit, const bool longPath, const SVector &lastKnownGoodTile );
 
-	// поиск пути без каких-либо улучшений
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	virtual bool CalculatePath() { return true; }	
-	// поиск пути в точку без циклов
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	virtual void CalculatePathWOCycles() { }
 	virtual void SmoothPath() { }
 	
@@ -131,3 +131,5 @@ public:
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __PATH_FINDER_INTERNAL_H__
+
+

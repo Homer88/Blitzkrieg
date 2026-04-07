@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "ArtRocketStates.h"
 #include "SerializeOwner.h"
@@ -16,3 +16,5 @@ int CArtRocketAttackGroundState::operator&( IStructureSaver &ss )
 	return 0;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

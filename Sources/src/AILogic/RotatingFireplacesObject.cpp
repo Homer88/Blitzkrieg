@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "RotatingFireplacesObject.h"
 #include "Soldier.h"
@@ -58,7 +58,7 @@ bool CRotatingFireplacesObject::IsBetterToGoToFireplace( CSoldier *pSoldier, con
 		return false;
 	else if ( pFireplaceSoldier == 0 )
 		return true;
-	// не вытеснять солдата из fireplace, если мы уже сидим в fireplace или он убит
+	// пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ fireplace, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ fireplace пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
 	else if ( !pFireplaceSoldier->IsAlive() || pSoldier->IsInFirePlace() )
 		return false;
 	else if ( pSoldier->GetStats()->type != RPG_TYPE_OFFICER && pFireplaceSoldier->GetStats()->type == RPG_TYPE_OFFICER )
@@ -143,3 +143,5 @@ void CRotatingFireplacesObject::Segment()
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "ObstacleInternal.h"
 #include "CommonUnit.h"
@@ -20,3 +20,5 @@ int CObstacleStaticObject::operator&( IStructureSaver &ss )
 	saver.AddTypedSuper( 2, static_cast<CObstacle*>(this) );
 	return 0;
 }
+
+

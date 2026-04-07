@@ -221,6 +221,8 @@ struct SGFXLVertex
 			CVec2 tex;
 		};
 	};
+	// 
+	SGFXLVertex() {}
 	//
 	void Setup( float _x, float _y, float _z, DWORD _color, DWORD _specular, float _tu, float _tv )
 	{
@@ -277,6 +279,8 @@ struct SGFXLVertex2
 			CVec2 tex, tex1;
 		};
 	};
+	// 
+	SGFXLVertex2() {}
 	//
 	void Setup( float _x, float _y, float _z, DWORD _color, DWORD _specular, float _tu, float _tv, float _tu1, float _tv1 )
 	{
@@ -627,7 +631,7 @@ inline bool SetGammaCorrectionBounded( const float fBrightness, const float fCon
 {
   // calculate equation params for Y = A*X + B
   // contrast: a*x + b
-  // если contrast < 0, то a = 1/a (наклон <45 градусов)
+  // пїЅпїЅпїЅпїЅ contrast < 0, пїЅпїЅ a = 1/a (пїЅпїЅпїЅпїЅпїЅпїЅ <45 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
   float fA = 1.0f + 4.0f*fabs( fContrast );
   if ( fContrast < 0 )
     fA = 1.0f / fA;

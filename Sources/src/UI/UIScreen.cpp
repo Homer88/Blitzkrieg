@@ -363,7 +363,7 @@ void CUIScreen::Draw( interface IGFX *pGFX )
 			IText * pToWho = GetSingleton<ITextManager>()->GetDialog( bMessagesToEveryone ? "Textes\\UI\\Mission\\toAll" : "Textes\\UI\\Mission\\toAllies" );
 			std::wstring szResult = L"";
 			if ( pToWho )
-				szResult = pToWho->GetString();
+				szResult = reinterpret_cast<const wchar_t*>(pToWho->GetString());
 
 			szResult += szChatMessage;
 			//pGFX->DrawString( L">>", CHAT_MESSAGE_LEFT, rc.y1 + CHAT_MESSAGE_TOP );

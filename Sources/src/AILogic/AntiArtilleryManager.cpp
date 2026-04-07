@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "AntiArtilleryManager.h"
 #include "AntiArtillery.h"
@@ -23,7 +23,7 @@ void CAntiArtilleryManager::RemoveAA( CAntiArtillery *pAA )
 	antiArtilleries[pAA->nParty].erase( pAA->GetUniqueId() );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// выстрел из pAntiArt был слышен строной nParty
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ pAntiArt пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ nParty
 bool CAntiArtilleryManager::IsHeardForParty( CAntiArtillery *pAntiArt, const int nParty )
 {
 	const NTimer::STime lastShotTime = pAntiArt->lastShotTime[nParty];
@@ -136,3 +136,5 @@ bool CAntiArtilleryManager::CIterator::IsFinished() const
 	return nCurParty >= 3;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

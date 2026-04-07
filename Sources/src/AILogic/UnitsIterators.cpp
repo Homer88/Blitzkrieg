@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 
 #include "UnitsIterators.h"
 #include "AIStaticMap.h"
@@ -132,3 +132,5 @@ const bool CPlanesIter::IsFinished() const
 	return iter == units.planes.end();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

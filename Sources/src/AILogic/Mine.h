@@ -1,4 +1,4 @@
-#ifndef __MINE_H__
+п»ї#ifndef __MINE_H__
 #define __MINE_H__
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma ONCE
@@ -20,15 +20,15 @@ class CMineStaticObject : public CGivenPassabilityStObject
 	DWORD mVisibleStatus;
 	NTimer::STime nextSegmTime;
 
-	bool bIfWillBeDeleted; // кто-то из солдат направляется к этой мине
-	bool bIfRegisteredInCWorld; // мина видима
+	bool bIfWillBeDeleted; // пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+	bool bIfRegisteredInCWorld; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 	bool bAlive;
 
 	//
 	void Detonate();
 
-	// зависит от клиента
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	bool IsRegisteredInWorld() const;
 public: 
 	CMineStaticObject();
@@ -43,7 +43,7 @@ public:
 	// if explodes under the given unit
 	bool WillExplodeUnder( CAIUnit *pUnit );
 
-	// сдетонировать, если при наезде данного юнита мина взрывается; true - если сдетонировала
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ; true - пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	bool CheckToDetonate( class CAIUnit *pUnit );
 	virtual void TakeDamage( const float fDamage, const bool bFromExplosion, const int nPlayerOfShoot, CAIUnit *pShotUnit );
 	virtual void Die( const float fDamage );
@@ -52,11 +52,11 @@ public:
 	virtual const bool IsVisible( const BYTE nParty ) const;
 	void SetVisible( int nParty, bool bVis = true );
 
-	// для удаления инженерами
+	// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	bool IsBeingDisarmed() const {return bIfWillBeDeleted; }
 	void SetBeingDisarmed( bool bStartDisarm );
 
-	// зависит от клиента
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	void RegisterInWorld();
 
 	void ClearVisibleStatus();
@@ -71,3 +71,5 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __MINE_H__
+
+

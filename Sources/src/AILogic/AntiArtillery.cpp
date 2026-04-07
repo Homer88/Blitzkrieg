@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 
 #include "AntiArtillery.h"
 #include "Diplomacy.h"
@@ -31,7 +31,7 @@ void CAntiArtillery::Init( const float _fMaxRadius, const int _nParty )
 
 	lastScan = 0;
 
-	// 3 - всего три стороны
+	// 3 - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	closestEnemyDist2.resize( 3 );
 	lastHeardPos.resize( 3 );
 	nHeardShots.resize( 3 );
@@ -131,7 +131,7 @@ void CAntiArtillery::Fired( const float fGunRadius, const CVec2 &center )
 						RandQuadrInCircle( fCurRadius, &newCenter );
 						newCenter += center;
 					}
-					// CRAP{ нет времени поискать баг
+					// CRAP{ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 					// NI_ASSERT_T( minX <= maxX, "Wrong box" );
 					else if ( minX > maxX )
 						newCenter = center;
@@ -187,7 +187,7 @@ void CAntiArtillery::Segment( bool bOwnerVisible )
 	const int nMyParty = theDipl.GetMyParty();	
 	for ( int nIterParty = 0; nIterParty < 2; ++nIterParty )
 	{
-		// если player - враг, слышал выстрел, не слишком давно, и пора рисовать круг
+		// пїЅпїЅпїЅпїЅ player - пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 		const bool bEnemy = theDipl.GetDiplStatusForParties( nParty, nIterParty ) == EDI_ENEMY;
 		const bool bHaveToSendCircle =
 			lastShotTime[nIterParty] != 0 && curTime - lastShotTime[nIterParty] <= SConsts::AUDIBILITY_TIME && 
@@ -197,10 +197,10 @@ void CAntiArtillery::Segment( bool bOwnerVisible )
 		{
 			lastRevealCircleTime[nIterParty] = curTime;
 
-			// обязательно нужно создать, чтобы общая нумерация объектов не зависела от клиента
+			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			CPtr<CRevealCircle> pCircle = new CRevealCircle( GetRevealCircle( 1 - nParty ) );
 			
-			// этон наша сторона и мы для него не видны, 
+			// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, 
 			if ( nMyParty == nIterParty && !bOwnerVisible )
 			{
 				if ( !theCheats.IsHistoryPlaying() )
@@ -210,3 +210,5 @@ void CAntiArtillery::Segment( bool bOwnerVisible )
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

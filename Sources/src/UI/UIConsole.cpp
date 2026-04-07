@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 
 #include "..\Main\iMainCommands.h"
 #include "..\Input\Input.h"
@@ -276,9 +276,9 @@ void CUIConsole::Draw( interface IGFX *pGFX )
 		if ( bShowCursor )
 		{
 			IText *pText = states[nCurrentState].pGfxText->GetText();
-			pText->SetText( szEditString.c_str() );
+			pText->SetText( reinterpret_cast<const WORD*>(szEditString.c_str()) );
 			int nWidth = states[nCurrentState].pGfxText->GetWidth( nCursorPos );
-			pText->SetText( L"" );
+			pText->SetText( reinterpret_cast<const WORD*>(L"") );
 
 			SGFXRect2 rc;
 			rc.rect.left = wndRect.left + nWidth + vTextPos.x - 1 + TEXT_LEFT_SPACE + TEXT_VERTICAL_SIZE;
@@ -789,3 +789,5 @@ CUIConsole::CUIConsole() : dwLastOpenTime( 0 ), dwLastCloseTime( 0 ), nCursorPos
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+

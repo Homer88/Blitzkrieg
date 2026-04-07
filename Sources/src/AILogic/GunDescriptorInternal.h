@@ -1,4 +1,4 @@
-#ifndef __GUN_DESCRIPTOR_INTERNAL__
+﻿#ifndef __GUN_DESCRIPTOR_INTERNAL__
 #define __GUN_DESCRIPTOR_INTERNAL__
 
 #pragma ONCE
@@ -25,3 +25,5 @@ public:
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __GUN_DESCRIPTOR_INTERNAL__
+
+

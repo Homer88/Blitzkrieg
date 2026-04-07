@@ -1,4 +1,4 @@
-#ifndef __SERIALIZE_OWNER_H__
+﻿#ifndef __SERIALIZE_OWNER_H__
 #define __SERIALIZE_OWNER_H__
 
 #pragma ONCE
@@ -20,3 +20,5 @@ void SerializeOwner( const int nChunk, T **pOwner, CSaverAccessor* pSaver )
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __SERIALIZE_OWNER_H__
+
+

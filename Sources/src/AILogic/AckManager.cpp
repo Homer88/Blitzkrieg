@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "AckManager.h"
 #include "AIUnit.h"
 #include "Diplomacy.h"
@@ -101,7 +101,7 @@ void CAckManager::RegisterAsBored( EUnitAckType eBored, class CAIUnit *pObject )
 void CAckManager::UnRegisterAsBored( EUnitAckType eBored, class CAIUnit *pObject )
 {
 	if ( pObject->GetPlayer() != theDipl.GetMyNumber() ) return;
-	// если этот юнит есть в списке, то он удаляется.
+	// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 	NI_ASSERT_T( eBored <= _ACK_BORED_END && eBored >= _ACK_BORED_BEGIN, "not bored ack passed" );
 	bored[eBored][pObject->GetUniqueId()] = CUnitBoredPresence( pObject, false );
 }
@@ -112,3 +112,4 @@ void CAckManager::UnitDead( class CAIUnit *pObject )
 		it->second.erase( pObject->GetUniqueId() );
 	// common acks from dead units will be deleted in update.
 }
+
