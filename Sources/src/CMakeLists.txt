@@ -108,7 +108,7 @@ add_subdirectory(buildversion)
 # add_subdirectory(bzmconvertor)   # Зависит от Main
 # add_subdirectory(editor)         # Зависит от Main
 add_subdirectory(excelexporter)
-# add_subdirectory(FontGen)        # Проблемы со сборкой
+add_subdirectory(FontGen)
 add_subdirectory(imagedefrag)
 add_subdirectory(InterfaceSystemTest)
 add_subdirectory(MapEditor)      # Зависит от Image

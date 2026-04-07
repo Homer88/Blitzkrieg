@@ -106,6 +106,8 @@ target_compile_definitions(ELK PRIVATE
     _MBCS
     _DEBUG
     _WIN32_WINNT=0x0501
+    WINVER=0x0501
+    _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
 )
 
 # Include directories
