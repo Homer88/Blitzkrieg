@@ -94,11 +94,14 @@ typedef unsigned __int64 QWORD;					// quadra word
 #include "..\StreamIO\StreamIO.h"				// stream I/O base interfaces
 #include "..\StreamIO\DBIO.h"						// database I/O base interfaces
 #include "..\StreamIO\StructureSaver.h"	// strucutre saver base interfaces
+#include "..\StreamIO\StructureSaver2.h" // structure saver 2
 #include "..\StreamIO\SSHelper.h"				// strucutre saver helper classes
 #include "..\StreamIO\DTHelper.h"				// data tree helper classes
 
-#include "..\Main\GameTimer.h"
-#include "..\Main\GameDB.h"
+// Image library headers
+#include "..\Image\Image.h"
+#include "..\Image\ImageProcessor.h"
+
 // in the file 'Specific.h' one can define own project-specific includes
 #include "Specific.h"
 
