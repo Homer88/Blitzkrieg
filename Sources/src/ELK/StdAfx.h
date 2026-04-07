@@ -2,6 +2,13 @@
 //  or project specific include files that are used frequently, but
 //      are changed infrequently
 //
+#ifndef WINVER
+#define WINVER 0x0601
+#endif
+
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT 0x0601
+#endif
 
 #if !defined(AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_)
 #define AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_
@@ -33,6 +40,7 @@
 // #define _STLP_USE_MFC 1
 //////// STLPort: #include "stl_user_config.h"
 //////// STLPort: #include <stl/_config.h>
+
 
 #include <afxwin.h>											// MFC core and standard components
 #include <afxext.h>											// MFC extensions
