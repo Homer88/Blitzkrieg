@@ -27,7 +27,6 @@ Sources/src/build_output.txt
 /Sources/src/spcomp/build
 /Sources/src/Input/build
 /Sources/src/libpng/build
-/Sources/src/MapEditor/build/.vs
 /Sources/src/MapEditor/build
 /Sources/src/SFX/build
 /Sources/src/build_x86
@@ -38,3 +37,4 @@ Sources/src/build_output.txt
 /Sources/src/ELK/build
 /Sources/src/betakeygen/build
 /Sources/src/build_root
+/Sources/sdk/Stingray

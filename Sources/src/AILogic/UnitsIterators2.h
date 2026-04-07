@@ -10,7 +10,7 @@
 extern CUnits units;
 extern CStaticMap theStaticMap;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<BYTE false, int NSize>
+template<BYTE cOnlyVisible, int NSize>
 class CUnitsIter
 {
 	CVec2 vDownLeft;
@@ -57,11 +57,11 @@ class CUnitsIter
 
 			if ( nYCell > nUpY )
 			{
-				if ( false && cCurVis < 1 )
+				if ( cOnlyVisible && cCurVis < 1 )
 					cCurVis = 1;
 				else
 				{
-					if ( false )
+					if ( cOnlyVisible )
 						cCurVis = 0;
 
 					++cCurDipl;
@@ -191,7 +191,7 @@ class CUnitsIter<1, 0>
 
 			if ( nYCell > nUpY )
 			{
-				if ( !false && cCurVis < 1)
+				if ( false && cCurVis < 1)
 				 cCurVis = 1;
 				else
 				{
@@ -339,7 +339,7 @@ class CUnitsIter<0, 0>
 
 			if ( nYCell > nUpY )
 			{
-				if ( !false && cCurVis < 1)
+				if ( false && cCurVis < 1)
 				 cCurVis = 1;
 				else
 				{

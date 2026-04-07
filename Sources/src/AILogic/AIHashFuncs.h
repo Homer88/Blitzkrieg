@@ -4,8 +4,8 @@
 #pragma ONCE
 #include "StreamIO/BasicHash.h"
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-interface IUpdatableObj;
-class CAIUnit;
+interface IUpdatableObj;			// определён в UpdatableObject.h
+class CAIUnit;						// определён в AIUnit.h
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Хеш-функторы для hash_map/hash_set
 // Содержат и operator() для хеширования, и operator() для сравнения
@@ -16,12 +16,8 @@ struct SUpdatableObjectObjHash
 	bool operator()( const CObj<IUpdatableObj> &a, const CObj<IUpdatableObj> &b ) const { return a.GetPtr() < b.GetPtr(); }
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct SUnitObjHash
-{
-	enum { bucket_size = 4 };
-	size_t operator()( const CObj<CAIUnit> &a ) const { return (size_t)a.GetPtr()->GetUniqueId(); }
-	bool operator()( const CObj<CAIUnit> &a, const CObj<CAIUnit> &b ) const { return a.GetPtr() < b.GetPtr(); }
-};
+// Хеш-функтор для CAIUnit — определён в AIUnit.h (после полного определения CAIUnit)
+// struct SUnitObjHash перенесён в AIUnit.h чтобы избежать circular include
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct SUniqueIdHash
 {

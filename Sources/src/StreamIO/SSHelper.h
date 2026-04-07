@@ -1,5 +1,7 @@
 #ifndef __SSHELPER_H__
 #define __SSHELPER_H__
+// hash_map/hash_set совместимость MSVC 6.0 / MSVC 2022
+#include "..\std_hash_compat.h"
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #ifndef ZDATA_
 #define ZDATA_(a)

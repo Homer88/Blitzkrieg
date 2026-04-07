@@ -24,6 +24,8 @@
 #include <comutil.h>
 #include <assert.h>
 #include <functional>									// для bind2nd (в MSVC 6)
+// hash_map/hash_set совместимость MSVC 6.0 / MSVC 2022
+#include "..\std_hash_compat.h"
 // undef some Windows API defines, like GetObject and CreateObject
 #ifdef GetObject
 #undef GetObject
@@ -98,8 +100,27 @@ typedef unsigned __int64 QWORD;					// quadra word
 #include "..\StreamIO\SSHelper.h"				// strucutre saver helper classes
 #include "..\StreamIO\DTHelper.h"				// data tree helper classes
 
+// Main — нужен ДО определяющих заголовков AILogic (они зависят от NTimer, IObjectsDB)
 #include "..\Main\GameTimer.h"
 #include "..\Main\GameDB.h"
+
+// AILogic базовые типы — ДО остальных include'ов
+#include "..\AILogic\AIGeometry.h"				// SVector, CVector и геометрия ИИ
+#include "..\AILogic\AIConsts.h"					// SAIConsts
+#include "..\AILogic\AIInternalConsts.h"		// SConsts (наследуется от SAIConsts)
+
+// Недостающие типы для MSVC 2022
+#include "AILogicMissingTypes.h"
+
+// Определяющие заголовки для MSVC 2022 (в MSVC 6 были видны через PCH порядок)
+#include "..\AILogic\Commands.h"				// CAICommand — полное определение
+#include "..\AILogic\ListsSet.h"				// CDecksSet, CListsSet
+#include "..\AILogic\AIUnit.h"					// CAIUnit — полное определение (нужен ДО UpdatableObject.h т.к. RectTiles.h → AIHashFuncs.h)
+#include "..\AILogic\UpdatableObject.h"	// IUpdatableObj — полное определение
+#include "..\AILogic\Units.h"						// CUnits — полный класс с unitsInCells
+#include "..\AILogic\UnitsIterators2.h"	// CUnitsIter<b, n> — полное определение (использует CUnits)
+#include "..\AILogic\Guns.h"						// CBasicGun — полное определение
+
 // in the file 'Specific.h' one can define own project-specific includes
 #include "Specific.h"
 

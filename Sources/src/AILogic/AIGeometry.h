@@ -126,6 +126,7 @@ struct SVector
 	SVector& operator*=( const int n ) { x *= n; y *= n; return *this; }
 	// ������� ������
 	SVector& operator/=( const int n ) { const float coeff = 1.0f / float(n); x *= coeff; y *= coeff; return *this; }
+	const bool operator<( const SVector &vec ) const { return (x != vec.x) ? (x < vec.x) : (y < vec.y); }
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ������ � ���������� �������� �������

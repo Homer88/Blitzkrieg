@@ -451,6 +451,14 @@ public:
 	virtual bool CanMoveAfterUserCommand() const;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Хеш-функтор для CAIUnit — определён ЗДЕСЬ, после полного определения CAIUnit
+struct SUnitObjHash
+{
+	enum { bucket_size = 4 };
+	size_t operator()( const CObj<CAIUnit> &a ) const { return (size_t)a.GetPtr()->GetUniqueId(); }
+	bool operator()( const CObj<CAIUnit> &a, const CObj<CAIUnit> &b ) const { return a.GetPtr() < b.GetPtr(); }
+};
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __AI_UNIT_H__
 
 
