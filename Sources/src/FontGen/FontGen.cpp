@@ -5,6 +5,7 @@
 #include "..\Image\Image.h"
 #include "..\Image\ImageHelper.h"
 #include "..\Misc\StrProc.h"
+#include "..\StreamIO\SSHelper.h"
 
 #include <strstream>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -247,8 +248,8 @@ IImage* CreateFontImage( const SFontInfo &fi, const std::vector<WORD> &chars )
     DWORD c = pBitmapBits[i];//( a != 0 ? 255 : pBitmapBits[i] );
     imagedata[j] = (a << 24) | (c << 16) | (c << 8) | c;
   }
-	IImage *pImage = Singleton<IImgProc>()->CreateImage( fi.nTextureSizeX, fi.nTextureSizeY, &(imagedata[0]) );
-	FlipY( pImage ); // flip image due to bottom-left bitmap orientation
+	IImage *pImage = GetSingleton<IImageProcessor>()->CreateImage( fi.nTextureSizeX, fi.nTextureSizeY, &(imagedata[0]) );
+	pImage->FlipY(); // flip image due to bottom-left bitmap orientation
 
 	return pImage;
 }
@@ -344,32 +345,12 @@ SFontFormat* CreateFontFormat( const std::string &szFaceName, const SFontInfo &f
 
 int main( int argc, char *argv[] )
 {
-	// load image library
+	// Image library инициализация — используем статически слинкованную Image.lib
+	// Image.lib уже регистрирует IImageProcessor при загрузке
 	{
-		char buffer[2048];
-		GetCurrentDirectory( 2048, buffer );
-		std::string szCurrDir = buffer;
-		if ( szCurrDir.empty() )
-			szCurrDir = ".\\";
-		else if ( szCurrDir[szCurrDir.size() - 1] != '\\' )
-			szCurrDir += '\\';
-		//
-		HMODULE hImage = LoadLibrary( (szCurrDir + "image.dll").c_str() );
-		if ( hImage )
-		{
-			GETMODULEDESCRIPTOR pfnGetModuleDescriptor = reinterpret_cast<GETMODULEDESCRIPTOR>( GetProcAddress( hImage, "GetModuleDescriptor" ) );
-			if ( pfnGetModuleDescriptor )
-			{
-				const SModuleDescriptor *pDesc = (*pfnGetModuleDescriptor)();
-				if ( pDesc && pDesc->pRegistrator )
-				{
-					pDesc->pRegistrator->RegisterClasses();
-					IImgProc *pIP = MakeObject<IImgProc>( IImgProc::tidTypeID );
-					if ( pIP )
-						NSingleton::RegisterSingleton( pIP, IImgProc::tidTypeID );
-				}
-			}
-		}
+		// Проверяем, что ImageProcessor доступен
+		IImageProcessor *pImgProc = GetSingleton<IImageProcessor>();
+		NI_ASSERT( pImgProc != 0, "ImageProcessor not registered!" );
 	}
   // prepare command line
   std::vector<std::string> szParams( argc - 1 );
@@ -468,16 +449,19 @@ int main( int argc, char *argv[] )
 	SFontFormat *pFF = CreateFontFormat( szFaceName, fi, chars );
 	// write generated font as image and data
 	printf( "saving...\n" );
-	// write binary data
+	// write binary data через StructureSaver
 	{
-		CPtr<IDataStream> pStream = CreateStream( ".\1.tfd", false );
-		CPtr<IBinSaver> pSaver = CreateBinSaver( pStream, SAVER_MODE_WRITE );
-		pSaver->Add( 1, pFF );
+		CPtr<IDataStream> pStream = CreateFileStream( ".\\1.tfd", STREAM_ACCESS_WRITE );
+		CStructureSaver2 saver( pStream, IStructureSaver::WRITE, 0, 0, 0 );
+		const SSChunkID chunkId = 'Fnt ';
+		saver.StartChunk( chunkId );
+		pFF->operator&( saver );
+		saver.FinishChunk();
 	}
-	// texture
+	// texture — сохраняем как TGA
 	{
-		CPtr<IDataStream> pStream = CreateStream( ".\1.tga", false );
-		Singleton<IImgProc>()->SaveImage( pStream, pImage, IMAGE_FILE_FORMAT_TGA );
+		CPtr<IDataStream> pStream = CreateFileStream( ".\\1.tga", STREAM_ACCESS_WRITE );
+		GetSingleton<IImageProcessor>()->SaveImageAsTGA( pStream, pImage );
 	}
 	//
 	return 0;

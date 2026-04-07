@@ -83,7 +83,7 @@ target_link_libraries(FontGen PRIVATE
     Formats
     Misc
     BugSlay
-    libpng
+    LibPng
     zlib
     # Windows системные
     kernel32

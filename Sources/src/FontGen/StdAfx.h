@@ -94,6 +94,7 @@ typedef unsigned __int64 QWORD;					// quadra word
 #include "..\StreamIO\StreamIO.h"				// stream I/O base interfaces
 #include "..\StreamIO\DBIO.h"						// database I/O base interfaces
 #include "..\StreamIO\StructureSaver.h"	// strucutre saver base interfaces
+#include "..\StreamIO\StructureSaver2.h" // structure saver 2
 #include "..\StreamIO\SSHelper.h"				// strucutre saver helper classes
 #include "..\StreamIO\DTHelper.h"				// data tree helper classes
 

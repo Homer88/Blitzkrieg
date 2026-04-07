@@ -7,7 +7,7 @@ class CFontGen
 {
 	SFontFormat format;										// font format description
 public:
-	CreateFont( const char *pszFaceName, int nHeight, bool bItalic, bool bBold, bool bAAQuality, 
+	HFONT CreateFont( const char *pszFaceName, int nHeight, bool bItalic, bool bBold, bool bAAQuality,
 		          const char *pszPitch, const char *pszCharSet );
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
