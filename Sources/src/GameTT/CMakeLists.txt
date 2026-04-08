@@ -19,6 +19,7 @@ add_library(GameTT SHARED
 
 # Зависимости GameTT из A7.dsw
 target_link_libraries(GameTT
+    AILogic
     BugSlay
     Misc
     StreamIO
@@ -29,6 +30,7 @@ target_link_libraries(GameTT
 
 # Подключаем заголовочные файлы зависимостей
 target_include_directories(GameTT PRIVATE
+    ${CMAKE_SOURCE_DIR}/AILogic
     ${CMAKE_SOURCE_DIR}/BugSlay
     ${CMAKE_SOURCE_DIR}/Misc
     ${CMAKE_SOURCE_DIR}/StreamIO
@@ -47,6 +49,11 @@ target_compile_definitions(GameTT PRIVATE
     _CRT_NONSTDC_NO_DEPRECATE
     _WIN32_WINNT=0x0400
     WINVER=0x0400
+)
+
+# Отключаем проверку диапазонов и разрешаем wchar_t как unsigned short
+target_compile_options(GameTT PRIVATE
+    /Zc:wchar_t-
 )
 
 # Настройки прекомпилированных заголовков
