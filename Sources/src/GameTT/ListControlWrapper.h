@@ -28,7 +28,7 @@ private:
 	typedef std::hash_map<TID, CPtr<TInfo> > PlayersInfo;
 	PlayersInfo playersInfo;
 
-	PlayersInfo::iterator curIter;							//current iterator.
+	typename PlayersInfo::iterator curIter;							//current iterator.
 
 
 public:
@@ -81,18 +81,18 @@ public:
 		}
 		return 0;
 	}
-	
+
 	IUIListRow * Add( TInfo * pInfo )
 	{
 		/*int nCount = playersInfo.size();
-		for ( PlayersInfo::iterator it = playersInfo.begin(); it != playersInfo.end(); ++it )
+		for ( typename PlayersInfo::iterator it = playersInfo.begin(); it != playersInfo.end(); ++it )
 		{
 			TID i = it->first;
 		}*/
 
 
 		const TID nID = pInfo->GetID();
-		PlayersInfo::iterator playerIter = playersInfo.find( nID );
+		typename PlayersInfo::iterator playerIter = playersInfo.find( nID );
 		if ( playerIter == playersInfo.end() )
 		{
 			//insert player

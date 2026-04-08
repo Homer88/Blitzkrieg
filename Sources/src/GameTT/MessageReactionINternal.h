@@ -37,9 +37,13 @@ enum ECustomCheckReturn
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct SPairHash
 {
-	int operator()( const std::pair<int,int> &incomingPair ) const
+	enum { bucket_size = 4 };
+	typedef std::pair<int,int> key_type;
+	typedef size_t value_type;
+
+	value_type operator()( const key_type &incomingPair ) const
 	{
-		return incomingPair.first + incomingPair.second;
+		return static_cast<value_type>( incomingPair.first + incomingPair.second );
 	}
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

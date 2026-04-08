@@ -693,7 +693,7 @@ public:
 	CTreeAccessor() : pSS(0) {}
 	CTreeAccessor(const CTreeAccessor& accessor) : pSS(accessor.pSS) {}
 
-	explicit CTreeAccessor(IDataTree* _pSS = 0) : pSS(_pSS) {}
+	CTreeAccessor(IDataTree* _pSS = 0) : pSS(_pSS) {}
 
 	const CTreeAccessor& operator=(IDataTree* _pSS) { pSS = _pSS; return *this; }
 	const CTreeAccessor& operator=(const CTreeAccessor& accessor) { pSS = accessor.pSS; return *this; }
