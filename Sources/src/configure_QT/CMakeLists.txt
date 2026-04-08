@@ -13,7 +13,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Widgets LinguistTools REQUIRED Xml)
 
-set(TS_FILES Configure_ru_RU.ts)
+set(TS_FILES
+    Configure_ru_RU.ts)
 
 
 

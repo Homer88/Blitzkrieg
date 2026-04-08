@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.1, 2026-04-08T20:35:26. -->
+<!-- Written by QtCreator 4.11.1, 2026-04-08T23:31:13. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -891,7 +891,7 @@
      <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
      <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
     </valuelist>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">F:/Github/Blitzkrieg/Sources/src/configure_QT/build-Configure-Desktop_Qt_5_14_2_MinGW_32_bit-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">F:/Github/Blitzkrieg/Sources/src/configure_QT/build_debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
@@ -1141,7 +1141,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">F:/Github/Blitzkrieg/Sources/src/configure_QT/build-Configure-Desktop_Qt_5_14_2_MinGW_32_bit-Debug</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/Homer/AppData/Local/Temp/QtCreator-TfYnMl/qtc-cmake-IXTjQVEU</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>
