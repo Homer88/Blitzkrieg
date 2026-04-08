@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 
 #include "AIWarFog.h"
 #include "WarFogTracer.h"
@@ -165,7 +165,7 @@ void CWarFog::AddUnit( const SFogInfo &fogInfo )
 	if ( fogInfo.r <= 2 )
 		return;
 
-	// ���������� center � r ������������ � IsInfluencedUnit
+	// ?????????? center ? r ???????????? ? IsInfluencedUnit
 	center = fogInfo.center;
 	r = fogInfo.r;
 
@@ -192,7 +192,7 @@ void CWarFog::GetVisibilities( SAIVisInfo **pVisBuffer, int *pnLen )
 	{
 		for ( int sum = ( minSum + minSum % 2 ) / 2; sum <= ( maxSum - maxSum % 2 ) / 2; ++sum )
 		{
-			// ������� �� 2
+			// ??????? ?? 2
 			if ( ( ((sum + diff) & 1) == 0 ) && ( ((sum-diff) & 1) == 0 ) )
 			{
 				(*pVisBuffer)[*pnLen].x = (sum + diff) / 2;
@@ -299,10 +299,10 @@ void CGlobalWarFog::AddUnit( const int id, int nParty, const SFogInfo &fogInfo )
 void CGlobalWarFog::DeleteUnit( const int id )
 {
 	NI_ASSERT_SLOW_T( unitsInfo.size() > id, "out of bounds" );
-	// �� ����� ����
+	// ?? ????? ????
 	if ( unitsInfo[id].nHeapPos != -2 )
 	{
-		deletedUnits.push_back();
+		deletedUnits.emplace_back();
 		deletedUnits.back().unitInfo = unitsInfo[id];
 		deletedUnits.back().removedObjects = removedObjects4Units[id];
 		deletedUnits.back().addedObjects = addedObjects4Units[id];
@@ -314,7 +314,7 @@ void CGlobalWarFog::DeleteUnit( const int id )
 		removedObjects4Units[id].clear();
 		addedObjects4Units[id].clear();
 	}
-	// �����, ����� ��� �� ���������
+	// ?????, ????? ??? ?? ?????????
 	else
 	{
 		std::list<int>::iterator iter = newUnits.begin();
@@ -344,7 +344,7 @@ void CGlobalWarFog::UpdateUnit( const int id, SFogInfo &newFogInfo, const int we
 	if ( weight != 0 )
 	{
 		int &nHeapPos = unitsInfo[id].nHeapPos;
-		// ���� ����� � ����
+		// ???? ????? ? ????
 		if ( nHeapPos >= 0 ) 
 		{
 			if ( weight > weights[nHeapPos].nWeight )
@@ -363,7 +363,7 @@ void CGlobalWarFog::UpdateUnit( const int id, SFogInfo &newFogInfo, const int we
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CGlobalWarFog::ChangeUnitCoord( const int id, SFogInfo &newFogInfo )
 {
-	// �����, ����� ��� �� ��������
+	// ?????, ????? ??? ?? ????????
 	if ( unitsInfo[id].nHeapPos == -2 )
 		unitsInfo[id].fogInfo = newFogInfo;
 	else
@@ -372,7 +372,7 @@ void CGlobalWarFog::ChangeUnitCoord( const int id, SFogInfo &newFogInfo )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CGlobalWarFog::ChangeUnitState( const int id, SFogInfo &newFogInfo )
 {
-	// �����, ����� ��� �� ��������
+	// ?????, ????? ??? ?? ????????
 	if ( unitsInfo[id].nHeapPos == -2 )
 		unitsInfo[id].fogInfo = newFogInfo;
 	else
@@ -381,7 +381,7 @@ void CGlobalWarFog::ChangeUnitState( const int id, SFogInfo &newFogInfo )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CGlobalWarFog::ChangeUnitParty( const int id, const int nParty )
 {
-	// �����, ����� ��� �� ��������
+	// ?????, ????? ??? ?? ????????
 	if ( unitsInfo[id].nHeapPos == -2 )
 		unitsInfo[id].nParty = nParty;
 	else
@@ -395,7 +395,7 @@ void CGlobalWarFog::ChangeUnitParty( const int id, const int nParty )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CGlobalWarFog::RecalculateForRemovedObject( const int id, const float fDist, CExistingObject *pObject )
 {
-	// ���� ����� ��� ����� ����� ��� ���������
+	// ???? ????? ??? ????? ????? ??? ?????????
 	if ( unitsInfo[id].nHeapPos != -2 )
 	{
 		UpdateUnit( id, unitsInfo[id].fogInfo, Max( 1.0f, fDist / ( SConsts::TILE_SIZE * 5.0f ) ) );
@@ -410,7 +410,7 @@ void CGlobalWarFog::RecalculateForRemovedObject( const int id, const float fDist
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CGlobalWarFog::RecalculateForAddedObject( const int id, const float fDist, CExistingObject *pObject )
 {
-	// ���� ����� ��� ����� ����� ��� ���������
+	// ???? ????? ??? ????? ????? ??? ?????????
 	if ( unitsInfo[id].nHeapPos != -2 )
 	{
 		UpdateUnit( id, unitsInfo[id].fogInfo, Max( 1.0f, fDist / ( SConsts::TILE_SIZE * 5.0f ) ) );
@@ -462,11 +462,11 @@ bool operator < ( const SVector &a, const SVector &b )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CGlobalWarFog::RemoveUnitWarfog( SUnitInfo &unitInfo, const CObjectsList &removedObjects, const CObjectsList &addedObjects )
 {
-	// ������ ������������ ��� ��� ��������, ������� ���� ���������� ����� ��������� ������ ��� ����� �����
+	// ?????? ???????????? ??? ??? ????????, ??????? ???? ?????????? ????? ????????? ?????? ??? ????? ?????
 	for ( CObjectsList::const_iterator iter = addedObjects.begin(); iter != addedObjects.end(); ++iter )
 		(*iter)->RemoveTransparencies();
 
-	// ��������� ������������ ��� ��� ��������, ������� ���� ������� ����� ��������� ������ ��� ����� �����
+	// ????????? ???????????? ??? ??? ????????, ??????? ???? ??????? ????? ????????? ?????? ??? ????? ?????
 	for ( CObjectsList::const_iterator iter = removedObjects.begin(); iter != removedObjects.end(); ++iter )
 	{
 		if ( IsValidObj( *iter ) )

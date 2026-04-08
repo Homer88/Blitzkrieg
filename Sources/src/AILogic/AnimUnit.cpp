@@ -33,13 +33,18 @@ void CAnimUnit::Stopped()
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CAnimUnit::AnimationSet( int nAnimation )
+{
+	AnimationSet( nAnimation, -1 );
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAnimUnit::AnimationSet( int nAnimation, int nLength )
 {
 	nCurAnimation = nAnimation;
 
 	const int nStatsAnimLength = pOwner->GetStats()->GetAnimTime( nAnimation );
 
-	timeOfFinishAnimation = 
+	timeOfFinishAnimation =
 		( nLength == -1 || nStatsAnimLength == -1 ) ? 0 : curTime + nStatsAnimLength;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +56,7 @@ void CAnimUnit::Segment()
 		{
 			if ( movingState.timeOfIntentionStart + 200 < curTime )
 			{
-				movingState.state = 
+				movingState.state =
 					movingState.state == SMovingState::EMS_STOPPED_TO_MOVING ? SMovingState::EMS_MOVING : SMovingState::EMS_STOPPED;
 
 				if ( bTechnics || (nCurAnimation != ANIMATION_LIE && nCurAnimation != ANIMATION_STAND) )
@@ -78,7 +83,7 @@ void CAnimUnit::Segment()
 			}
 			else
 			{
-				updater.Update( ACTION_NOTIFY_STOP, pOwner );				
+				updater.Update( ACTION_NOTIFY_STOP, pOwner );
 				updater.Update( pOwner->GetIdleAction(), pOwner );
 				movingState.state = SMovingState::EMS_STOPPED;
 			}

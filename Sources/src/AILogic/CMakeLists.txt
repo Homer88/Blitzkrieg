@@ -11,8 +11,8 @@ set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Исходные файлы
-FILE(GLOB AILOGIC_SOURCE "*.cpp")
-FILE(GLOB AILOGIC_HEADERS "*.h")
+FILE(GLOB AILOGIC_SOURCE "*.cpp" "Scripts/*.cpp")
+FILE(GLOB AILOGIC_HEADERS "*.h" "Scripts/*.h")
 
 # Создаем DLL (согласно .dsp файлу)
 add_library(AILogic SHARED
@@ -48,6 +48,25 @@ target_compile_definitions(AILogic PRIVATE
     _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
     _WIN32_WINNT=0x0400
     WINVER=0x0400
+)
+
+# Отключаем некоторые ошибки для MSVC 2022
+# C2908 - явная специализация уже создана (дубликаты CastToRefCountImpl)
+# C4430 - отсутствует спецификатор типа
+target_compile_options(AILogic PRIVATE
+    /wd4430
+)
+
+# Для файлов с BASIC_REGISTER_CLASS отключаем PCH чтобы избежать дубликатов
+set_source_files_properties(
+    Aviation.cpp
+    Formation.cpp
+    PathFinderInternal.cpp
+    ShootEstimatorInternal.cpp
+    StandartPath.cpp
+    Statistics.cpp
+    UnitStates.cpp
+    PROPERTIES COMPILE_FLAGS "/Y-"
 )
 
 # Подключение заголовочных файлов

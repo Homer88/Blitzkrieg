@@ -384,17 +384,17 @@ void CUnitCreation::InitConsts()
 {
 	{
 		CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream( "units\\technics\\common\\tankpit.xml" , STREAM_ACCESS_READ );
-		CTreeAccessor tree = CreateDataTreeSaver( pStream, IDataTree::READ );
+		CTreeAccessor tree( CreateDataTreeSaver( pStream, IDataTree::READ ) );
 		tree.Add( "TankPits", &tankPitInfo );
 	}
 	{
 		CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream( "partys.xml" , STREAM_ACCESS_READ );
-		CTreeAccessor tree = CreateDataTreeSaver( pStream, IDataTree::READ );
+		CTreeAccessor tree( CreateDataTreeSaver( pStream, IDataTree::READ ) );
 		tree.Add( "PartyInfo", &partyDependentInfo );
 	}
 	{
 		CPtr<IDataStream> pStream = GetSingleton<IDataStorage>()->OpenStream( "objects\\objectcreation.xml" , STREAM_ACCESS_READ );
-		CTreeAccessor tree = CreateDataTreeSaver( pStream, IDataTree::READ );
+		CTreeAccessor tree( CreateDataTreeSaver( pStream, IDataTree::READ ) );
 		tree.Add( "Objects", &commonInfo );
 	}
 }

@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 
 #include "GroupLogic.h"
 #include "Commands.h"
@@ -56,7 +56,7 @@ void CGroupLogic::AddUnitToGroup( CCommonUnit *pGroupUnit, const int nGroup )
 {
 	if ( pGroupUnit->nGroup != nGroup )
 	{
-		// ���� ���� ��� � �����-�� ������, ������ ��� ������
+		// ???? ???? ??? ? ?????-?? ??????, ?????? ??? ??????
 		DelUnitFromGroup( pGroupUnit );
 
 		pGroupUnit->nGroup = nGroup;
@@ -90,7 +90,7 @@ void CGroupLogic::DelUnitFromSpecialGroup( CCommonUnit *pUnit )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CGroupLogic::DelGroup( const int nGroup )
 {
-	// ��������� ������
+	// ????????? ??????
 	for ( int i = groupUnits.begin( nGroup ); i != groupUnits.end(); i = groupUnits.GetNext( i ) )
 	{
 		groupUnits.GetEl( i )->nGroup = 0;
@@ -149,7 +149,7 @@ void CGroupLogic::RegisterGroup( IRefCount **pUnitsBuffer, const int nLen, const
 
 				if ( pGroupUnit->nGroup != wGroup )				
 				{
-					// ���� ���� ��� � �����-�� ������, ������ ��� ������
+					// ???? ???? ??? ? ?????-?? ??????, ?????? ??? ??????
 					DelUnitFromGroup( pGroupUnit );
 
 					pGroupUnit->nGroup = wGroup;
@@ -309,7 +309,7 @@ void CGroupLogic::EraseFromAmbushGroups( const SAIUnitCmd &command, const WORD w
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CGroupLogic::CreateAmbushGroup( const WORD wGroup )
 {
-	ambushGroups.push_front();
+	ambushGroups.emplace_front();
 	for ( int i = groupUnits.begin( wGroup ); i != groupUnits.end(); i = groupUnits.GetNext( i ) )
 	{
 		CCommonUnit *pUnit = groupUnits.GetEl( i );
@@ -378,17 +378,17 @@ void CGroupLogic::ProcessAmbushGroups()
 			while ( innerIter != iter->end() )
 			{
 				const int nUniqueId = innerIter->nUniqueId;
-				// ��� � ������ ambush ������, or deleted from ambush groups, ������� �� ����
+				// ??? ? ?????? ambush ??????, or deleted from ambush groups, ??????? ?? ????
 				if ( checkedUnits.find( nUniqueId ) != checkedUnits.end() || 
 						 ambushUnits.find( nUniqueId ) == ambushUnits.end() )
 					innerIter = iter->erase( innerIter );
 				else
 				{
-					// ���� ����������
+					// ???? ??????????
 					checkedUnits.insert( nUniqueId );
 
 					CLinkObject *pObject = CLinkObject::GetObjectByUniqueIdSafe( nUniqueId );
-					// ���� ����, ������� �� ambush groups
+					// ???? ????, ??????? ?? ambush groups
 					if ( !IsValidObj( pObject ) )
 					{
 						ambushUnits.erase( nUniqueId );
@@ -453,12 +453,12 @@ void CGroupLogic::ProcessAmbushGroups()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CGroupLogic::GroupCommand( const SAIUnitCmd &command, const WORD wGroup, bool bPlaceInQueue )
 {
-	// �.�. ����� ������ ����� ���������, ��������, ����� ���� �� ������� � multiplayer �����
+	// ?.?. ????? ?????? ????? ?????????, ????????, ????? ???? ?? ??????? ? multiplayer ?????
 	if ( registeredGroups.find( wGroup ) != registeredGroups.end() )
 	{
 		CPtr<CAICommand> pCommand = new CAICommand( command );
 		
-		// ����� � ����������� ������������� �������
+		// ????? ? ??????????? ????????????? ???????
 		if ( !bPlaceInQueue )
 		{
 			if ( command.cmdType == ACTION_COMMAND_MOVE_TO || command.cmdType == ACTION_COMMAND_SWARM_TO || 
@@ -491,14 +491,14 @@ void CGroupLogic::GroupCommand( const SAIUnitCmd &command, const WORD wGroup, bo
 		for ( int i = groupUnits.begin( wGroup ); i != groupUnits.end(); i = groupUnits.GetNext( i ) )
 			groups[nGroupsIter++] = groupUnits.GetEl( i );
 
-		// ���� ������ �������� ����� ���������� �� command.bFromAI - ��� ���������� ������ 
-		// �����������
+		// ???? ?????? ???????? ????? ?????????? ?? command.bFromAI - ??? ?????????? ?????? 
+		// ???????????
 		if ( groupUnits.GetSize(wGroup) != 0 )
 		{
 			int nRandom = Random( groupUnits.GetSize(wGroup) );
 			if ( !command.bFromAI )
 			{
-				// ������� �� ������� ����, ������� ����� �������� ��� �� ������������� �������
+				// ??????? ?? ??????? ????, ??????? ????? ???????? ??? ?? ????????????? ???????
 				groups[nRandom]->SendAcknowledgement( ACK_POSITIVE, true );
 			}
 		}
@@ -610,29 +610,29 @@ void CGroupLogic::Segment()
 
 	const NTimer::STime roundedCurTime = curTime - curTime % SConsts::AI_SEGMENT_DURATION;
 
-	// states ������
+	// states ??????
 	NSegmObjs::Segment( lastSegmTime, roundedCurTime, segmUnits[0], (CStateSegments*)0 );
 	NSegmObjs::Segment( lastSegmTime, roundedCurTime, segmUnits[1], (CStateSegments*)0 );
 	NSegmObjs::Segment( lastSegmTime, roundedCurTime, freezeUnits, (CFreezeSegments*)0 );
 
-	// ������
+	// ??????
 	theShellsStore.Segment();
 
-	// �������� ������ � follow
+	// ???????? ?????? ? follow
 	SegmentFollowingUnits();
 
-	// ����� ��������
+	// ????? ????????
 	NSegmObjs::Segment( lastSegmTime, roundedCurTime, firstPathUnits, (CFirstPathSegments*)0 );
 	theScanLimiter.SegmentsFinished();
 
-	// ��������� ���������� ��-�� �������� ������
+	// ????????? ?????????? ??-?? ???????? ??????
 	NSegmObjs::SegmentWOMove( lastSegmTime, roundedCurTime, secondPathUnits, (CStayTimeSegments*)0 );
 	StayTimeSegment();
 
-	// ��������� ��������
+	// ????????? ????????
 	theColCollector.HandOutCollisions();
 
-	// �������� ������ ����� ����
+	// ???????? ?????? ????? ????
 	NSegmObjs::Segment( lastSegmTime, roundedCurTime, secondPathUnits, (CSecondPathSegments*)0 );
 
 	lastSegmTime = curTime - curTime % SConsts::AI_SEGMENT_DURATION + SConsts::AI_SEGMENT_DURATION;
@@ -667,7 +667,7 @@ void CGroupLogic::UnregisterSegments( CCommonUnit *pUnit )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const CVec2 GetGoPointByCommand( const SAIUnitCmd &cmd )
 {
-	// -1 - ��� �����, 0 - cmd.vPos, 1 - ����� ����� cmd.pObject, 2 - ����� ������. ������� cmd.pObject
+	// -1 - ??? ?????, 0 - cmd.vPos, 1 - ????? ????? cmd.pObject, 2 - ????? ??????. ??????? cmd.pObject
 	int nType = -1;
 
 	switch ( cmd.cmdType )

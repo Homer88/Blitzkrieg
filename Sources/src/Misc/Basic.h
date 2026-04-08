@@ -489,6 +489,11 @@ public:
 template<> IRefCount* CastToRefCountImpl<classname >( classname *p, void* ) { return p; }	\
 template<> classname* CastToUserObjectImpl<classname >( IRefCount *p, classname*, void* ) { return static_cast<classname*>( p ); }
 
+// Защита от повторного определения специализаций
+#define BASIC_REGISTER_CLASS_SAFE( classname )																							\
+template<> IRefCount* CastToRefCountImpl<classname >( classname *p, void* );													\
+template<> classname* CastToUserObjectImpl<classname >( IRefCount *p, classname*, void* );
+
 template <class TUserObj> IRefCount* CastToRefCountImpl( TUserObj *p, void* );
 template <class TUserObj> IRefCount* CastToRefCountImpl( TUserObj *p, IRefCount* ) { return p; }
 template <class TUserObj> TUserObj* CastToUserObjectImpl( IRefCount *p, TUserObj*, void * );

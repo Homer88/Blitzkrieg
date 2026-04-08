@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 
 #include "RotatingFireplacesObject.h"
 #include "Soldier.h"
@@ -14,7 +14,7 @@ void CRotatingFireplacesObject::AddUnit( CSoldier *pSoldier, const int nFireplac
 
 	if ( iter == units.end() )
 	{
-		units.push_back();
+		units.emplace_back();
 		iter = units.end();
 		--iter;
 	}
@@ -58,7 +58,7 @@ bool CRotatingFireplacesObject::IsBetterToGoToFireplace( CSoldier *pSoldier, con
 		return false;
 	else if ( pFireplaceSoldier == 0 )
 		return true;
-	// �� ��������� ������� �� fireplace, ���� �� ��� ����� � fireplace ��� �� ����
+	// ?? ????????? ??????? ?? fireplace, ???? ?? ??? ????? ? fireplace ??? ?? ????
 	else if ( !pFireplaceSoldier->IsAlive() || pSoldier->IsInFirePlace() )
 		return false;
 	else if ( pSoldier->GetStats()->type != RPG_TYPE_OFFICER && pFireplaceSoldier->GetStats()->type == RPG_TYPE_OFFICER )

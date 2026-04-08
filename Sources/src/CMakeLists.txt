@@ -93,11 +93,7 @@ add_subdirectory(UI)             # Зависит от BugSlay, Misc, StreamIO, 
 # === БИБЛИОТЕКИ ТРЕТЬЕГО УРОВНЯ ===
 add_subdirectory(Scene)          # Зависит от Image
 add_subdirectory(AILogic)        # ИИ логика игры (DLL) - исправляем совместимость с MSVC 2022
-# add_subdirectory(ELK)            # ОТКЛЮЧЕНО: Зависит от Stingray Objective Toolkit (коммерческая библиотека)
-                                   # ПЛАН: Полный Qt-порт GUI-слоя (бизнес-логика BLitzkriegELKDatabase переиспользуется)
-                                   # Объём: ~25 файлов, ~9000 строк. Оценка: 7-11 недель
-                                   # Stingray OT классы: SECFrameWnd, SECMenuBar, SECToolBarManager, SECStatusBar, SECTreeCtrl, SECDirSelectDlg
-                                   # GUI-фреймворк: MFC + Stingray Objective Toolkit → Qt (QMainWindow, QDockWidget, QTreeView, QDialog)
+add_subdirectory(ELK)            # Редактор локализации (теперь есть Stingray SDK в sdk/Stingray)
 # add_subdirectory(GameTT)         # Зависит от AILogic (отключен)
 
 # === БИБЛИОТЕКИ ЧЕТВЁРТОГО УРОВНЯ ===

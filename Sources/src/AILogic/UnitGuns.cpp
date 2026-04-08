@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 
 #include "Technics.h"
 #include "Soldier.h"
@@ -97,7 +97,7 @@ bool CUnitGuns::FindTimeToGo( CAIUnit *pUnit, CAIUnit *pEnemy, std::list< CUnitG
 		return false;
 	else
 	{
-		pPathInfo->push_back();
+		pPathInfo->emplace_back();
 		pPathInfo->back().fRadius = fFireRangeMax;
 		pPathInfo->back().time = pPath->GetLength() * SConsts::TILE_SIZE * pUnit->GetStats()->fSpeed;
 		pPathInfo->back().pStaticPath = pPath;
@@ -110,7 +110,7 @@ bool CUnitGuns::FindTimeToGo( CAIUnit *pUnit, CAIUnit *pEnemy, std::list< CUnitG
 void CUnitGuns::FindTimeToTurn( CAIUnit *pOwner, const WORD wWillPower, CTurret *pTurret, CAIUnit *pEnemy, const SVector &finishTile, const bool bIsEnemyInFireRange, NTimer::STime *pTimeToTurn ) const
 {
 	*pTimeToTurn = 0;
-	// ����� ������ ����� �� ���������
+	// ????? ?????? ????? ?? ?????????
 	if ( pOwner->CanRotate() && ( !bIsEnemyInFireRange || pTurret == 0 ) )
 	{
 		const WORD finishToEnemyDir = GetDirectionByVector( (pEnemy->GetTile() - finishTile).ToCVec2() );
@@ -159,7 +159,7 @@ bool CUnitGuns::FindTimeToStatObjGo( CAIUnit *pUnit, CStaticObject *pObj, std::l
 		return false;
 	else
 	{
-		pPathInfo->push_back();
+		pPathInfo->emplace_back();
 		pPathInfo->back().fRadius = fFireRangeMax;
 		pPathInfo->back().time = pPath->GetLength() * SConsts::TILE_SIZE * pUnit->GetStats()->fSpeed;
 		pPathInfo->back().pStaticPath = pPath;
@@ -184,7 +184,7 @@ CBasicGun* CUnitGuns::ChooseGunForStatObj( CAIUnit *pOwner, CStaticObject *pObj,
 	{
 		CBasicGun *pGun = pOwner->GetGun(i);
 		const SWeaponRPGStats::SShell &shell = pGun->GetShell();
-		// ���������� ��������� � �������� ����������
+		// ?????????? ????????? ? ???????? ??????????
 		if ( shell.eDamageType != SWeaponRPGStats::SShell::DAMAGE_HEALTH || shell.fArea2 <= 0 )
 			pGun->SetRejectReason( ACK_NEGATIVE );
 		else if ( pGun->CanShootToObject( pObj ) )
@@ -192,7 +192,7 @@ CBasicGun* CUnitGuns::ChooseGunForStatObj( CAIUnit *pOwner, CStaticObject *pObj,
 			SWeaponPathInfo info;			
 			if ( !pOwner->CanMove() || FindTimeToStatObjGo( pOwner, pObj, &pathInfo, pWStats, &info ) )
 			{
-				// ���� �� � �������� � ������ �������� �� � �������, � ����� �������� � �����, �������				
+				// ???? ?? ? ???????? ? ?????? ???????? ?? ? ???????, ? ????? ???????? ? ?????, ???????				
 				if ( pOwner->CanMove() && !pOwner->CanGoToPoint( info.pStaticPath->GetFinishPoint() ) )
 					continue;
 
@@ -202,12 +202,12 @@ CBasicGun* CUnitGuns::ChooseGunForStatObj( CAIUnit *pOwner, CStaticObject *pObj,
 				else
 					time = 0;
 
-				// ���������, ����� �����
+				// ?????????, ????? ?????
 				const float fShotsToKill = pObj->GetHitPoints() / pGun->GetDamage();
-				// ��������
+				// ????????
 				const int nBursts = ceil( fShotsToKill / pWStats->nAmmoPerBurst );
 
-				// ���-�� �������� * ( ����� ������������ + ( ���-�� ��������� - 1 ) * ����� ����� ���������� )
+				// ???-?? ???????? * ( ????? ???????????? + ( ???-?? ????????? - 1 ) * ????? ????? ?????????? )
 				time += nBursts * ( pWStats->nAimingTime + ( pWStats->nAmmoPerBurst - 1 ) * pGun->GetFireRate() );
 
 				if ( time < *pTime || nGun == -1 )
@@ -247,7 +247,7 @@ int CUnitGuns::GetNAmmo( const int nCommonGun ) const
 	return commonGunsInfo[nCommonGun]->nAmmo;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// nAmmo �� ������
+// nAmmo ?? ??????
 void CUnitGuns::ChangeAmmo( const int nCommonGun, const nAmmo )
 {
 	NI_ASSERT_T( nCommonGun < nCommonGuns, NStr::Format( "Wrong number of gun (%d), total number of guns (%d)", nCommonGun, nCommonGuns ) );

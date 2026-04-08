@@ -176,7 +176,7 @@ struct SVectorHash
 {
 	enum { bucket_size = 4 };
 	size_t operator()( const SVector & v) const { return (size_t)((v.x * 65535) + v.y); }
-	bool operator()( const SVector & a, const SVector & b) const { return a < b; }
+	bool operator()( const SVector & a, const SVector & b) const { return (a.x != b.x) ? (a.x < b.x) : (a.y < b.y); }
 };
 typedef BLITZ_HASH_MAP<SVector, bool, SVectorHash> CSVectorHash;
 }

@@ -87,7 +87,7 @@ public:
 		//��� ������������� � ���������, ������������ �����
 		int operator&( IDataTree &ss )
 		{
-			CTreeAccessor tree = &ss;
+			CTreeAccessor tree (& ss);
 			tree.Add( "PartyName", &szPartyName );
 			tree.Add( "GeneralPartyName", &szGeneralPartyName );
 
