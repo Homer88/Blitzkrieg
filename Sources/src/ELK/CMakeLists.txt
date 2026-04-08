@@ -1,5 +1,5 @@
 # ELK - Редактор локализации (MFC Application)
-# Зависит от: ELK.lib (из DSP), htmlhelp.lib
+# Зависит от: Stingray Objective Toolkit SDK (в ../../sdk/Stingray)
 
 cmake_minimum_required(VERSION 2.4)
 
@@ -110,14 +110,28 @@ target_compile_definitions(ELK PRIVATE
     _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
 )
 
+# Stingray Objective Toolkit SDK
+set(STINGRAY_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/../../sdk/Stingray/Include")
+set(STINGRAY_LIB_DIR "${CMAKE_SOURCE_DIR}/../../sdk/Stingray/lib")
+
 # Include directories
 target_include_directories(ELK PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${STINGRAY_INCLUDE_DIR}
+    ${STINGRAY_INCLUDE_DIR}/Foundation
+    ${STINGRAY_INCLUDE_DIR}/Toolkit
+    ${STINGRAY_INCLUDE_DIR}/Views
+    ${STINGRAY_INCLUDE_DIR}/Chart
+    ${STINGRAY_INCLUDE_DIR}/Grid
+    ${STINGRAY_INCLUDE_DIR}/Edit
 )
 
-# Link с htmlhelp.lib
+# Link с Stingray и htmlhelp
 target_link_libraries(ELK PRIVATE
+    ${STINGRAY_LIB_DIR}/SECFnd70.lib
+    ${STINGRAY_LIB_DIR}/SECToolkit70.lib
+    ${STINGRAY_LIB_DIR}/SECViews70.lib
     htmlhelp.lib
     kernel32.lib
     user32.lib

@@ -65,7 +65,7 @@ endif()
 # ============================================================
 
 # === БАЗОВЫЕ БИБЛИОТЕКИ ===
-# BugSlay (исправлен пользователем)
+# BugSlay (исправлен)
 add_subdirectory(BugSlay)
 add_subdirectory(zlib)
 add_subdirectory(libpng)
@@ -94,7 +94,7 @@ add_subdirectory(UI)             # Зависит от BugSlay, Misc, StreamIO, 
 add_subdirectory(Scene)          # Зависит от Image
 add_subdirectory(AILogic)        # ИИ логика игры (DLL) - исправляем совместимость с MSVC 2022
 add_subdirectory(ELK)            # Редактор локализации (теперь есть Stingray SDK в sdk/Stingray)
-# add_subdirectory(GameTT)         # Зависит от AILogic (отключен)
+# add_subdirectory(GameTT)       # Зависит от AILogic (отключен)
 
 # === БИБЛИОТЕКИ ЧЕТВЁРТОГО УРОВНЯ ===
 # add_subdirectory(Main)           # Зависит от AILogic (отключен)
