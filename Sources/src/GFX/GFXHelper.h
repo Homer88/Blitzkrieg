@@ -327,6 +327,8 @@ struct SGFXLVertex2
 struct SGFXTLVertex
 {
 	enum { format = GFXFVF_XYZRHW | GFXFVF_DIFFUSE  | GFXFVF_SPECULAR | GFXFVF_TEX1 };
+	// Конструктор по умолчанию для совместимости с MSVC 2022
+	SGFXTLVertex() {}
 	union
 	{
 		struct
@@ -365,6 +367,8 @@ struct SGFXTLVertex
 struct SGFXTLVertex2
 {
 	enum { format = GFXFVF_XYZRHW | GFXFVF_DIFFUSE  | GFXFVF_SPECULAR | GFXFVF_TEX2 };
+	// Конструктор по умолчанию для совместимости с MSVC 2022
+	SGFXTLVertex2() {}
 	union
 	{
 		struct
@@ -441,6 +445,8 @@ struct SGFXTLPoint
 struct SGFXLineVertex
 {
 	enum { format = GFXFVF_XYZ | GFXFVF_DIFFUSE };
+	// Конструктор по умолчанию для совместимости с MSVC 2022
+	SGFXLineVertex() {}
 	union
 	{
 		struct

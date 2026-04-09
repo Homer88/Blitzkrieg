@@ -91,8 +91,11 @@ namespace NStr
 	inline float ToFloat( const std::string &szString ) { return ToFloat( szString.c_str() ); }
 	double ToDouble( const char *pszString );
 	inline double ToDouble( const std::string &szString ) { return ToDouble( szString.c_str() ); }
-	// 
+	//
 	void SetCodePage( int nCodePage );
+	// Binary data to hex string conversion
+	const char* BinToString( const void *pData, int nSize, char *pszBuffer );
+	void* StringToBin( const char *pszData, void *pBuffer, int *pnSize );
 	void ToAscii( std::string *pRes, const std::wstring &szSrc );
 	inline std::string ToAscii( const std::wstring &szSrc )
 	{

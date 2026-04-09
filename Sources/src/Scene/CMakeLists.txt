@@ -87,10 +87,28 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
 endif()
 
 # Связывание библиотек
+# Используем абсолютный путь к binkw32.lib напрямую
+set(BINKW32_LIB "${BINK_SDK_DIR}/binkw32.lib")
+
 target_link_libraries(Scene
     # Мультимедиа и видео
     winmm
-    binkw32
+    ${BINKW32_LIB}
+
+    # Зависимости от других модулей проекта
+    BugSlay
+    Misc
+    StreamIO
+    Common
+    Formats
+    Image
+    Input
+    Anim
+    SFX
+    GFX
+    UI
+    zlib
+    libpng
 
     # Системные библиотеки Windows
     kernel32

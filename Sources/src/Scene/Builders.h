@@ -51,6 +51,8 @@ inline void GetSecondaryMaps( int nX, int nY, bool bFlipY, CVec2 *maps, const fl
 struct STerrainTLVertex
 {
 	enum { format = GFXFVF_XYZRHW | GFXFVF_DIFFUSE | GFXFVF_TEX2 };
+	// Конструктор по умолчанию для совместимости с MSVC 2022
+	STerrainTLVertex() {}
 	//
 	union
 	{

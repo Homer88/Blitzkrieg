@@ -111,7 +111,7 @@ add_subdirectory(excelexporter)
 add_subdirectory(FontGen)
 add_subdirectory(imagedefrag)
 add_subdirectory(InterfaceSystemTest)
-add_subdirectory(MapEditor)      # Зависит от Image
+#add_subdirectory(MapEditor)      # Зависит от Image
 add_subdirectory(PlanePathTest)
 add_subdirectory(soundverifycation)  # Утилита проверки звука с FMOD
 add_subdirectory(spcomp)

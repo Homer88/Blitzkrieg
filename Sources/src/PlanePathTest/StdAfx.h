@@ -76,6 +76,9 @@ typedef unsigned __int64 QWORD;					// quadra word
 // in the file 'Specific.h' one can define own project-specific includes
 #include "Specific.h"
 
+// Stub definitions for standalone build
+#include "src/PlanePathTestStubs.h"
+
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
