@@ -554,7 +554,9 @@ void FillActionsPriority( const char *pszRow, const char *pszEntry, CTableAccess
 			dst.push_back( 0 );
 	}
 	// remove all actions >= 64
-	dst.erase( std::remove_if(dst.begin(), dst.end(), std::bind2nd(std::greater_equal<int>(), 64)), dst.end() );
+	dst.erase( std::remove_if(dst.begin(), dst.end(), [](int val) {
+		return val >= 64;
+	}), dst.end() );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorldClient::Init( ISingleton *pSingleton )
@@ -586,7 +588,7 @@ void CWorldClient::Init( ISingleton *pSingleton )
 	RegisterAction( USER_ACTION_INSTALL, SActionDesc::INSTANT, &CWorldClient::ActionInstallMsg );
 	RegisterAction( USER_ACTION_UNINSTALL, SActionDesc::INSTANT, &CWorldClient::ActionUnInstallMsg );
 
-	RegisterAction( USER_ACTION_CAPTURE_ARTILLERY, SActionDesc::AUTO, ActionCaptureArtilleryMsg );
+	RegisterAction( USER_ACTION_CAPTURE_ARTILLERY, SActionDesc::AUTO, &CWorldClient::ActionCaptureArtilleryMsg );
 	RegisterAction( USER_ACTION_HOOK_ARTILLERY, SActionDesc::AUTO | SActionDesc::FORCED, &CWorldClient::ActionHookArtilleryMsg );
 	RegisterAction( USER_ACTION_DEPLOY_ARTILLERY, SActionDesc::FORCED, &CWorldClient::ActionDeployArtilleryMsg );
 
@@ -1797,7 +1799,7 @@ void CWorldClient::OnMouseMove( const CVec2 &vPos, interface IUIElement *pUIPick
 	{
 		GetSingleton<ICursor>()->SetMode( 0 );
 		SetStatusBar( 0 );
-		CTRect<float> rcOut; // это просто затычка, можно не заполнять
+		CTRect<float> rcOut; // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		if ( bSetPlayerTooltip )
 			pScene->SetToolTip( 0, VNULL2, rcOut, 0x00000000 );
 		bSetPlayerTooltip = false;
@@ -2118,7 +2120,7 @@ void CWorldClient::ReportObjectiveStateChanged( int nObjective, int nState )
 
 				pHeaderText = pTexMan->GetDialog( pMission->objectives[nObjective].szHeader.c_str() );
 				pDescriptionText = pTexMan->GetDialog( pMission->objectives[nObjective].szDescriptionText.c_str() );
-				//ставим метку
+				//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 				if ( IUIScreen *pUIScreen = pScene->GetMissionScreen() )
 				{
 					if ( IUIMiniMap *pUIMiniMap = checked_cast<IUIMiniMap*>( pUIScreen->GetChildByID( 20000 ) ) )

@@ -304,6 +304,9 @@ private:
 		{
 			return v.x * RAND_MAX +  v.y;
 		}
+		enum { bucket_size = 4 };
+		enum { min_buckets = 8 };
+		bool operator()(const SIntPair& lhs, const SIntPair& rhs) const { return lhs < rhs; }
 	};
 
 	struct SUpdatedCell

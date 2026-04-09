@@ -1,18 +1,111 @@
-# Минимальная версия CMake
-cmake_minimum_required(VERSION 3.5)
+# Scene - Сцена, рендеринг, камера, курсор, частицы, terrain, видео
+# Зависит от: Image, BugSlay, Misc, StreamIO, Common, Formats, Anim, Input, SFX, GFX
+# Тип: DLL (Dynamic-Link Library)
 
-# Название проекта
+cmake_minimum_required(VERSION 2.4)
+
 project(Scene)
 
-# Установка стандарта C++
+# Установка стандарта C++98 для совместимости с Windows 98/2000
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-FILE(GLOB SCENE_SOURCE "*.cpp")
+# Определение исходных файлов и заголовков
+FILE(GLOB SCENE_SOURCES "*.cpp")
 FILE(GLOB SCENE_HEADERS "*.h")
 
-add_definitions( -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS)
-add_definitions( -D_WIN32_WINNT=0x0501)
+# Исключаем BinkVideoPlayer.cpp - не совместим с Windows SDK 10 / MSVC 2022
+# Bink SDK 2002 года требует старые заголовки Windows
+list(REMOVE_ITEM SCENE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/BinkVideoPlayer.cpp")
 
-add_library(Scene STATIC ${SCENE_HEADERS} ${SCENE_SOURCE})
+# Ресурсы (курсоры и rc файл)
+set(SCENE_RESOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/Scene.rc
+    ${CMAKE_CURRENT_SOURCE_DIR}/Scene.def
+)
 
+# Определение библиотеки как DLL
+add_library(Scene SHARED ${SCENE_SOURCES} ${SCENE_HEADERS} ${SCENE_RESOURCES})
+
+# Определение файла .def для экспорта
+set_target_properties(Scene PROPERTIES
+    LINK_FLAGS "/DEF:\"${CMAKE_CURRENT_SOURCE_DIR}/Scene.def\""
+)
+
+# SDK пути
+set(BINK_SDK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../sdk/bink")
+set(DIRECTX8_SDK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../sdk/directx")
+
+# Пути include
+INCLUDE_DIRECTORIES(
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${CMAKE_CURRENT_SOURCE_DIR}/../BugSlay
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Misc
+    ${CMAKE_CURRENT_SOURCE_DIR}/../StreamIO
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Formats
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Anim
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Image
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Input
+    ${CMAKE_CURRENT_SOURCE_DIR}/../SFX
+    ${CMAKE_CURRENT_SOURCE_DIR}/../GFX
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Main
+    ${BINK_SDK_DIR}
+    ${DIRECTX8_SDK_DIR}/include
+)
+
+# Отключаем макрос for из Misc/Basic.h который ломает синтаксис C++11+
+add_compile_options(/Dfor=for)
+
+# Пути для библиотек
+LINK_DIRECTORIES(
+    ${BINK_SDK_DIR}
+    ${DIRECTX8_SDK_DIR}/lib
+)
+
+# Компиляторные определения для Windows 98/2000
+target_compile_definitions(Scene PRIVATE
+    WIN32
+    _WINDOWS
+    _USRDLL
+    _CRT_SECURE_NO_WARNINGS
+    _WIN32_WINNT=0x0501
+    WINVER=0x0501
+    _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
+    # Отключаем Bink Video - требует проприетарный SDK который не совместим с MSVC 2022
+    _NO_BINK_VIDEO
+)
+
+# Определения для разных конфигуций сборки
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_compile_definitions(Scene PRIVATE _FINALRELEASE NDEBUG)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(Scene PRIVATE _DEBUG _DO_ASSERT_SLOW _DO_CHECKED_CAST _STL_RANGE_CHECK)
+elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    target_compile_definitions(Scene PRIVATE _BETARELEASE NDEBUG _DO_ASSERT_SLOW)
+endif()
+
+# Связывание библиотек
+target_link_libraries(Scene
+    # Мультимедиа и видео
+    winmm
+    binkw32
+
+    # Системные библиотеки Windows
+    kernel32
+    user32
+    gdi32
+    winspool
+    comdlg32
+    advapi32
+    shell32
+    ole32
+    oleaut32
+    uuid
+    odbc32
+    odbccp32
+
+    # COM Support
+    comsupp
+)

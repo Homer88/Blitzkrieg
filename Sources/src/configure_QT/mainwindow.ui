@@ -23,8 +23,11 @@
       <height>501</height>
      </rect>
     </property>
+    <property name="locale">
+     <locale language="C" country="AnyCountry"/>
+    </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="TbBasic">
      <property name="toolTip">

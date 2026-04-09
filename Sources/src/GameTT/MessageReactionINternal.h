@@ -4,6 +4,8 @@
 #pragma ONCE
 #include "MessageReaction.h"
 #include "CustomMessageReaction.h"
+#include <unordered_map>
+#include <functional>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 enum EMessageAtomicReactionType
 {
@@ -37,13 +39,12 @@ enum ECustomCheckReturn
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct SPairHash
 {
-	enum { bucket_size = 4 };
-	typedef std::pair<int,int> key_type;
-	typedef size_t value_type;
-
-	value_type operator()( const key_type &incomingPair ) const
+	size_t operator()( const std::pair<int,int> &incomingPair ) const
 	{
-		return static_cast<value_type>( incomingPair.first + incomingPair.second );
+		return std::hash<long long>()(
+			(static_cast<long long>(incomingPair.first) << 32) | 
+			(static_cast<unsigned int>(incomingPair.second) & 0xFFFFFFFF)
+		);
 	}
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -342,7 +343,7 @@ class CMessageLink : public IMessageLink
 	DECLARE_SERIALIZE;
 
 	typedef std::pair<int/*nIncomingMessageID*/,int/*nParam*/> CIncomingMessage;
-	typedef std::hash_map< CIncomingMessage, CPtr<CMessageReaction>, SPairHash > CMessageReactions;
+	typedef std::unordered_map< CIncomingMessage, CPtr<CMessageReaction>, SPairHash > CMessageReactions;
 	CMessageReactions messageReactions;
 
 #if !defined(_FINALRELEASE) && !defined(_BETARELEASE)

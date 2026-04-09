@@ -11,12 +11,6 @@
 #endif // _MSC_VER > 1000
 
 // STLport configuration defines
-// #define _NOTHREADS 1
-// #define _STLP_DEBUG_TERMINATE 1
-// #define _STLP_DEBUG_MESSAGE 1
-//
-#ifndef __AFX__
-#define WIN32_LEAN_AND_MEAN							// Exclude rarely-used stuff from Windows headers
 ////////// STLPort: #include "stl_user_config.h"
 ////////// STLPort: #include <stl/_config.h>
 
@@ -59,7 +53,11 @@
 //
 typedef __int64 int64;									// due to lack of 'long long' type support
 typedef unsigned __int64 QWORD;					// quadra word
+// Макрос for нужен только для MSVC 6.0 где переменные в for видны снаружи
+// В MSVC 2005+ это не нужно и ломает синтаксис
+#if _MSC_VER < 1400
 #define for if(false); else for					// to achive standard variable scope resolving, declared inside 'for'
+#endif
 #define STDCALL __stdcall								// to use with interface function calls
 // define 'interface' keyword
 #ifndef interface

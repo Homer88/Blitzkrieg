@@ -7,10 +7,56 @@
 #define STRING_ENUM_ADD_PTR(TypeConverter,eEnum) (*TypeConverter)[#eEnum] = eEnum;
 #define STRING_ENUM_ADD(TypeConverter,eEnum) TypeConverter.Add( #eEnum, eEnum );
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template < class T1, class T2, class TH1 = std::hash<T1>, class TH2 = std::hash<T2> >
+
+// Для совместимости с MSVC 2022 - stdext::hash_map требует hash_compare с bucket_size
+// Определяем hash_compare для основных типов
+#if _MSC_VER >= 1400
+namespace NCompat {
+    template<typename T>
+    struct THash {
+        size_t operator()(const T& v) const { return (size_t)v; }
+        bool operator()(const T& a, const T& b) const { return a < b; }
+        enum { bucket_size = 4 };
+        enum { min_buckets = 8 };
+    };
+    template<>
+    struct THash<std::string> {
+        size_t operator()(const std::string& s) const {
+            size_t h = 0;
+            for (size_t i = 0; i < s.length(); ++i)
+                h = h * 31 + s[i];
+            return h;
+        }
+        bool operator()(const std::string& a, const std::string& b) const { return a < b; }
+        enum { bucket_size = 4 };
+        enum { min_buckets = 8 };
+    };
+    template<>
+    struct THash<WORD> {
+        size_t operator()(const WORD& v) const { return (size_t)v; }
+        bool operator()(const WORD& a, const WORD& b) const { return a < b; }
+        enum { bucket_size = 4 };
+        enum { min_buckets = 8 };
+    };
+    template<>
+    struct THash<DWORD> {
+        size_t operator()(const DWORD& v) const { return (size_t)v; }
+        bool operator()(const DWORD& a, const DWORD& b) const { return a < b; }
+        enum { bucket_size = 4 };
+        enum { min_buckets = 8 };
+    };
+}
+#define DEFAULT_HASH1 NCompat::THash<T1>
+#define DEFAULT_HASH2 NCompat::THash<T2>
+#else
+#define DEFAULT_HASH1 std::hash<T1>
+#define DEFAULT_HASH2 std::hash<T2>
+#endif
+
+template < class T1, class T2, class TH1 = DEFAULT_HASH1, class TH2 = DEFAULT_HASH2 >
 class CTypeConvertor
 {
-protected: // ������������� �������.
+protected: // ������������� �������.
 	std::hash_map<T1, T2, TH1> t1_t2;
 	std::hash_map<T2, T1, TH2> t2_t1;
 	//

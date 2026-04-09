@@ -1,5 +1,4 @@
 #include "StdAfx.h"
-
 #include "BinkVideoPlayer.h"
 
 #include "..\SFX\SFX.h"

@@ -19,12 +19,21 @@ add_library(AILogic SHARED
     ${AILOGIC_SOURCE}
     ${AILOGIC_HEADERS}
     AILogic.rc
+    AILogic.def
 )
 
-# Используем .def файл для экспорта функций
+# Установка имени выходного файла и создание import library
+set_target_properties(AILogic PROPERTIES
+    OUTPUT_NAME "AILogic"
+    PREFIX ""
+)
+
+# Создаем import library вручную если его нет
+# На Windows DLL + .lib для импорта создаются автоматически при экспорте символов
 if(WIN32)
     set_target_properties(AILogic PROPERTIES
         DEFINE_FILE "AILogic.def"
+        WINDOWS_EXPORT_ALL_SYMBOLS FALSE
     )
 endif()
 

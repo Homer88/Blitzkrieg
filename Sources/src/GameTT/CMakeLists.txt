@@ -21,11 +21,14 @@ add_library(GameTT SHARED
 target_link_libraries(GameTT
     AILogic
     BugSlay
-    Misc
     StreamIO
     Common
     Formats
     RandomMapGen
+    Misc
+    # Системные библиотеки Windows
+    version.lib
+    comsupp.lib
 )
 
 # Подключаем заголовочные файлы зависимостей

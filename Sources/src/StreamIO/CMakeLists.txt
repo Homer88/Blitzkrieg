@@ -60,17 +60,11 @@ set_target_properties(StreamIO_STATIC PROPERTIES OUTPUT_NAME "StreamIO_static")
 # =============================================================================
 # DLL (основная библиотека)
 # =============================================================================
-add_library(StreamIO SHARED ${STREAMIO_HEADERS} ${STREAMIO_SOURCES})
-
-# Используем .def файл для экспорта функций (Windows)
-if(WIN32)
-    set_target_properties(StreamIO PROPERTIES
-        DEFINE_FILE "StreamIO.def"
-    )
-endif()
+add_library(StreamIO SHARED ${STREAMIO_HEADERS} ${STREAMIO_SOURCES} StreamIO.def)
 
 set_target_properties(StreamIO PROPERTIES
     OUTPUT_NAME "StreamIO"
+    PREFIX ""
 )
 
 # =============================================================================

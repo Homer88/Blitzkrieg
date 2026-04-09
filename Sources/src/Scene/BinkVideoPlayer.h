@@ -1,9 +1,19 @@
 #ifndef __BINKVIDEOPLAYER_H__
 #define __BINKVIDEOPLAYER_H__
+
+#ifndef _NO_BINK_VIDEO
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma ONCE
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ВАЖНО: bink.h и radbase.h должны включаться ДО windows.h
+// Чтобы избежать конфликта PVOID64, мы включаем radbase.h самым первым
+// который определяет PVOID64 ДО того как windows.h попытается это сделать
+
+// Сначала включаем radbase.h из Bink SDK (он определяет типы RAD и PVOID64)
+#include <radbase.h>
+// Теперь bink.h (он увидит что __RADBASEH__ уже определён и не будет включать radbase.h снова)
 #include <bink.h>
+// windows.h уже включён через StdAfx.h, но PVOID64 уже определён в radbase.h
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct SImagePart
 {
@@ -58,7 +68,7 @@ public:
 	// shading effect
 	virtual void SetShadingEffect( const int nEffect, bool bStart )
 	{
-		if ( bStart ) 
+		if ( bStart )
 			nShadingEffectStart = nEffect;
 		else
 			nShadingEffectFinish = nEffect;
@@ -81,3 +91,5 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif // __BINKVIDEOPLAYER_H__
+
+#endif // _NO_BINK_VIDEO

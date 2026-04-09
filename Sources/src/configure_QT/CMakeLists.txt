@@ -6,7 +6,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTORCC ON)  # Автоматически обрабатывать .qrc файлы
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,7 +14,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5 COMPONENTS Widgets LinguistTools REQUIRED Xml)
 
 set(TS_FILES
-    Configure_ru_RU.ts)
+    Configure_ru_RU.ts
+    Configure_ru_RU.qm)
 
 
 
@@ -31,7 +32,7 @@ set (RESOURCE
     mainwindow.ui)
 
 
-add_executable(Configure ${SOURCES} ${HEADERS} ${RESOURCE} ${TS_FILES})
-target_link_libraries(Configure PRIVATE Qt5::Widgets Qt5::Xml)
+add_executable(Configure ${SOURCES} ${HEADERS} ${RESOURCE} ${TS_FILES} ${QM_FILES})
+target_link_libraries(Configure PRIVATE Qt5::Widgets Qt5::Xml ${QM_FILES})
 
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})

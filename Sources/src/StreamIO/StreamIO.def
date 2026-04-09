@@ -7,6 +7,4 @@ EXPORTS
     ; Explicit exports can go here
 
 GetModuleDescriptor			@1
-GetTempRawBuffer_Hook		@2
 GetSLS_Hook							@3
-GetSingletonGlobal_Hook @4
