@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include "Specific.h"
 
 #include <shellapi.h>
 #include <crtdbg.h>
@@ -148,7 +149,7 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 			NStr::ToLower( szDataDir );
 			if ( szDataDir == "s:\\versions\\current" )
 			{
-				::MessageBox( 0, "Сказано же, что нельзя использовать ресурсы с \"s:\\versions\\current\"!", "ERROR", MB_OK | MB_ICONEXCLAMATION );
+				::MessageBox( 0, "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ \"s:\\versions\\current\"!", "ERROR", MB_OK | MB_ICONEXCLAMATION );
 				return 0xDEAD;
 			}
 			else
@@ -347,7 +348,7 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 			}
 		}
 	}
-	// всё через жопу
+	// пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	{
 		std::string szGameSpyServer = GetGlobalVar( "Options.Multiplayer.GameSpyServerName", "" );
 		if ( !szGameSpyServer.empty() )

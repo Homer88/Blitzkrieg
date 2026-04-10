@@ -3,6 +3,19 @@
 //      are changed infrequently
 //
 
+// CRITICAL: Include windows.h FIRST to avoid PVOID64 errors
+#ifndef WINVER
+#define WINVER 0x0501
+#endif
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT 0x0501
+#endif
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#define POINTER_64 __ptr64
+#include <windows.h>
+
 #if !defined(AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_)
 #define AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_
 
@@ -16,7 +29,7 @@
 // #define _STLP_DEBUG_MESSAGE 1
 //
 #ifndef __AFX__
-#define WIN32_LEAN_AND_MEAN							// Exclude rarely-used stuff from Windows headers
+#define WIN32_LEAN_AND_MEAN							// Already defined, but keep for consistency
 //////// STLPort: #include "stl_user_config.h"
 //////// STLPort: #include <stl/_config.h>
 
@@ -105,8 +118,8 @@ typedef unsigned __int64 QWORD;					// quadra word
 #include "..\Main\GameTimer.h"
 #include "..\Main\GameDB.h"
 // in the file 'Specific.h' one can define own project-specific includes
-// Include Specific.h LAST to avoid windows.h ordering issues
-#include "Specific.h"
+// Note: Specific.h moved to main.cpp to avoid windows.h ordering issues
+//#include "Specific.h"
 
 // TODO: reference additional headers your program requires here
 
