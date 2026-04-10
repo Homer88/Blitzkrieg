@@ -97,8 +97,8 @@ add_subdirectory(ELK)            # Редактор локализации (те
 add_subdirectory(GameTT)         # Зависит от AILogic
 
 # === БИБЛИОТЕКИ ЧЕТВЁРТОГО УРОВНЯ ===
-# add_subdirectory(Main)           # Зависит от AILogic (отключен)
-# add_subdirectory(Game)           # Зависит от GameTT (отключен)
+add_subdirectory(Main)           # Зависит от AILogic, GameTT и др.
+add_subdirectory(Game)           # Главный исполняемый файл
 
 # === ПРИЛОЖЕНИЯ ===
 add_subdirectory(a7exportmodel)

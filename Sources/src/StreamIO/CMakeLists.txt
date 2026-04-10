@@ -14,6 +14,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNI
 # Windows-specific определения
 if(WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0501")
+    # Отключаем проверку диапазонов и разрешаем wchar_t как unsigned short
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:wchar_t-")
 endif()
 
 # =============================================================================
@@ -96,7 +98,7 @@ endif()
 # Платформо-зависимые библиотеки
 # =============================================================================
 if(WIN32)
-    target_link_libraries(StreamIO comsuppw.lib winmm.lib)
+    target_link_libraries(StreamIO comsupp.lib winmm.lib)
 elseif(UNIX)
     target_link_libraries(StreamIO dl pthread)
 endif()

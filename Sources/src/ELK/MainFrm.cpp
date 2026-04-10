@@ -339,7 +339,7 @@ int CMainFrame::OnCreate( LPCREATESTRUCT lpCreateStruct )
 		return -1;
 	}
 
-	//создаем толбары
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	SECToolBarManager* pToolBarManager = dynamic_cast<SECToolBarManager*>( m_pControlBarManager );	
 	if ( bShortApperence )
 	{
@@ -1565,7 +1565,7 @@ void CMainFrame::OnUpdateBrowseCollapseItem(CCmdUI* pCmdUI)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CMainFrame::OnCreateCombo(UINT wParam, LONG lParam)
+LRESULT CMainFrame::OnCreateCombo(WPARAM wParam, LPARAM lParam)
 {
 	HWND hWnd = reinterpret_cast<HWND>( lParam );
 	UINT nNotifyCode = HIWORD( wParam );
@@ -1590,6 +1590,7 @@ void CMainFrame::OnCreateCombo(UINT wParam, LONG lParam)
 			break;
 		}
 	}
+	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1832,7 +1833,7 @@ void CMainFrame::OnUpdateEditFind( CCmdUI* pCmdUI )
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-LONG CMainFrame::OnFindReplace( WPARAM wParam, LPARAM lParam )
+LRESULT CMainFrame::OnFindReplace( WPARAM wParam, LPARAM lParam )
 {
 	if ( lParam != 0 )
 	{
@@ -2017,7 +2018,7 @@ void CMainFrame::RunExternalHelpFile( const std::string &rszHelpFilePath )
 {
 	if ( NFile::IsFileExist( rszHelpFilePath.c_str() ) )
 	{
-    HtmlHelp( NULL, rszHelpFilePath.c_str(), HH_DISPLAY_TOPIC, 0 );
+    ::HtmlHelp( NULL, rszHelpFilePath.c_str(), HH_DISPLAY_TOPIC, 0 );
   }
   else
   {

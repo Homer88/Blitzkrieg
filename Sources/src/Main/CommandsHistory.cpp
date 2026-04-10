@@ -67,7 +67,7 @@ void CCommandsHistory::Clear()
 bool CCommandsHistory::Load( const char *pszFileName )
 {
 	CPtr<IDataStream> pStream = CreateFileStream( pszFileName, STREAM_ACCESS_READ );
-	CTreeAccessor saver = CreateDataTreeSaver( pStream, IDataTree::READ );
+	CTreeAccessor saver( CreateDataTreeSaver( pStream, IDataTree::READ ) );
 
 	saver.Add( "History", &loadedHistory );
 	saver.Add( "StartMapCheckSum", &startMapCheckSum );
@@ -121,7 +121,7 @@ bool CCommandsHistory::Load( const char *pszFileName )
 	saver.Add( "Multiplayer", &nMultiplayerGame );
 	if ( nMultiplayerGame == 1 )
 	{
-		GetSingleton<IGlobalVars>()->SerializeVarsByMatch( saver, "Multiplayer." );
+		GetSingleton<IGlobalVars>()->SerializeVarsByMatch( saver.get(), "Multiplayer." );
 		SetGlobalVar( "MultiplayerGame", 1 );
 	}
 
@@ -129,7 +129,7 @@ bool CCommandsHistory::Load( const char *pszFileName )
 	unsigned long savedCheckSumRes = GetGlobalVar( "Multiplayer.CheckSumRes", 0 );
 
 	// if variables aren't set (playing replay)
-	// он может реально быть 0, но такое встречается редко
+	// пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 0, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 //	if ( checkSumRes == 0.0f )
 	{
 		std::string szMapName = GetGlobalVar( "Multiplayer.MapName", "" );
@@ -175,7 +175,7 @@ void CCommandsHistory::Save( const char *pszFileName )
 		CPtr<IDataStream> pStream = CreateFileStream( szFileName, STREAM_ACCESS_WRITE );
 		if ( pStream == 0 )
 			return;
-		CTreeAccessor saver = CreateDataTreeSaver( pStream, IDataTree::WRITE );
+		CTreeAccessor saver( CreateDataTreeSaver( pStream, IDataTree::WRITE ) );
 
 		saver.Add( "StartMapCheckSum", &startMapCheckSum );
 		saver.Add( "History", &savingHistory );
@@ -230,7 +230,7 @@ void CCommandsHistory::Save( const char *pszFileName )
 
 		SetGlobalVar( "Multiplayer.GameSpeed", GetSingleton<IGameTimer>()->GetSpeed() );
 
-		GetSingleton<IGlobalVars>()->SerializeVarsByMatch( saver, "Multiplayer." );
+		GetSingleton<IGlobalVars>()->SerializeVarsByMatch( saver.get(), "Multiplayer." );
 		
 		std::string szCurModName = GetGlobalVar( "MOD.Name", "" );
 		saver.Add( "MODName", &szCurModName );

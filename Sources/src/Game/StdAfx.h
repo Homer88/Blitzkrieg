@@ -52,10 +52,15 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <hash_map>
-#include <hash_set>
 #include <set>
 #include <queue>
+// hash_map/hash_set совместимость
+#include <hash_map>
+#include <hash_set>
+namespace std {
+    using stdext::hash_map;
+    using stdext::hash_set;
+}
 //
 typedef __int64 int64;									// due to lack of 'long long' type support
 typedef unsigned __int64 QWORD;					// quadra word
@@ -100,6 +105,7 @@ typedef unsigned __int64 QWORD;					// quadra word
 #include "..\Main\GameTimer.h"
 #include "..\Main\GameDB.h"
 // in the file 'Specific.h' one can define own project-specific includes
+// Include Specific.h LAST to avoid windows.h ordering issues
 #include "Specific.h"
 
 // TODO: reference additional headers your program requires here

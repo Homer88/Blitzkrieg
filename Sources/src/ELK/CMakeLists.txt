@@ -108,6 +108,7 @@ target_compile_definitions(ELK PRIVATE
     _WIN32_WINNT=0x0501
     WINVER=0x0501
     _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
+    _HAS_AUTO_PTR_ETC=0
 )
 
 # Stingray Objective Toolkit SDK

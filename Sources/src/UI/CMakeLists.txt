@@ -17,15 +17,16 @@ add_library(UI SHARED ${UI_SOURCE} ${UI_HEADERS} UI.rc)
 
 # Используем .def файл для экспорта
 if(WIN32)
-    set_target_properties(UI PROPERTIES
-        DEFINE_FILE "UI.def"
-    )
+    target_link_options(UI PRIVATE "/DEF:${CMAKE_CURRENT_SOURCE_DIR}/UI.def")
 endif()
 
 # Прекомпилированные заголовки
 set_target_properties(UI PROPERTIES
     COMPILE_FLAGS "/YuStdAfx.h"
 )
+
+# wchar_t как unsigned short (совместимость с остальным проектом)
+target_compile_options(UI PRIVATE /Zc:wchar_t-)
 
 set_source_files_properties(StdAfx.cpp PROPERTIES
     COMPILE_FLAGS "/YcStdAfx.h"

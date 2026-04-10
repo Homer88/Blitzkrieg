@@ -22,12 +22,19 @@ struct STemplateUsage
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct SGUIDHashFunc
 {
-	unsigned long operator()( const GUID &guid ) const
+	// Required by stdext::hash_map in MSVC
+	enum { bucket_size = 4 };
+	size_t operator()( const GUID &guid ) const
 	{
-		const unsigned long uCode = guid.Data1 + guid.Data2 + guid.Data3 + 
-																guid.Data4[0] + guid.Data4[1] + guid.Data4[2] + guid.Data4[3] + 
+		const size_t uCode = guid.Data1 + guid.Data2 + guid.Data3 +
+																guid.Data4[0] + guid.Data4[1] + guid.Data4[2] + guid.Data4[3] +
 																guid.Data4[4] + guid.Data4[5] + guid.Data4[6] + guid.Data4[7];
 		return uCode;
+	}
+	// Also required by stdext::hash_map for ordering within buckets
+	bool operator()( const GUID &g1, const GUID &g2 ) const
+	{
+		return memcmp( &g1, &g2, sizeof(g1) ) < 0;
 	}
 };
 struct SGUIDEqual
@@ -80,7 +87,8 @@ class CUserProfile : public CTRefCount<IUserProfile>
 	// MOD support
 	std::string szMOD;										// MOD name
 	// load count
-	typedef std::hash_map<GUID, int, SGUIDHashFunc, SGUIDEqual> CLoadsMap;
+	// Note: SGUIDEqual removed - stdext::hash_map in MSVC 2022 doesn't accept separate comparator
+	typedef std::hash_map<GUID, int, SGUIDHashFunc> CLoadsMap;
 	CLoadsMap loadCounters;
 	//
 	bool bChanged;												// was user profile changed?

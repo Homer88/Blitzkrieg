@@ -3,6 +3,9 @@
 # Зависимости: BugSlay, Misc, StreamIO, Common, Formats, RandomMapGen
 # ============================================================
 
+cmake_minimum_required(VERSION 2.4)
+project(GameTT)
+
 # Собираем все исходные файлы
 FILE(GLOB GAMETT_SOURCES "*.cpp")
 FILE(GLOB GAMETT_HEADERS "*.h")
@@ -52,11 +55,13 @@ target_compile_definitions(GameTT PRIVATE
     _CRT_NONSTDC_NO_DEPRECATE
     _WIN32_WINNT=0x0400
     WINVER=0x0400
+    _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
 )
 
 # Отключаем проверку диапазонов и разрешаем wchar_t как unsigned short
 target_compile_options(GameTT PRIVATE
     /Zc:wchar_t-
+    /FS
 )
 
 # Настройки прекомпилированных заголовков

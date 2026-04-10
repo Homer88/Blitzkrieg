@@ -19,6 +19,9 @@ add_library(Anim SHARED
     anim.rc
 )
 
+# wchar_t как unsigned short (совместимость с остальным проектом)
+target_compile_options(Anim PRIVATE /Zc:wchar_t-)
+
 # Используем .def файл для экспорта
 if(WIN32)
     set_target_properties(Anim PROPERTIES

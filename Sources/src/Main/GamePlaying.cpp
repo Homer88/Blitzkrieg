@@ -95,8 +95,8 @@ void CGamePlaying::RemoveClient( const int nClientID )
 			++i;
 
 		if ( i < players.size() )
-			std::construct( &(players[i]) );
-		
+			players[i].~SPlayerInfo();
+
 		clientID2LogicID.erase( nClientID );
 	}
 }
@@ -388,7 +388,7 @@ void CGamePlaying::DropPlayer( const int nLogicID )
 
 	if ( iter != players.end() )
 	{
-		// после удаления клиента iter станет невалидным
+		// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ iter пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		const int nClientID = iter->nClientID;
 
 		RemoveClient( nClientID );

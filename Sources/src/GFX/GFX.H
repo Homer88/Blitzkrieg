@@ -7,7 +7,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "GFXTypes.h"
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// константы на создание объектов в object factory
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ object factory
 enum
 {
 	GFX_BASE_VALUE			= 0x10030000,
@@ -136,6 +136,7 @@ interface IGFXFont : public ISharedResource
 	//
 	virtual const struct SFontFormat& STDCALL GetFormat() const = 0;
   virtual int STDCALL GetTextWidth( const char *pszString, int nCounter = 2000000000 ) const = 0;
+  // WORD is used instead of wchar_t (with /Zc:wchar_t- they are the same)
   virtual int STDCALL GetTextWidth( const WORD *pszString, int nCounter = 2000000000 ) const = 0;
 };
 interface IGFXText : public IRefCount

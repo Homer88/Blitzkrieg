@@ -14,6 +14,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNI
 # Windows-specific определения
 if(WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0501 -D_CRT_SECURE_NO_WARNINGS -DWIN32_LEAN_AND_MEAN")
+    # Отключаем проверку диапазонов и разрешаем wchar_t как unsigned short
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:wchar_t-")
 endif()
 
 # =============================================================================

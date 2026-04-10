@@ -60,10 +60,15 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <hash_map>
-#include <hash_set>
 #include <set>
 #include <queue>
+// hash_map/hash_set совместимость
+#include <hash_map>
+#include <hash_set>
+namespace std {
+    using stdext::hash_map;
+    using stdext::hash_set;
+}
 //
 typedef __int64 int64;									// due to lack of 'long long' type support
 typedef unsigned __int64 QWORD;					// quadra word

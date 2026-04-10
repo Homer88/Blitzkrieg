@@ -103,8 +103,8 @@ target_link_libraries(Scene
     Formats
     Image
     Input
-    Anim
-    SFX
+    # Anim - not linked, loaded dynamically at runtime
+    SFX_STATIC
     GFX
     UI
     zlib
