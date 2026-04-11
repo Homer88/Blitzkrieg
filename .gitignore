@@ -45,3 +45,6 @@ Sources/src/configure_QT/Configure_ru_RU.qm
 /Sources/src/Scene/build
 /Sources/src/build_all
 /Sources/src/GameTT/build
+.continue/agents/new-config.yaml
+/Current
+/Sources/src/bin

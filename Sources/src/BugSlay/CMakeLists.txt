@@ -15,6 +15,7 @@ FILE(GLOB BUGSLAY_SOURCES "*.cpp")
 FILE(GLOB BUGSLAY_HEADERS "*.h")
 
 # Исключаем файлы с ассемблером (не совместимы с x64)
+# MemorySystem.cpp исключён из-за несовместимости stdext::hash_map с MSVC 2022
 list(REMOVE_ITEM BUGSLAY_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/DumbPow2Alloc.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/MemorySystem.cpp

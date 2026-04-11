@@ -56,6 +56,9 @@ set_target_properties(Game PROPERTIES
 # wchar_t как unsigned short (совместимость с остальным проектом)
 target_compile_options(Game PRIVATE /Zc:wchar_t-)
 
+# Отключаем SAFESEH для совместимости со старой d3dx8.lib
+target_link_options(Game PRIVATE /SAFESEH:NO)
+
 set_source_files_properties(StdAfx.cpp PROPERTIES
     COMPILE_FLAGS "/YcStdAfx.h"
 )
@@ -82,6 +85,7 @@ target_include_directories(Game PRIVATE
     ${CMAKE_SOURCE_DIR}/LuaLib
     ${CMAKE_SOURCE_DIR}/RandomMapGen
     ${CMAKE_SOURCE_DIR}/Main
+    ${CMAKE_SOURCE_DIR}/scl
     # DirectX8 SDK
     ${CMAKE_SOURCE_DIR}/../sdk/directx/include
 )
@@ -93,10 +97,12 @@ target_link_libraries(Game
     # Движок
     Scene
     AILogic
-    Anim
+    # GameTT - loaded dynamically, no import lib
+    # Anim - loaded dynamically, no import lib
     GFX
     UI
     SFX_STATIC
+    scl
     Input
     Net
     GameSpy
@@ -129,4 +135,11 @@ target_link_libraries(Game
     odbccp32.lib
     comsupp.lib
     Shlwapi.lib
+)
+
+# Добавляем пути к библиотекам scl
+target_link_directories(Game PRIVATE
+    ${CMAKE_SOURCE_DIR}/scl/Debug
+    ${CMAKE_SOURCE_DIR}/scl/Release
+    ${CMAKE_SOURCE_DIR}/scl
 )

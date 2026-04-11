@@ -9,6 +9,27 @@ cmake_minimum_required(VERSION 2.4)
 project(Blitzkrieg)
 
 # ============================================================
+# Глобальные выходные директории - все файлы в bin/
+# ============================================================
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "${CMAKE_SOURCE_DIR}/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_SOURCE_DIR}/bin")
+
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL "${CMAKE_SOURCE_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_SOURCE_DIR}/bin")
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL "${CMAKE_SOURCE_DIR}/bin")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_SOURCE_DIR}/bin")
+
+# Создаём директорию bin
+file(MAKE_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
+
+# ============================================================
 # Глобальные определения для всех проектов (Windows 98/2000 + новый SDK)
 # ============================================================
 add_definitions(
@@ -77,7 +98,6 @@ add_subdirectory(Common)
 add_subdirectory(GameSpy)
 add_subdirectory(LuaLib)
 add_subdirectory(RandomMapGen)   
-add_subdirectory(StreamIOLib)
 add_subdirectory(Image)
 
 # === БИБЛИОТЕКИ ВТОРОГО УРОВНЯ ===
