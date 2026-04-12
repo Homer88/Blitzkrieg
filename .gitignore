@@ -48,3 +48,5 @@ Sources/src/configure_QT/Configure_ru_RU.qm
 .continue/agents/new-config.yaml
 /Current
 /Sources/src/bin
+/Sources/src/BugSlay/lib
+/Sources/src/lib

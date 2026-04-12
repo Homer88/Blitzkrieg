@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include <windows.h>
 #include "DialogFunctions.h"
 #include "WndUtils.h"
 
@@ -90,22 +91,43 @@ bool SetWindowText( HWND hwndDlg, const int nElementID, const int nValue )
 	return SetWindowText( hwndDlg, nElementID, buff );
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void* SetWindowUserData( HWND hwndDlg, const int nElementID, void *pUserData )
 {
-	return reinterpret_cast<void*>( SetWindowLong( GetDlgItem(hwndDlg, nElementID), 
-		                                             GWL_USERDATA, reinterpret_cast<LONG>(pUserData) ) );
+#ifdef GWLP_USERDATA
+	// Windows 2000 и новее: используем SetWindowLongPtr
+	return reinterpret_cast<void*>(SetWindowLongPtr(GetDlgItem(hwndDlg, nElementID), GWLP_USERDATA, (LONG_PTR)pUserData));
+#else
+	// —тарые SDK: используем SetWindowLong (только 32-бит)
+	return reinterpret_cast<void*>(SetWindowLong(GetDlgItem(hwndDlg, nElementID), (LONG_PTR)GWL_USERDATA, reinterpret_cast<LONG>pUserData));
+#endif
 }
 void* GetWindowUserData( HWND hwndDlg, const int nElementID )
 {
-	return reinterpret_cast<void*>( GetWindowLong( GetDlgItem(hwndDlg, nElementID), GWL_USERDATA ) );
+#ifdef GWLP_USERDATA
+	return (void*)GetWindowLong(GetDlgItem(hwndDlg, nElementID), (LONG_PTR)GWLP_USERDATA);
+#else
+	return (void*)GetWindowLong(GetDlgItem(hwndDlg, nElementID), (LONG_PTR)GWL_USERDATA);
+#endif
+
 }
 void* SetDlgUserData( HWND hwndDlg, void *pUserData )
 {
-	return reinterpret_cast<void*>( SetWindowLong( hwndDlg, DWL_USER, reinterpret_cast<LONG>(pUserData) ) );
+#ifdef DWLP_USER
+	return  reinterpret_cast<void*>(SetWindowLongPtr(hwndDlg, DWLP_USER, (LONG_PTR)(pUserData)));
+#else
+	return  reinterpret_cast<void*>(SetWindowLong(hwndDlg, DWL_USER, reinterpret_cast<LONG>(pUserData)));
+#endif
+
+	
 }
 void* GetDlgUserData( HWND hwndDlg )
 {
-	return reinterpret_cast<void*>( GetWindowLong( hwndDlg, DWL_USER ) );
+#ifdef DWLP_USER
+	return (void*)GetWindowLongPtr(hwndDlg, DWLP_USER);
+#else
+	return (void*)GetWindowLong(hwndDlg, DWL_USER);
+#endif
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int GetCheckButtonState( HWND hwndDlg, const int nElementID )
@@ -114,7 +136,7 @@ int GetCheckButtonState( HWND hwndDlg, const int nElementID )
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void WriteReportToFile( const char *pszFileName, const char *pszCondition, const char *pszDescription, 
-												const CCallStackEntryList &entries )
+	const std::list<SCallStackEntry>& entries )
 {
 	std::string szFileName = ".\\";
 	// create file name

@@ -1,4 +1,4 @@
-# AILogic - ИИ логика игры (DLL)
+# AILogic - ИИ логика игры (DLL + STATIC)
 # Совместимость: MSVC 2002-2022, C++98 стандарт
 # Зависимости: BugSlay, StreamIO, Misc, Image, LuaLib, Formats, zlib, RandomMapGen
 
@@ -14,7 +14,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 FILE(GLOB AILOGIC_SOURCE "*.cpp" "Scripts/*.cpp")
 FILE(GLOB AILOGIC_HEADERS "*.h" "Scripts/*.h")
 
-# Создаем DLL (согласно .dsp файлу)
+# Создаем STATIC библиотеку
+add_library(AILogic_STATIC STATIC
+    ${AILOGIC_SOURCE}
+    ${AILOGIC_HEADERS}
+)
+
+# Создаем DLL
 add_library(AILogic SHARED
     ${AILOGIC_SOURCE}
     ${AILOGIC_HEADERS}
@@ -23,9 +29,16 @@ add_library(AILogic SHARED
 )
 
 # Установка имени выходного файла и создание import library
+set_target_properties(AILogic_STATIC PROPERTIES
+    OUTPUT_NAME "AILogic_static"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib"
+)
+
 set_target_properties(AILogic PROPERTIES
     OUTPUT_NAME "AILogic"
     PREFIX ""
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin"
 )
 
 # Создаем import library вручную если его нет
@@ -37,8 +50,8 @@ if(WIN32)
     )
 endif()
 
-# Прекомпилированные заголовки
-set_target_properties(AILogic PROPERTIES
+# Прекомпилированные заголовки для STATIC
+set_target_properties(AILogic_STATIC PROPERTIES
     COMPILE_FLAGS "/YuStdAfx.h /Zm200"
 )
 
@@ -46,7 +59,23 @@ set_source_files_properties(StdAfx.cpp PROPERTIES
     COMPILE_FLAGS "/YcStdAfx.h"
 )
 
+# Прекомпилированные заголовки для DLL
+set_target_properties(AILogic PROPERTIES
+    COMPILE_FLAGS "/YuStdAfx.h /Zm200"
+)
+
 # Определения для Windows (согласно .dsp)
+target_compile_definitions(AILogic_STATIC PRIVATE
+    WIN32
+    _WINDOWS
+    _LIB
+    _CRT_SECURE_NO_WARNINGS
+    _CRT_NONSTDC_NO_DEPRECATE
+    _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
+    _WIN32_WINNT=0x0400
+    WINVER=0x0400
+)
+
 target_compile_definitions(AILogic PRIVATE
     WIN32
     _WINDOWS
@@ -66,6 +95,10 @@ target_compile_options(AILogic PRIVATE
     /wd4430
 )
 
+target_compile_options(AILogic_STATIC PRIVATE
+    /wd4430
+)
+
 # Для файлов с BASIC_REGISTER_CLASS отключаем PCH чтобы избежать дубликатов
 set_source_files_properties(
     Aviation.cpp
@@ -79,6 +112,19 @@ set_source_files_properties(
 )
 
 # Подключение заголовочных файлов
+target_include_directories(AILogic_STATIC PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${CMAKE_SOURCE_DIR}/BugSlay
+    ${CMAKE_SOURCE_DIR}/Misc
+    ${CMAKE_SOURCE_DIR}/StreamIO
+    ${CMAKE_SOURCE_DIR}/Image
+    ${CMAKE_SOURCE_DIR}/LuaLib
+    ${CMAKE_SOURCE_DIR}/Formats
+    ${CMAKE_SOURCE_DIR}/zlib
+    ${CMAKE_SOURCE_DIR}/RandomMapGen
+)
+
 target_include_directories(AILogic PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
@@ -93,9 +139,31 @@ target_include_directories(AILogic PRIVATE
 )
 
 # Подключение зависимостей (согласно AILogic.dsp)
+target_link_libraries(AILogic_STATIC PRIVATE
+    BugSlay
+    StreamIO_STATIC
+    Misc
+    Image
+    LuaLib
+    Formats
+    zlib
+    RandomMapGen
+    # Системные библиотеки Windows
+    kernel32.lib
+    user32.lib
+    gdi32.lib
+    winspool.lib
+    comdlg32.lib
+    advapi32.lib
+    shell32.lib
+    ole32.lib
+    oleaut32.lib
+    uuid.lib
+)
+
 target_link_libraries(AILogic PRIVATE
     BugSlay
-    StreamIO_STATIC  # Используем статическую версию для линковки
+    StreamIO
     Misc
     Image
     LuaLib
